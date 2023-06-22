@@ -81,13 +81,13 @@ function Wallet() {
 
   return (
     <div className="">
-      <div className=" bg-[#fff] dark:bg-boxdark w-full rounded-md border border-stroke dark:border-strokedark shadow-md">
+      <div className=" bg-[#fff] px-6 dark:bg-boxdark w-full rounded-md border border-stroke dark:border-strokedark shadow-md">
         <div className="px-6 py-10 ">
           <h1 className="text-2xl text-black dark:text-white font-bold uppercase">
             Cryptocurrencies
           </h1>
           <form onSubmit={handleFormSubmit}>
-            <div className="crypto-list flex text-black flex-col  bg-gray-300 w-full md:h-96 h-[40vh] mt-6 overflow-y-scroll rounded-md shadow-lg shadow-gray-600">
+            <div className="crypto-list flex text-black flex-col  bg-gray-300 w-full md:h-96 h-[40vh] mt-6 overflow-y-scroll rounded-md ">
               <Select
                 value={selectedCrypto}
                 onChange={handleCryptoChange}
@@ -104,6 +104,7 @@ function Wallet() {
                 )}
                 getOptionValue={(option) => option.value}
                 placeholder="Select a crypto"
+                className="w-full rounded border border-stroke bg-gray py-3 pl-11.5 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
                 isSearchable
                 required
               />
@@ -112,10 +113,16 @@ function Wallet() {
                 value={address}
                 onChange={(e) => setAddress(e.target.value)}
                 placeholder="Address"
+                className="w-full rounded border border-stroke bg-gray py-3 pl-11.5 pr-4.5  mt-7 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
                 required
               />
 
-              <button type="submit">Save</button>
+              <button
+                type="submit"
+                className="flex justify-center rounded w-full mt-3 bg-primary py-2 px-6 font-medium text-gray hover:bg-opacity-70"
+              >
+                Save
+              </button>
             </div>
           </form>
         </div>

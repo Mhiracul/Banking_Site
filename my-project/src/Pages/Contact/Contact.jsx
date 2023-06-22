@@ -6,7 +6,7 @@ import Footer from "../../component/Footer";
 
 const Contact = () => {
   return (
-    <div className="w-full h-screen m-0 p-0  oveflow-hidden ">
+    <div className="w-full h-screen ">
       <Navbar />
       <Hero />
       <FAQ />

@@ -48,6 +48,7 @@ const LoginForm = () => {
 
       const dataRes = await fetchData.json();
       console.log(dataRes);
+      toast(dataRes.message);
 
       if (dataRes.user) {
         if (dataRes.user.status === "disabled") {
@@ -60,7 +61,6 @@ const LoginForm = () => {
           });
           return;
         }
-
         if (dataRes.user.status === "suspended") {
           navigate("/error", {
             state: {
@@ -71,9 +71,19 @@ const LoginForm = () => {
           });
           return;
         }
-      }
+      } else if (dataRes.alert) {
+        // Check if there is no error
+        // Save token to local storage
+        localStorage.setItem("token", dataRes.token);
 
-      toast(dataRes.message);
+        dispatch(loginRedux(dataRes));
+        setTimeout(() => {
+          navigate("/main"); // Redirect to user page
+        }, 1000);
+      } else {
+        // Handle other error cases
+        toast.error(dataRes.message);
+      }
 
       if (dataRes.alert) {
         // Save token to local storage
@@ -120,7 +130,7 @@ const LoginForm = () => {
               />
             </div>
 
-            <div className="mt-8 flex px-1 items-center py-1 bg-slate-200 rounded ">
+            <div className="mt-8 flex px-1 items-center py-1 bg-slate-200  bg-white rounded-md">
               <input
                 type={showPassword ? "text" : "password"}
                 id="password"
@@ -128,11 +138,11 @@ const LoginForm = () => {
                 placeholder="Password *"
                 value={formData.password}
                 onChange={handleChange}
-                className="w-full px-4 py-2 rounded-md border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                className="w-full px-4 py-2  border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 bg-white rounded-md"
                 required
               />
               <span
-                className="flex text-xl cursor-pointer"
+                className="flex text-xl cursor-pointer bg-white p-3 rounded-r-md"
                 onClick={handleShowPassword}
               >
                 {" "}

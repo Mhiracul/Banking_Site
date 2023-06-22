@@ -129,6 +129,10 @@ const WithdrawalForm = () => {
 
   const handleWithdrawalSubmit = async (e) => {
     e.preventDefault();
+    if (!withdrawalType) {
+      toast.error("Please select a withdrawal type");
+      return;
+    }
 
     const amount = parseFloat(withdrawalAmount);
 

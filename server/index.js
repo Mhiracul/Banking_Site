@@ -2,7 +2,6 @@ const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
 const nodemailer = require("nodemailer");
-const moment = require("moment");
 
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
@@ -801,6 +800,7 @@ const withdrawalSchema = new mongoose.Schema({
     default: null,
   },
   user: { type: mongoose.Schema.Types.ObjectId, ref: "users" }, // Update this line
+  transaction: { type: mongoose.Schema.Types.ObjectId, ref: "Transaction" }, // Reference to the Transaction schema
 });
 
 const Withdrawal = mongoose.model("Withdrawal", withdrawalSchema);
@@ -929,8 +929,14 @@ app.post("/withdrawal", authenticateToken, async (req, res) => {
       status: result.status,
       user: result.user,
     });
-    await transaction.save();
-    const emailTemplate = await EmailTemplate.findOne({}); // Modify this line to fetch the email template from your database or storage system
+    const savedTransaction = await transaction.save();
+
+    result.transaction = savedTransaction._id;
+
+    await result.save();
+
+    // Save the transaction
+    //const emailTemplate = await EmailTemplate.findOne({}); // Modify this line to fetch the email template from your database or storage system
 
     // Update the user's pending requests
     await userModel.findByIdAndUpdate(userId, {
@@ -940,6 +946,7 @@ app.post("/withdrawal", authenticateToken, async (req, res) => {
     // Deduct the withdrawal amount from the user's account balance
     const user = await userModel.findById(userId);
     user.accountBalance -= amount;
+
     await user.save();
 
     // Generate and send the receipt to the user's email
@@ -1119,6 +1126,7 @@ const depositSchema = new mongoose.Schema({
     default: "pending",
   },
   user: { type: mongoose.Schema.Types.ObjectId, ref: "users" }, // Update this line
+  transaction: { type: mongoose.Schema.Types.ObjectId, ref: "Transaction" }, // Reference to the Transaction schema
 });
 
 const Deposit = mongoose.model("Deposit", depositSchema);
@@ -1151,6 +1159,10 @@ app.post("/deposits", authenticateToken, async (req, res) => {
       status: savedDeposit.status, // Use savedDeposit instead of result
       user: savedDeposit.user, // Use savedDeposit instead of result
     });
+    savedDeposit.transaction = transaction._id;
+    await savedDeposit.save();
+
+    // Save the transaction
     await transaction.save();
 
     res.status(201).json(savedDeposit);
@@ -1159,6 +1171,27 @@ app.post("/deposits", authenticateToken, async (req, res) => {
     res.status(500).json({ error: "Failed to create deposit" });
   }
 });
+
+app.get(
+  "/admin/deposits/total",
+  authenticateToken,
+  authorizeAdmin,
+  async (req, res) => {
+    try {
+      const deposits = await Deposit.find();
+      let totalAmount = 0;
+
+      for (const deposit of deposits) {
+        totalAmount += parseFloat(deposit.depositAmount);
+      }
+
+      res.json({ totalAmount });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: "Server error" });
+    }
+  }
+);
 
 app.get("/total-deposit", authenticateToken, async (req, res) => {
   const userId = req.user._id;
@@ -1428,6 +1461,7 @@ const loanSchema = new mongoose.Schema({
     default: "pending",
   },
   user: { type: mongoose.Schema.Types.ObjectId, ref: "users" },
+  transaction: { type: mongoose.Schema.Types.ObjectId, ref: "Transaction" }, // Reference to the Transaction schema
 });
 
 const Loan = mongoose.model("Loan", loanSchema);
@@ -1451,9 +1485,13 @@ app.post("/loans", authenticateToken, async (req, res) => {
       date: savedLoan.date,
       amount: savedLoan.amount,
       status: savedLoan.status,
-      user: req.user._id,
+      user: savedLoan.user,
     });
-    await transaction.save();
+
+    const savedTransaction = await transaction.save();
+
+    savedLoan.transaction = savedTransaction._id;
+    await savedLoan.save();
 
     res.status(201).json({ message: "Loan payment recorded successfully" });
   } catch (error) {
@@ -1510,6 +1548,7 @@ const savingsSchema = new mongoose.Schema({
   },
   releaseDate: Date,
   user: { type: mongoose.Schema.Types.ObjectId, ref: "users" },
+  transaction: { type: mongoose.Schema.Types.ObjectId, ref: "Transaction" }, // Reference to the Transaction schema
 });
 const Savings = mongoose.model("Savings", savingsSchema);
 
@@ -1518,6 +1557,14 @@ app.post("/savings", authenticateToken, async (req, res) => {
   try {
     const { amount, duration, reason } = req.body;
     const userId = req.user._id; // Assuming you have authentication middleware to extract the user ID
+
+    // Convert amount to a number
+    const parsedAmount = parseFloat(amount);
+    if (isNaN(parsedAmount)) {
+      return res
+        .status(400)
+        .json({ error: "Invalid amount. Amount must be a number." });
+    }
 
     // Calculate release date based on duration
     const releaseDate = new Date();
@@ -1533,11 +1580,11 @@ app.post("/savings", authenticateToken, async (req, res) => {
 
     // Calculate daily addition based on the current interest rate
     const interestRate = await getInterestRate(); // Function to retrieve the current interest rate
-    const dailyAddition = (amount * (interestRate / 100)) / 365;
+    const dailyAddition = (parsedAmount * (interestRate / 100)) / 365;
 
     // Create a new Savings entry
     const savings = new Savings({
-      amount,
+      amount: parsedAmount, // Use the parsed amount
       duration,
       reason,
       releaseDate,
@@ -1546,25 +1593,26 @@ app.post("/savings", authenticateToken, async (req, res) => {
 
     const savedSavings = await savings.save();
     console.log("Savings saved successfully");
+
     const transaction = new Transaction({
-      type: "loan",
+      type: "savings",
       date: savedSavings.date,
       amount: savedSavings.amount,
       status: savedSavings.status,
       user: savedSavings.user,
     });
-    await transaction.save();
+
+    const savedTransaction = await transaction.save();
+    savedSavings.transaction = savedTransaction._id;
+    await savedSavings.save();
 
     // Deduct the savings amount from the user's account balance
     const user = await userModel.findById(userId);
-    const updatedBalance = user.accountBalance - amount;
-    user.accountBalance = updatedBalance;
+    user.accountBalance -= parsedAmount; // Deduct the parsed amount from the account balance
     user.earnings += dailyAddition;
     user.accountBalance += dailyAddition;
 
     await user.save();
-
-    // Create a new Transaction entry
 
     res
       .status(201)
@@ -1745,15 +1793,64 @@ app.patch(
     const { status } = req.body;
 
     try {
-      // Find the transaction by its ID and update the status field
       const transaction = await Transaction.findById(transactionId);
 
       if (!transaction) {
         return res.status(404).json({ error: "Transaction not found" });
       }
 
+      const previousStatus = transaction.status;
       transaction.status = status;
       const updatedTransaction = await transaction.save();
+
+      if (previousStatus !== status) {
+        if (transaction.type === "deposit") {
+          const deposit = await Deposit.findOne({
+            transaction: updatedTransaction._id,
+          });
+
+          if (!deposit) {
+            return res.status(404).json({ error: "Deposit not found" });
+          }
+
+          deposit.status = status;
+          await deposit.save();
+        } else if (transaction.type === "withdrawal") {
+          const withdrawal = await Withdrawal.findOne({
+            transaction: updatedTransaction._id,
+          });
+
+          if (!withdrawal) {
+            return res.status(404).json({ error: "Withdrawal not found" });
+          }
+
+          withdrawal.status = status;
+          await withdrawal.save();
+        } else if (transaction.type === "loan") {
+          const loan = await Loan.findOne({
+            transaction: updatedTransaction._id,
+          });
+
+          if (!loan) {
+            return res.status(404).json({ error: "Loan not found" });
+          }
+
+          loan.status = status;
+          await loan.save();
+        } else if (transaction.type === "savings") {
+          const savings = await Savings.findOne({
+            transaction: updatedTransaction._id,
+          });
+
+          if (!savings) {
+            return res.status(404).json({ error: "Savings not found" });
+          }
+
+          savings.status = status;
+          await savings.save();
+        }
+      }
+
       res.status(200).json(updatedTransaction);
     } catch (error) {
       console.error("Error updating transaction:", error);

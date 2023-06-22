@@ -46,15 +46,15 @@ const FAQ = () => {
         <div className="grid lg:grid-cols-2 grid-cols-1 gap-10 px-10 py-20 w-full max-w-screen-lg">
           <div className="w-[390px]">
             <h1 className="text-[#E1FEA3]">FAQ</h1>
-            <h1 className="text-white text-3xl font-bold capitalize mt-2">
+            <h1 className="text-white md:text-3xl text-xl font-bold capitalize mt-2">
               Frequently Asked Questions
             </h1>
             <p className="text-xs text-bodydark mt-2">
-              If you have any questions, check out our frequently asked
+              If you have any questions, check out our frequently <br /> asked
               questions below.
             </p>
           </div>
-          <div className="box w-[390px]">
+          <div className="box md:w-[390px] w-[300px]">
             {faqData.map((item, index) => (
               <div key={index} className="faq-item">
                 <div

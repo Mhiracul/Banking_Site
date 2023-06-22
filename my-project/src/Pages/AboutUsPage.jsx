@@ -31,13 +31,13 @@ const AboutUsPage = () => {
                   excellent banking services to our customers.
                 </p>
 
-                <div className="grid grid-cols-3 gap-5">
-                  <div className="flex flex-col items-center justify-center gap-2 bg-[#EEF0EF]  px-4 py-10  rounded-lg">
+                <div className="grid lg:grid-cols-3 md:grid-cols-3 grid-cols-1 gap-5">
+                  <div className="flex flex-col items-center justify-center gap-2 bg-[#EEF0EF]   px-4 py-10  rounded-lg">
                     <h1 className="text-[#a3c853] text-3xl font-bold">2018</h1>
                     <p className="text-xs">Year founded</p>
                   </div>
 
-                  <div className="flex flex-col items-center justify-center gap-2 bg-[#EEF0EF]  px-4 py-10 rounded-lg">
+                  <div className="flex flex-col items-center justify-center gap-2 bg-[#EEF0EF]   px-4 py-10 rounded-lg">
                     <h1 className="text-[#a3c853] text-3xl font-bold">30M</h1>
                     <p className="text-xs">Monthly Users</p>
                   </div>

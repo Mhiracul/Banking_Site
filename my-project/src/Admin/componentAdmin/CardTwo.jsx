@@ -1,4 +1,24 @@
+import React, { useState, useEffect } from "react";
+
 const CardOne = () => {
+  const [totalDeposit, setTotalDeposit] = useState(0);
+
+  useEffect(() => {
+    // Fetch the total deposit amount from the server
+    fetch("http://localhost:4000/admin/deposits/total", {
+      method: "GET",
+      headers: {
+        "auth-token": localStorage.getItem("token"), // Pass the auth token
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setTotalDeposit(data.totalAmount);
+      })
+      .catch((error) => {
+        console.error("Error retrieving total deposit amount:", error);
+      });
+  }, []);
   return (
     <div className="rounded-lg border border-stroke bg-[#fff] px-7.5 py-6 shadow-default dark:border-strokedark dark:bg-boxdark">
       <div className="flex h-11.5 w-11.5 items-center justify-center rounded-md bg-meta-2 dark:bg-meta-4">
@@ -24,7 +44,7 @@ const CardOne = () => {
       <div className="mt-4 flex items-end justify-between">
         <div>
           <h4 className="text-title-md font-bold text-black dark:text-white">
-            $3.456K
+            ${totalDeposit}
           </h4>
           <span className="text-sm font-medium">Total deposit</span>
         </div>

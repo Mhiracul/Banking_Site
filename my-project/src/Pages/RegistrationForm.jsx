@@ -81,8 +81,8 @@ const RegistrationForm = () => {
           "url(https://media.istockphoto.com/id/1137281183/photo/stack-of-multicolored-credit-cards-close-up-view-with-selective-focus.jpg?b=1&s=170667a&w=0&k=20&c=F-ueJD2p9rtPwOnCwOeR9oqvdgtRjmhGf782EPdDc4g=)",
       }}
     >
-      <div className="w-full h-screen py-10 bg-gradient bg-gradient-to-br from-[#102F2D] to-transparent bg-opacity-20">
-        <div className="max-w-lg w-[80%] mx-auto bg-gradient bg-gradient-to-br from-[#102F2D] to-transparent bg-opacity-20 px-8 py-6 rounded-md">
+      <div className="w-full h-screen px-2 py-10 bg-gradient bg-gradient-to-br from-[#102F2D] to-transparent bg-opacity-20">
+        <div className="max-w-lg w-full px-3  mx-auto bg-gradient bg-gradient-to-br from-[#102F2D] to-transparent bg-opacity-20  py-6 rounded-md">
           <div className="flex flex-col items-center justify-center">
             <h1 className="text-2xl font-semibold mt-8 text-[#E1FFA0]">
               FinFlow Registration
