@@ -11,6 +11,7 @@ const LoginForm = () => {
     userName: "",
     password: "",
   });
+  const apiBaseUrl = process.env.REACT_PORT; // Access the REACT_APP_API_URL environment variable
 
   const navigate = useNavigate();
 
@@ -38,7 +39,7 @@ const LoginForm = () => {
     e.preventDefault();
     const { userName, password } = formData;
     if (userName && password) {
-      const fetchData = await fetch(`${process.env.REACT_PORT}/login`, {
+      const fetchData = await fetch(`${apiBaseUrl}/login`, {
         method: "POST",
         headers: {
           "content-type": "application/json",
