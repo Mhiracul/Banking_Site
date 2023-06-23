@@ -37,7 +37,7 @@ import TermsPage from "./Pages/TermsPage";
 import PrivacyPage from "./Pages/PrivacyPage";
 import Contact from "./Pages/Contact/Contact";
 import SavingsPage from "./Admin/pages/SavingsPage";
-import VerifyOTPPage from "./Pages/verifyOtpPage";
+import VerifyOTPPage from "./Pages/VerifyOTPPage";
 
 const App = () => {
   return (
