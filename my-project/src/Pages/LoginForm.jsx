@@ -5,7 +5,6 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { loginRedux } from "../redux/userSlice";
 import { toast } from "react-hot-toast";
-require("dotenv").config();
 
 const LoginForm = () => {
   const [formData, setFormData] = useState({
