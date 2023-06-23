@@ -13,7 +13,7 @@ const app = express();
 
 app.use(cors());
 app.use(express.json({ limit: "10mb" }));
-const PORT = 4000 || 4000;
+const PORT = 4000;
 
 const mongo = process.env.MONGODB_URL;
 
