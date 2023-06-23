@@ -11,7 +11,7 @@ const LoginForm = () => {
     userName: "",
     password: "",
   });
-  const apiBaseUrl = process.env.REACT_APP_PORT || ""; // Access the REACT_APP_API_URL environment variable
+  const apiBaseUrl = process.env.REACT_APP_API_URL || ""; // Access the REACT_APP_API_URL environment variable
 
   const navigate = useNavigate();
 
@@ -33,13 +33,13 @@ const LoginForm = () => {
     }));
   };
 
-  console.log("https://banking-6no4.onrender.com/login");
+  console.log(`${apiBaseUrl}/login`);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const { userName, password } = formData;
     if (userName && password) {
-      const fetchData = await fetch(`https://banking-6no4.onrender.com/login`, {
+      const fetchData = await fetch(`${apiBaseUrl}/login`, {
         method: "POST",
         headers: {
           "content-type": "application/json",
