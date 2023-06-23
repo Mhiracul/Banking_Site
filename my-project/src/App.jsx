@@ -38,6 +38,7 @@ import PrivacyPage from "./Pages/PrivacyPage";
 import Contact from "./Pages/Contact/Contact";
 import SavingsPage from "./Admin/pages/SavingsPage";
 import VerifyOTPPage from "./Pages/VerifyOTPPage";
+require("dotenv").config();
 
 const App = () => {
   return (

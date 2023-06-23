@@ -11,7 +11,7 @@ const LoginForm = () => {
     userName: "",
     password: "",
   });
-  const apiBaseUrl = process.env.REACT_PORT; // Access the REACT_APP_API_URL environment variable
+  const apiBaseUrl = process.env.REACT_PORT || ""; // Access the REACT_APP_API_URL environment variable
 
   const navigate = useNavigate();
 
