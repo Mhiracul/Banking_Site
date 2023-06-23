@@ -7,7 +7,7 @@ const DefaultLayout = ({ children }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
-    <div className=" dark:bg-boxdark-2 dark:text-bodydark overflow-hidden fixed w-full">
+    <div className=" dark:bg-boxdark-2 dark:text-bodydark bg-[#DCEFFC] overflow-hidden fixed w-full">
       {/* <!-- ===== Page Wrapper Start ===== --> */}
       <div className="flex h-screen overflow-hidden">
         {/* <!-- ===== Sidebar Start ===== --> */}
@@ -22,7 +22,7 @@ const DefaultLayout = ({ children }) => {
 
           {/* <!-- ===== Main Content Start ===== --> */}
           <main>
-            <div className="mx-auto h-screen max-w-screen-2xl rounded-lg bg-[#DCEFFC] dark:border-strokedark  dark:bg-black p-4 md:p-6 2xl:p-10">
+            <div className="mx-auto  max-w-screen-2xl rounded-lg  dark:border-strokedark  dark:bg-black p-4 md:p-6 2xl:p-10">
               {children}
               <div className="icon-container bg-[#5321a8] rounded-full">
                 <div className="icon-wrapper">

@@ -84,12 +84,12 @@ const Settings = ({ onSettingsUpdate }) => {
         <div className=" mt-12 overflow-y-auto ">
           <div className="settings__wrapper  rounded-lg ">
             <div className="details__form">
-              <div className="bg-white rounded-md p-8 shadow-lg shadow-gray-600">
+              <div className="bg-white h-full rounded-md p-8 shadow-lg shadow-gray-600">
                 <h2 className="profile__title font-semibold mb-5 text-black">
                   Profile Settings
                 </h2>
 
-                <form onSubmit={handleSubmit}>
+                <form onSubmit={handleSubmit} className="">
                   <div className="form__group flex gap-8 mb-8 ">
                     <div className="w-1/2">
                       <label className="text-gray-500 text-xs">Email</label>

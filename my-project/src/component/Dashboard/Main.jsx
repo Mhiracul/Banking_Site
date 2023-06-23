@@ -79,7 +79,7 @@ const Main = () => {
 
   return (
     <div className=" ">
-      <main className=" flex-1 h-full ">
+      <main className=" flex-1">
         {/* Account Balance */}
         <div className="grid lg:grid-cols-4 md:grid-cols-2 grid-cols-1 gap-4 ">
           {/* Account Balance */}

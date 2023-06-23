@@ -32,13 +32,13 @@ const LoginForm = () => {
     }));
   };
 
-  console.log("https://banking-6no4.onrender.com/login");
+  console.log("${process.env.REACT_PORT}/login");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const { userName, password } = formData;
     if (userName && password) {
-      const fetchData = await fetch(`https://banking-6no4.onrender.com/login`, {
+      const fetchData = await fetch(`${process.env.REACT_PORT}/login`, {
         method: "POST",
         headers: {
           "content-type": "application/json",

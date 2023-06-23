@@ -48,7 +48,7 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="overflow-hidden fixed w-full">
+    <div className="w-full ">
       {loading ? ( // Display the loading spinner while loading is true
         <div
           style={override}

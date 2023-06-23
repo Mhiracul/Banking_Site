@@ -56,7 +56,7 @@ const TransactionsHistory = () => {
         <Breadcrumb pageName="Transaction history" />
         <div>
           <div className="h-full px-6 md:px-20 py-10 mx-auto">
-            <div className="bg-[#fff] border border-stroke shadow-default dark:border-strokedark dark:bg-boxdark  overflow-y-auto  md:h-[600px] h-[900px] w-full text-black rounded-md">
+            <div className="bg-[#fff] border border-stroke shadow-default dark:border-strokedark dark:bg-boxdark  overflow-y-auto  md:h-[600px] h-[650px] w-full text-black rounded-md">
               <table className="w-full  text-black dark:text-white">
                 <thead>
                   <tr>
