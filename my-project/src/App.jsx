@@ -53,6 +53,7 @@ const App = () => {
 
             <Route path="/register" element={<RegistrationForm />} />
             <Route path="/login" element={<LoginForm />} />
+
             <Route path="/forgotpassword" element={<Forgotpassword />} />
             <Route path="/main" element={<Main />} />
             <Route path="/about" element={<AboutUsPage />} />

@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { loginRedux } from "../redux/userSlice";
 import { toast } from "react-hot-toast";
-
+import { apiBaseUrl } from "../../config";
 const LoginForm = (props) => {
   const [formData, setFormData] = useState({
     userName: "",
@@ -32,13 +32,13 @@ const LoginForm = (props) => {
     }));
   };
 
-  console.log(`${props.apiBaseUrl}/login`);
+  console.log(`${apiBaseUrl}/login`);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const { userName, password } = formData;
     if (userName && password) {
-      const fetchData = await fetch(`${props.apiBaseUrl}/login`, {
+      const fetchData = await fetch(`${apiBaseUrl}/login`, {
         method: "POST",
         headers: {
           "content-type": "application/json",
