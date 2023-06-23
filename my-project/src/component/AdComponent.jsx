@@ -1,21 +1,11 @@
 import React, { useEffect, useState } from "react";
-import handImage from "../assets/img1.jpg";
-import houseImage from "../assets/img2.jpg";
-import welcomeImage from "../assets/img3.jpeg";
-import moneyImage from "../assets/img4.webp";
-import shakingImage from "../assets/img5.jpeg";
+import handImage from "https://images.unsplash.com/photo-1633158829585-23ba8f7c8caf?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8bG9hbnxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=800&q=60";
 
 const AdComponent = () => {
   const [adImage, setAdImage] = useState(handImage);
 
   useEffect(() => {
-    const adImages = [
-      handImage,
-      houseImage,
-      welcomeImage,
-      moneyImage,
-      shakingImage,
-    ];
+    const adImages = [handImage];
     const interval = setInterval(() => {
       const randomIndex = Math.floor(Math.random() * adImages.length);
       setAdImage(adImages[randomIndex]);
