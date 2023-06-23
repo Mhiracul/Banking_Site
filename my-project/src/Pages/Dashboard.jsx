@@ -37,7 +37,7 @@ const Dashboard = () => {
 
   const updateAccountBalance = async (userName) => {
     try {
-      await axios.put(`http://localhost:4000/users/${userName}`, {
+      await axios.put(`https://banking-6no4.onrender.com/users/${userName}`, {
         newBalance,
       });
       console.log("Account balance updated successfully");

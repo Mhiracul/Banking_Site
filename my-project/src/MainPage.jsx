@@ -11,13 +11,16 @@ function Main() {
   useEffect(() => {
     const fetchLoginStatus = async () => {
       try {
-        const response = await fetch("http://localhost:4000/login", {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            "auth-token": localStorage.getItem("token"),
-          },
-        });
+        const response = await fetch(
+          "https://banking-6no4.onrender.com/login",
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              "auth-token": localStorage.getItem("token"),
+            },
+          }
+        );
 
         if (response.ok) {
           const data = await response.json();

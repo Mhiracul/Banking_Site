@@ -26,7 +26,7 @@ const Main = () => {
         }
 
         const accountResponse = await axios.get(
-          "http://localhost:4000/account",
+          "https://banking-6no4.onrender.com/account",
           {
             headers: {
               "auth-token": token,
@@ -37,7 +37,7 @@ const Main = () => {
         setAccountBalance(accountBalance);
 
         const withdrawalResponse = await axios.get(
-          "http://localhost:4000/total-withdrawal",
+          "https://banking-6no4.onrender.com/total-withdrawal",
           {
             headers: {
               "auth-token": token,
@@ -48,7 +48,7 @@ const Main = () => {
         setTotalWithdrawal(totalWithdrawal);
 
         const depositResponse = await axios.get(
-          "http://localhost:4000/total-deposit",
+          "https://banking-6no4.onrender.com/total-deposit",
           {
             headers: {
               "auth-token": token,
@@ -59,7 +59,7 @@ const Main = () => {
         setTotalDeposit(totalDeposit);
 
         const earningsResponse = await axios.get(
-          "http://localhost:4000/total-earnings",
+          "https://banking-6no4.onrender.com/total-earnings",
           {
             headers: {
               "auth-token": token,
