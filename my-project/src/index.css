@@ -367,7 +367,7 @@ span.flatpickr-weekday.dark,
 .bdt-tabs-item.bdt-active::before {
   content: "";
   position: absolute;
-  left: 75px; /* Adjust the left position to align the bar with the text */
+  left: 28px; /* Adjust the left position to align the bar with the text */
   height: 120px;
   width: 5px; /* Adjust the width as needed */
   background-color: #00ff00; /* Replace #00ff00 with your desired bar color */
@@ -376,7 +376,7 @@ span.flatpickr-weekday.dark,
 .bdt-tabs-item::before {
   content: "";
   position: absolute;
-  left: 75px; /* Adjust the left position to align the bar with the text */
+  left: 28px; /* Adjust the left position to align the bar with the text */
   height: 120px;
   width: 5px; /* Adjust the width as needed */
   background-color: gray; /* Replace gray with the desired default bar color */

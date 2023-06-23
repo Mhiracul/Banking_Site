@@ -11,18 +11,20 @@ const About = () => {
             <p className="text-sm text-[#E1FFA0] font-medium">
               Why <WebsiteName />?
             </p>
-            <h1 className="text-white md:flex-col flex flex-row items-center justify-center gap-1 md:text-5xl text-xl font-medium mt-3">
-              The only fintech app
-              <span className="text-white md:text-5xl text-xl font-medium space-x-7">
+            <div className="text-center mt-3">
+              <h1 className="inline-block text-white  mr-1 md:text-5xl text-xl font-medium ">
+                The only fintech app
+              </h1>
+              <span className="text-white md:text-5xl md:inline-block font-medium text-xl  ">
                 you’ll ever need
               </span>
-            </h1>
+            </div>
 
             <p className="text-[#afaeae] md:text-xl text-sm mt-3">
               Our online banking platform is user-friendly and easy to navigate.
             </p>
           </div>
-          <div className="grid lg:grid-cols-4 md:grid-cols-2 grid-cols-1 gap-30 px-20 py-5 items-center justify-center">
+          <div className="grid lg:grid-cols-4 md:grid-cols-2 grid-cols-1 gap-30 px-20  items-center justify-center">
             <div className="">
               <div className="justify-center items-center flex bg-[#517353] rounded-full w-16 h-16 border-8 border-[#284D3D] mx-auto">
                 <FaMoneyBillAlt size={20} color="#E1FFA0" />
