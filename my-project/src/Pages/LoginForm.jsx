@@ -33,7 +33,7 @@ const LoginForm = () => {
     }));
   };
 
-  console.log("${process.env.REACT_PORT}/login");
+  console.log("${apiBaseUrl}/login");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
