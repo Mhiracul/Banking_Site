@@ -552,6 +552,7 @@ app.get("/profile", authenticateToken, async (req, res) => {
         gender: user.gender,
         bitcoinWalletAddress: user.bitcoinWalletAddress,
         tetherWalletAddress: user.tetherWalletAddress,
+        image: user.image,
       });
     } else {
       res.status(404).json({ error: "User not found" });

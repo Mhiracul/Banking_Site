@@ -16,12 +16,15 @@ const Settings = ({ onSettingsUpdate }) => {
     tetherWalletAddress: "",
     image: null,
   });
+
   const handleImageChange = (e) => {
     const file = e.target.files[0];
-    setFormData({
-      ...formData,
-      image: file,
-    });
+    if (file) {
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        image: file,
+      }));
+    }
   };
 
   const [showBankDetails, setShowBankDetails] = useState(false);
@@ -48,6 +51,7 @@ const Settings = ({ onSettingsUpdate }) => {
           gender: data.gender,
           bitcoinWalletAddress: data.bitcoinWalletAddress,
           tetherWalletAddress: data.tetherWalletAddress,
+          image: data.image,
         }));
       } catch (error) {
         console.error("Error retrieving profile data:", error);
@@ -135,12 +139,11 @@ const Settings = ({ onSettingsUpdate }) => {
 
                     <div className="w-1/2">
                       <label className="text-gray-500 text-xs">
-                        Phone Number
+                        Profile Image
                       </label>
                       <input
                         type="file"
                         accept="image/*"
-                        value={formData.image}
                         onChange={handleImageChange}
                       />
                     </div>
