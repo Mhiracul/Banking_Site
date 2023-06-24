@@ -21,6 +21,8 @@ const RegistrationForm = () => {
     firstName: "",
     lastName: "",
     userName: "",
+    country: "",
+    state: "",
     email: "",
     password: "",
     confirmPassword: "",
@@ -28,20 +30,49 @@ const RegistrationForm = () => {
   });
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
+    const { name, value, type, checked } = e.target;
+    const newValue = type === "checkbox" ? checked : value;
+
     setFormData((prev) => ({
       ...prev,
-      [name]: value,
+      [name]: newValue,
     }));
+
+    console.log("Updated form data:", {
+      ...formData,
+      [name]: newValue,
+    });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const { firstName, userName, email, password, confirmPassword } = formData;
-    if (firstName && userName && email && password && confirmPassword) {
+    const {
+      firstName,
+      userName,
+      email,
+      password,
+      confirmPassword,
+      country,
+      state,
+    } = formData;
+    if (
+      firstName &&
+      userName &&
+      email &&
+      password &&
+      confirmPassword &&
+      country &&
+      state
+    ) {
       if (password === confirmPassword) {
         const registrationData = {
-          ...formData,
+          firstName,
+          userName,
+          email,
+          password,
+          confirmPassword,
+          country, // Add country property
+          state, // Add state property
         };
 
         try {
@@ -117,6 +148,35 @@ const RegistrationForm = () => {
                 className="w-full px-4 py-2 rounded-md border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                 required
               />
+            </div>
+            <div className="mt-4">
+              <select
+                name="country" // Add name attribute
+                id="country"
+                value={formData.country}
+                onChange={handleChange}
+                className="w-full px-4 py-2 rounded-md border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                required
+              >
+                <option value="">Select a country</option>
+                <option value="USA">USA</option>
+                <option value="Canada">Canada</option>
+              </select>
+            </div>
+
+            <div className="mt-4">
+              <select
+                name="state" // Add name attribute
+                id="state"
+                value={formData.state}
+                onChange={handleChange}
+                className="w-full px-4 py-2 rounded-md border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                required
+              >
+                <option value="">Select a state</option>
+                <option value="New York">New York</option>
+                <option value="California">California</option>
+              </select>
             </div>
 
             <div className="mt-8">

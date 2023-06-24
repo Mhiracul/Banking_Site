@@ -5,6 +5,7 @@ import { FaMoneyCheck } from "react-icons/fa";
 import UserTop from "../component/UserTop";
 import DefaultLayouts from "../User/layoutt/DefaultLayouts";
 import { apiBaseUrl } from "../../config";
+
 const Settings = ({ onSettingsUpdate }) => {
   const [formData, setFormData] = useState({
     email: "",
@@ -14,18 +15,8 @@ const Settings = ({ onSettingsUpdate }) => {
     bicSwiftCode: "",
     bitcoinWalletAddress: "",
     tetherWalletAddress: "",
-    image: null,
   });
-
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      setFormData((prevFormData) => ({
-        ...prevFormData,
-        image: file,
-      }));
-    }
-  };
+  const [image, setImage] = useState("");
 
   const [showBankDetails, setShowBankDetails] = useState(false);
   const toggleBankDetails = () => {
@@ -51,7 +42,6 @@ const Settings = ({ onSettingsUpdate }) => {
           gender: data.gender,
           bitcoinWalletAddress: data.bitcoinWalletAddress,
           tetherWalletAddress: data.tetherWalletAddress,
-          image: data.image,
         }));
       } catch (error) {
         console.error("Error retrieving profile data:", error);
@@ -73,19 +63,9 @@ const Settings = ({ onSettingsUpdate }) => {
     e.preventDefault();
 
     try {
-      const profileData = new FormData();
-      profileData.append("email", formData.email);
-      profileData.append("phoneNumber", formData.phoneNumber);
-      profileData.append("accountNumber", formData.accountNumber);
-      profileData.append("gender", formData.gender);
-      profileData.append("tetherWalletAddress", formData.tetherWalletAddress);
-      profileData.append("bitcoinWalletAddress", formData.bitcoinWalletAddress);
-      profileData.append("image", formData.image);
-
-      const response = await axios.put(`${apiBaseUrl}/profile`, profileData, {
+      const response = await axios.put(`${apiBaseUrl}/profile`, formData, {
         headers: {
           "auth-token": localStorage.getItem("token"),
-          "Content-Type": "multipart/form-data",
         },
       });
 
@@ -136,28 +116,14 @@ const Settings = ({ onSettingsUpdate }) => {
                       />
                     </div>
                   </div>
-                  <div className="form__group  flex md:flex-row flex-col gap-8 mb-8 ">
-                    <div className="w-1/2">
-                      <input
-                        type="text"
-                        className="w-full py-3 px-4 rounded-lg bg-transparent border border-green-300 text-gray-800 text-xs outline-none"
-                        value="Bank Details"
-                        onClick={toggleBankDetails}
-                        readOnly
-                      />
-                    </div>
 
-                    <div className="w-1/2">
-                      <label className="text-gray-500 text-xs">
-                        Profile Image
-                      </label>
-                      <input
-                        type="file"
-                        accept="image/*"
-                        onChange={handleImageChange}
-                      />
-                    </div>
-                  </div>
+                  <input
+                    type="text"
+                    className="w-full py-3 px-4 rounded-lg bg-transparent border border-green-300 text-gray-800 text-xs outline-none"
+                    value="Bank Details"
+                    onClick={toggleBankDetails}
+                    readOnly
+                  />
 
                   {showBankDetails && (
                     <div className="bank-details">

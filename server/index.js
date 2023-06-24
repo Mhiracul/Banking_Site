@@ -8,7 +8,9 @@ const bcrypt = require("bcrypt");
 const multer = require("multer");
 
 // Set up multer for handling file uploads
-const upload = multer();
+
+const upload = multer(); // Specify the directory to store uploaded files
+
 const dotenv = require("dotenv");
 dotenv.config();
 
@@ -50,7 +52,9 @@ const UserSchema = new mongoose.Schema({
   accountNo: String,
   bitcoinWalletAddress: String,
   tetherWalletAddress: String,
-  image: Buffer, // Specify the data type as Buffer
+  country: String,
+  state: String,
+  image: { type: String },
   status: {
     type: String,
     enum: ["suspended", "activated", "disabled"],
@@ -172,9 +176,22 @@ const crypto = require("crypto");
 
 app.post("/signup", async (req, res) => {
   try {
-    const { userName, password, firstName, lastName, email, confirmPassword } =
-      req.body;
-
+    const {
+      userName,
+      password,
+      firstName,
+      lastName,
+      email,
+      confirmPassword,
+      country,
+      state,
+      city,
+      currentType,
+      accountType,
+      currencyType,
+    } = req.body;
+    console.log("Received country:", country);
+    console.log("Received state:", state);
     // Check if username already exists
     const existingUser = await userModel.findOne({ userName });
     if (existingUser) {
@@ -203,8 +220,17 @@ app.post("/signup", async (req, res) => {
       email,
       role,
       accountNo, // Add the account number to the user object
-      otp, // Add the OTP to the user object
+      otp,
+      country,
+      state,
+      city,
+      currentType,
+      accountType,
+      currencyType, // Add the OTP to the user object
     });
+    console.log("Country:", country);
+    console.log("State:", state);
+
     await user.save();
 
     // Send registration email with OTP
@@ -492,7 +518,7 @@ app.put("/users/:userName", async (req, res) => {
 app.put(
   "/profile",
   authenticateToken,
-  upload.single("image"),
+
   async (req, res) => {
     const {
       email,
@@ -504,12 +530,6 @@ app.put(
     } = req.body;
 
     try {
-      let imageData = null;
-
-      // Check if an image file was uploaded
-      if (req.file) {
-        imageData = req.file.buffer; // Set the image data to the uploaded file's buffer
-      }
       const user = await userModel.findOneAndUpdate(
         { _id: req.user._id },
         {
@@ -519,7 +539,6 @@ app.put(
           gender,
           bitcoinWalletAddress,
           tetherWalletAddress,
-          image: imageData,
         },
         { new: true }
       );
