@@ -223,7 +223,7 @@ const DepositForm = () => {
 
         <div className="">
           <div className="mt-6">
-            <div className="bg-[#fff] rounded-md h-[650px] shadow-md p-4">
+            <div className="bg-[#fff] rounded-md h-[548px] shadow-md p-4">
               <div className="grid grid-cols-1 gap-8">
                 <div className="">
                   <h3 className="text-xl font-medium text-gray-800">
