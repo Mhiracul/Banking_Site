@@ -10,7 +10,7 @@ import Wallet from "./Wallet.jsx";
 
 const Admins = () => {
   return (
-    <div className="fixed h-screen w-full">
+    <div className="w-full">
       <DefaultLayout>
         <div className="grid grid-cols-1 gap-4 rounded-md md:grid-cols-2 md:gap-6 xl:grid-cols-3 2xl:gap-7.5">
           <CardOne />

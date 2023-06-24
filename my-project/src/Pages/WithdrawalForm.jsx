@@ -232,7 +232,7 @@ const WithdrawalForm = () => {
           <div className="bg-white px-10 py-10 text-black mt-10 rounded-md shadow-md shadow-[#ccc] w-full">
             <div className="flex justify-between  items-center mb-5 ">
               <h1 className="text-2xl ">Account Balance:</h1>
-              <h1 className="text-2xl ">${accountBalance}</h1>
+              <h1 className="text-2xl ">${accountBalance.toFixed(2)}</h1>
             </div>
             <form onSubmit={handleWithdrawalSubmit}>
               <div className="py-2">
