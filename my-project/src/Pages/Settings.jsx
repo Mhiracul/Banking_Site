@@ -15,6 +15,7 @@ const Settings = ({ onSettingsUpdate }) => {
     bitcoinWalletAddress: "",
     tetherWalletAddress: "",
   });
+
   const [showBankDetails, setShowBankDetails] = useState(false);
   const toggleBankDetails = () => {
     setShowBankDetails(!showBankDetails);
