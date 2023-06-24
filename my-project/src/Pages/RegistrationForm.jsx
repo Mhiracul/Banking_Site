@@ -4,6 +4,55 @@ import { BiHide, BiShow } from "react-icons/bi";
 import { toast } from "react-hot-toast";
 import { apiBaseUrl } from "../../config";
 
+const Dropdown = ({ options, selectedOption, onOptionSelect }) => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const handleOptionClick = (option) => {
+    onOptionSelect(option);
+    setIsOpen(false);
+  };
+
+  return (
+    <div className="relative">
+      <button
+        type="button"
+        className="bg-white px-4 py-2 border rounded-md w-full flex items-center outline-none justify-between"
+        onClick={() => setIsOpen(!isOpen)}
+      >
+        <span>
+          {selectedOption ? selectedOption.label : "Select an option"}
+        </span>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 20 20"
+          fill="currentColor"
+          className={`w-5 h-5 ${isOpen ? "transform rotate-180" : ""}`}
+        >
+          <path
+            fillRule="evenodd"
+            d="M10.707 14.707a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L10 12.586l3.293-3.293a1 1 0 111.414 1.414l-4 4z"
+            clipRule="evenodd"
+          />
+        </svg>
+      </button>
+      {isOpen && (
+        <div className="absolute z-10 mt-2 py-2 w-full bg-white shadow-lg rounded-md">
+          {options.map((option) => (
+            <button
+              key={option.value}
+              type="button"
+              className="block px-4 py-2 text-gray-800 hover:bg-gray-200 w-full text-left"
+              onClick={() => handleOptionClick(option)}
+            >
+              {option.label}
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+};
+
 const RegistrationForm = () => {
   const navigate = useNavigate(); // Use the useNavigate hook
 
@@ -105,6 +154,18 @@ const RegistrationForm = () => {
     }
   };
 
+  const countryOptions = [
+    { value: "", label: "Select a country" },
+    { value: "USA", label: "USA" },
+    { value: "Canada", label: "Canada" },
+  ];
+
+  const stateOptions = [
+    { value: "", label: "Select a state" },
+    { value: "New York", label: "New York" },
+    { value: "California", label: "California" },
+  ];
+
   return (
     <div
       className="w-full absolute h-screen overflow-y-auto overflow-hidden bg-cover bg-center bg-opacity-10"
@@ -150,33 +211,27 @@ const RegistrationForm = () => {
               />
             </div>
             <div className="mt-4">
-              <select
-                name="country" // Add name attribute
-                id="country"
-                value={formData.country}
-                onChange={handleChange}
-                className="w-full px-4 py-2 rounded-md border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-                required
-              >
-                <option value="">Select a country</option>
-                <option value="USA">USA</option>
-                <option value="Canada">Canada</option>
-              </select>
+              <Dropdown
+                options={countryOptions}
+                selectedOption={formData.country}
+                onOptionSelect={(option) =>
+                  handleChange({
+                    target: { name: "country", value: option.value },
+                  })
+                }
+              />
             </div>
 
             <div className="mt-4">
-              <select
-                name="state" // Add name attribute
-                id="state"
-                value={formData.state}
-                onChange={handleChange}
-                className="w-full px-4 py-2 rounded-md border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-                required
-              >
-                <option value="">Select a state</option>
-                <option value="New York">New York</option>
-                <option value="California">California</option>
-              </select>
+              <Dropdown
+                options={stateOptions}
+                selectedOption={formData.state}
+                onOptionSelect={(option) =>
+                  handleChange({
+                    target: { name: "state", value: option.value },
+                  })
+                }
+              />
             </div>
 
             <div className="mt-8">
