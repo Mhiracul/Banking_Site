@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { BiHide, BiShow } from "react-icons/bi";
 import { toast } from "react-hot-toast";
+import { apiBaseUrl } from "../../config";
 
 const RegistrationForm = () => {
   const navigate = useNavigate(); // Use the useNavigate hook
@@ -44,7 +45,7 @@ const RegistrationForm = () => {
         };
 
         try {
-          const response = await fetch("http://localhost:4000/signup", {
+          const response = await fetch(`${apiBaseUrl}/signup`, {
             method: "POST",
             headers: {
               "Content-Type": "application/json",

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 
 const AdComponent = () => {
   return (
-    <div className="relative">
+    <div className="relative md:pb-0 pb-8">
       <img
         src="https://images.unsplash.com/photo-1633158829585-23ba8f7c8caf?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8bG9hbnxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=800&q=60"
         alt="Ad"

@@ -2,13 +2,13 @@ import React, { useEffect, useState } from "react";
 import Sidebar from "../component/Sidebar";
 import UserTop from "../component/UserTop";
 import DefaultLayouts from "../User/layoutt/DefaultLayouts";
-
+import { apiBaseUrl } from "../../config";
 const TransactionHistory = () => {
   const [transactions, setTransactions] = useState([]);
 
   useEffect(() => {
     // Fetch transaction data from the backend API
-    fetch("http://localhost:4000/transactions", {
+    fetch(`${apiBaseUrl}/transactions`, {
       headers: {
         "auth-token": localStorage.getItem("token"),
       },

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Dashboard from "./Pages/Dashboard";
 import Admins from "./Admin/Admins";
-
+import { apiBaseUrl } from "../config";
 function Main() {
   const [loggedIn, setLoggedIn] = useState(false);
   const [role, setRole] = useState("");
@@ -11,16 +11,13 @@ function Main() {
   useEffect(() => {
     const fetchLoginStatus = async () => {
       try {
-        const response = await fetch(
-          "https://banking-6no4.onrender.com/login",
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              "auth-token": localStorage.getItem("token"),
-            },
-          }
-        );
+        const response = await fetch(`${apiBaseUrl}/login`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            "auth-token": localStorage.getItem("token"),
+          },
+        });
 
         if (response.ok) {
           const data = await response.json();

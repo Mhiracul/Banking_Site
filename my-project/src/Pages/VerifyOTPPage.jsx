@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-
+import { apiBaseUrl } from "../../config";
 const VerifyOTPPage = () => {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
@@ -23,7 +23,7 @@ const VerifyOTPPage = () => {
     };
 
     try {
-      const response = await fetch("http://localhost:4000/verify-otp", {
+      const response = await fetch(`${apiBaseUrl}/verify-otp`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

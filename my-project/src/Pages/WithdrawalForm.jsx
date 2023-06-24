@@ -6,7 +6,7 @@ import DefaultLayouts from "../User/layoutt/DefaultLayouts";
 import UserTop from "../component/UserTop";
 import Polite from "../assets/PoliteChicky.gif";
 import { BsX } from "react-icons/bs";
-
+import { apiBaseUrl } from "../../config";
 const Dropdown = ({ options, selectedOption, onOptionSelect }) => {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -70,7 +70,7 @@ const WithdrawalForm = () => {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const response = await axios.get("http://localhost:4000/profile", {
+        const response = await axios.get(`${apiBaseUrl}/profile`, {
           headers: {
             "auth-token": localStorage.getItem("token"),
           },
@@ -84,7 +84,7 @@ const WithdrawalForm = () => {
 
     const fetchAccountBalance = async () => {
       try {
-        const response = await axios.get("http://localhost:4000/account", {
+        const response = await axios.get(`${apiBaseUrl}/account`, {
           headers: {
             "auth-token": localStorage.getItem("token"),
           },
@@ -104,7 +104,7 @@ const WithdrawalForm = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://localhost:4000/withdrawal", {
+        const response = await axios.get(`${apiBaseUrl}/withdrawal`, {
           headers: {
             "auth-token": localStorage.getItem("token"),
           },
@@ -153,7 +153,7 @@ const WithdrawalForm = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:4000/withdrawal",
+        `${apiBaseUrl}/withdrawal`,
         withdrawalData,
         {
           headers: {
@@ -170,7 +170,7 @@ const WithdrawalForm = () => {
       setShowSuccessMessage(true);
       setAccountBalance(updatedBalance);
 
-      const res = await axios.get("http://localhost:4000/withdrawal", {
+      const res = await axios.get(`${apiBaseUrl}/withdrawal`, {
         headers: {
           "auth-token": localStorage.getItem("token"),
         },

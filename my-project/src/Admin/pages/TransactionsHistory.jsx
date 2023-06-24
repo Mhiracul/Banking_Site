@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import DefaultLayout from "../layout/DefaultLayout";
 import Breadcrumb from "../componentAdmin/Breadcrumb";
+import { apiBaseUrl } from "../../../config";
 
 const TransactionsHistory = () => {
   const [transactions, setTransactions] = useState([]);
@@ -13,14 +14,11 @@ const TransactionsHistory = () => {
 
   const fetchTransaction = async () => {
     try {
-      const response = await axios.get(
-        "http://localhost:4000/admin/transaction",
-        {
-          headers: {
-            "auth-token": localStorage.getItem("token"),
-          },
-        }
-      );
+      const response = await axios.get(`${apiBaseUrl}/admin/transaction`, {
+        headers: {
+          "auth-token": localStorage.getItem("token"),
+        },
+      });
 
       console.log(response.data); // Check the value of response.data
       setTransactions(response.data.transactions);
@@ -34,7 +32,7 @@ const TransactionsHistory = () => {
       const updatedStatus = "success"; // Set the desired updated status here
       setUpdated(updatedStatus);
       await axios.patch(
-        `http://localhost:4000/admin/transaction/${transactionId}`,
+        `${apiBaseUrl}/admin/transaction/${transactionId}`,
         {
           status: updatedStatus,
         },

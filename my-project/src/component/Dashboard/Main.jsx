@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import VirtualCard from "./VirtualCard";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-
+import { apiBaseUrl } from "../../../config";
 const Main = () => {
   const [accountBalance, setAccountBalance] = useState(0);
   const [totalWithdrawal, setTotalWithdrawal] = useState(0);
@@ -25,19 +25,16 @@ const Main = () => {
           return;
         }
 
-        const accountResponse = await axios.get(
-          "https://banking-6no4.onrender.com/account",
-          {
-            headers: {
-              "auth-token": token,
-            },
-          }
-        );
+        const accountResponse = await axios.get(`${apiBaseUrl}/account`, {
+          headers: {
+            "auth-token": token,
+          },
+        });
         const { accountBalance } = accountResponse.data;
         setAccountBalance(accountBalance);
 
         const withdrawalResponse = await axios.get(
-          "https://banking-6no4.onrender.com/total-withdrawal",
+          `${apiBaseUrl}/total-withdrawal`,
           {
             headers: {
               "auth-token": token,
@@ -47,19 +44,16 @@ const Main = () => {
         const { totalWithdrawal } = withdrawalResponse.data;
         setTotalWithdrawal(totalWithdrawal);
 
-        const depositResponse = await axios.get(
-          "https://banking-6no4.onrender.com/total-deposit",
-          {
-            headers: {
-              "auth-token": token,
-            },
-          }
-        );
+        const depositResponse = await axios.get(`${apiBaseUrl}/total-deposit`, {
+          headers: {
+            "auth-token": token,
+          },
+        });
         const { totalDeposit } = depositResponse.data;
         setTotalDeposit(totalDeposit);
 
         const earningsResponse = await axios.get(
-          "https://banking-6no4.onrender.com/total-earnings",
+          `${apiBaseUrl}/total-earnings`,
           {
             headers: {
               "auth-token": token,

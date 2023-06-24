@@ -6,7 +6,7 @@ import Loancomp from "../component/Dashboard/Loancomp";
 import TopBar from "../component/TopBar";
 import DefaultLayouts from "../User/layoutt/DefaultLayouts";
 import ClipLoader from "react-spinners/ClipLoader";
-
+import { apiBaseUrl } from "../../config";
 const override = {
   display: "flex",
   justifyContent: "center",
@@ -37,7 +37,7 @@ const Dashboard = () => {
 
   const updateAccountBalance = async (userName) => {
     try {
-      await axios.put(`https://banking-6no4.onrender.com/users/${userName}`, {
+      await axios.put(`${apiBaseUrl}/users/${userName}`, {
         newBalance,
       });
       console.log("Account balance updated successfully");

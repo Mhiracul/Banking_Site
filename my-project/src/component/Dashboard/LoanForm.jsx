@@ -5,7 +5,7 @@ import UserTop from "../UserTop";
 import AdComponent from "../AdComponent";
 import axios from "axios";
 import DefaultLayouts from "../../User/layoutt/DefaultLayouts";
-
+import { apiBaseUrl } from "../../../config";
 const override = css`
   display: block;
   margin: 0 auto;
@@ -68,7 +68,7 @@ const LoanForm = () => {
       };
       console.log(requestBody);
 
-      await axios.post("http://localhost:4000/loans", requestBody, {
+      await axios.post(`${apiBaseUrl}/loans`, requestBody, {
         headers: {
           "auth-token": localStorage.getItem("token"),
         },
@@ -88,7 +88,7 @@ const LoanForm = () => {
   useEffect(() => {
     const fetchAccountBalance = async () => {
       try {
-        const response = await axios.get("http://localhost:4000/account", {
+        const response = await axios.get(`${apiBaseUrl}/account`, {
           headers: {
             "auth-token": localStorage.getItem("token"),
           },

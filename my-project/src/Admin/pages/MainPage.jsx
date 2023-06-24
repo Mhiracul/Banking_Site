@@ -6,7 +6,7 @@ import axios from "axios";
 import DefaultLayout from "../layout/DefaultLayout";
 import Breadcrumb from "../componentAdmin/Breadcrumb";
 import { toast } from "react-hot-toast";
-
+import { apiBaseUrl } from "../../../config";
 function MainPage() {
   const dispatch = useDispatch();
   const usersData = useSelector((state) => state.user.users);
@@ -19,7 +19,7 @@ function MainPage() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await axios.get("http://localhost:4000/admin/users", {
+        const res = await axios.get(`${apiBaseUrl}/admin/users`, {
           headers: {
             "auth-token": localStorage.getItem("token"),
           },
@@ -43,14 +43,11 @@ function MainPage() {
 
   const deleteUser = async (userId) => {
     try {
-      const res = await axios.delete(
-        `http://localhost:4000/admin/users/${userId}`,
-        {
-          headers: {
-            "auth-token": localStorage.getItem("token"),
-          },
-        }
-      );
+      const res = await axios.delete(`${apiBaseUrl}/admin/users/${userId}`, {
+        headers: {
+          "auth-token": localStorage.getItem("token"),
+        },
+      });
 
       if (res.status === 200) {
         // User deleted successfully
@@ -68,7 +65,7 @@ function MainPage() {
   const suspendUser = async (userId) => {
     try {
       const res = await axios.put(
-        `http://localhost:4000/admin/users/${userId}/suspend`,
+        `${apiBaseUrl}/admin/users/${userId}/suspend`,
         {},
         {
           headers: {
@@ -94,7 +91,7 @@ function MainPage() {
   const disableUser = async (userId) => {
     try {
       const res = await axios.put(
-        `http://localhost:4000/admin/users/${userId}/disable`,
+        `${apiBaseUrl}/admin/users/${userId}/disable`,
         {},
         {
           headers: {
@@ -119,7 +116,7 @@ function MainPage() {
   const activateUser = async (userId) => {
     try {
       const res = await axios.put(
-        `http://localhost:4000/admin/users/${userId}/activate`,
+        `${apiBaseUrl}/admin/users/${userId}/activate`,
         {},
         {
           headers: {
@@ -148,7 +145,7 @@ function MainPage() {
   const handleEditUser = async (editedUser) => {
     try {
       const res = await axios.put(
-        `http://localhost:4000/admin/users/${editedUser._id}`,
+        `${apiBaseUrl}/admin/users/${editedUser._id}`,
         editedUser,
         {
           headers: {
@@ -185,7 +182,7 @@ function MainPage() {
 
     try {
       const res = await axios.post(
-        `http://localhost:4000/admin/users/${userId}/penalty`,
+        `${apiBaseUrl}/admin/users/${userId}/penalty`,
         { amount },
         {
           headers: {
@@ -219,7 +216,7 @@ function MainPage() {
 
     try {
       const res = await axios.post(
-        `http://localhost:4000/admin/users/${userId}/balance/add`,
+        `${apiBaseUrl}/admin/users/${userId}/balance/add`,
         { amount },
         {
           headers: {

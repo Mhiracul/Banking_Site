@@ -3,6 +3,7 @@ import Breadcrumb from "../componentAdmin/Breadcrumb";
 import userThree from "../../assets/user-03.png";
 import DefaultLayout from "../layout/DefaultLayout";
 import axios from "axios";
+import { apiBaseUrl } from "../../../config";
 const AdminSettings = () => {
   const [formData, setFormData] = useState({
     firstName: "",
@@ -16,7 +17,7 @@ const AdminSettings = () => {
   useEffect(() => {
     const fetchProfileData = async () => {
       try {
-        const response = await axios.get("http://localhost:4000/profile", {
+        const response = await axios.get(`${apiBaseUrl}/profile`, {
           headers: {
             "auth-token": localStorage.getItem("token"),
           },
@@ -53,15 +54,11 @@ const AdminSettings = () => {
     e.preventDefault();
 
     try {
-      const response = await axios.put(
-        "http://localhost:4000/profile",
-        formData,
-        {
-          headers: {
-            "auth-token": localStorage.getItem("token"),
-          },
-        }
-      );
+      const response = await axios.put(`${apiBaseUrl}/profile`, formData, {
+        headers: {
+          "auth-token": localStorage.getItem("token"),
+        },
+      });
 
       console.log(response.data); // Success message
     } catch (error) {

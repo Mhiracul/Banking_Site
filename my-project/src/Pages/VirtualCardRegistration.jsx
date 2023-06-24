@@ -6,7 +6,7 @@ import { toast } from "react-hot-toast";
 import axios from "axios";
 import chip from "../assets/chip.png";
 import verve from "../assets/Verve-Logo.svg";
-
+import { apiBaseUrl } from "../../config";
 const VirtualCardRegistrationForm = () => {
   const [cardType, setCardType] = useState("");
   const [name, setName] = useState("");
@@ -35,16 +35,12 @@ const VirtualCardRegistrationForm = () => {
     };
 
     try {
-      const response = await axios.post(
-        "http://localhost:4000/virtual-cards",
-        data,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            "auth-token": localStorage.getItem("token"),
-          },
-        }
-      );
+      const response = await axios.post(`${apiBaseUrl}/virtual-cards`, data, {
+        headers: {
+          "Content-Type": "application/json",
+          "auth-token": localStorage.getItem("token"),
+        },
+      });
       console.log(response.data);
     } catch (error) {
       console.error("Error:", error);

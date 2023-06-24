@@ -19,7 +19,6 @@ const DepositForm = () => {
 
   const [cryptocurrencies, setCryptocurrencies] = useState([]);
   const [selectedCrypto, setSelectedCrypto] = useState(null);
-  const api_url = "https://banking-6no4.onrender.com";
   const handleMethodChange = (selectedOptions) => {
     setSelectedMethod(selectedOptions[0]);
   };
@@ -30,7 +29,7 @@ const DepositForm = () => {
 
   const fetchCryptocurrencies = async () => {
     try {
-      const response = await axios.get("api_url/cryptos");
+      const response = await axios.get(`${apiBaseUrl}/cryptos`);
       setCryptocurrencies(response.data);
       if (response.data.length > 0) {
         setSelectedCryptoAddress(response.data[0].address);
@@ -61,7 +60,7 @@ const DepositForm = () => {
     }
     try {
       const response = await axios.post(
-        "api_url/deposits",
+        `${apiBaseUrl}/deposits`,
         {
           depositAmount,
           selectedCryptoAddress,

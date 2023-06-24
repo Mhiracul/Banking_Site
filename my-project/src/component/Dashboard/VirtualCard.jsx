@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import chip from "../../assets/chip.png";
 import ClipLoader from "react-spinners/ClipLoader";
-
+import { apiBaseUrl } from "../../../config";
 const override = {
   display: "flex",
   justifyContent: "center",
@@ -21,7 +21,7 @@ const VirtualCard = () => {
 
   const fetchCardData = async () => {
     try {
-      const response = await axios.get("http://localhost:4000/card");
+      const response = await axios.get(`${apiBaseUrl}/card`);
       await new Promise((resolve) => setTimeout(resolve, 2000));
       setLoading(false);
       setCardData(response.data);

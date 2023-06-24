@@ -25,14 +25,11 @@ function Savings() {
   useEffect(() => {
     const fetchDynamicValues = async () => {
       try {
-        const response = await axios.get(
-          "http://localhost:4000/dynamic-values",
-          {
-            headers: {
-              "auth-token": localStorage.getItem("token"),
-            },
-          }
-        );
+        const response = await axios.get(`${apiBaseUrl}/dynamic-values`, {
+          headers: {
+            "auth-token": localStorage.getItem("token"),
+          },
+        });
         setReasons(response.data.reasons);
       } catch (error) {
         console.log("An error occurred while fetching dynamic values:", error);
@@ -41,14 +38,11 @@ function Savings() {
 
     const fetchInterestRate = async () => {
       try {
-        const response = await axios.get(
-          "http://localhost:4000/interest-rate",
-          {
-            headers: {
-              "auth-token": localStorage.getItem("token"),
-            },
-          }
-        );
+        const response = await axios.get(`${apiBaseUrl}/interest-rate`, {
+          headers: {
+            "auth-token": localStorage.getItem("token"),
+          },
+        });
 
         setInterestRate(response.data.interestRate);
         console.log(interestRate);
@@ -69,7 +63,7 @@ function Savings() {
 
     try {
       const response = await axios.post(
-        "http://localhost:4000/savings",
+        `${apiBaseUrl}/savings`,
         {
           amount,
           duration,

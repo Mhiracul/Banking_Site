@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { AiOutlineSearch } from "react-icons/ai";
 import { useSelector } from "react-redux";
 import axios from "axios";
+import { apiBaseUrl } from "../../config";
 const TopBar = () => {
   const userData = useSelector((state) => state.user);
 
@@ -11,7 +12,7 @@ const TopBar = () => {
   useEffect(() => {
     const fetchAccountNo = async () => {
       try {
-        const response = await axios.get("http://localhost:4000/accountno", {
+        const response = await axios.get(`${apiBaseUrl}/accountno`, {
           headers: {
             "auth-token": localStorage.getItem("token"),
           },

@@ -19,6 +19,8 @@ import berty from "../assets/berty.svg";
 import Sidebar from "./AdminSidebar";
 import Select from "react-select";
 import { toast } from "react-hot-toast";
+import { apiBaseUrl } from "../../config";
+
 const cryptoData = [
   { id: 1, name: "Bitcoin", logo: bitcoinLogo },
   { id: 2, name: "Ethereum", logo: EthLogo },
@@ -65,7 +67,7 @@ function Wallet() {
         address,
       };
 
-      await axios.post("http://localhost:4000/admin/cryptos", cryptoData, {
+      await axios.post(`${apiBaseUrl}/admin/cryptos`, cryptoData, {
         headers,
       });
 

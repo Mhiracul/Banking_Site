@@ -17,7 +17,7 @@ const LoanPaymentForm = () => {
     }
 
     try {
-      await axios.post("http://localhost:4000/loans", {
+      await axios.post(`${apiBaseUrl}/loans`, {
         name,
         amount,
         paymentDate,
@@ -35,7 +35,7 @@ const LoanPaymentForm = () => {
     // Make API request to fetch account balance
     const fetchAccountBalance = async () => {
       try {
-        const response = await axios.get("http://localhost:4000/account", {
+        const response = await axios.get(`${apiBaseUrl}/account`, {
           headers: {
             Authorization: localStorage.getItem("token"), // Send the JWT token in the request headers
           },

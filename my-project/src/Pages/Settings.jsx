@@ -4,7 +4,7 @@ import axios from "axios";
 import { FaMoneyCheck } from "react-icons/fa";
 import UserTop from "../component/UserTop";
 import DefaultLayouts from "../User/layoutt/DefaultLayouts";
-
+import { apiBaseUrl } from "../../config";
 const Settings = ({ onSettingsUpdate }) => {
   const [formData, setFormData] = useState({
     email: "",
@@ -23,7 +23,7 @@ const Settings = ({ onSettingsUpdate }) => {
   useEffect(() => {
     const fetchProfileData = async () => {
       try {
-        const response = await axios.get("http://localhost:4000/profile", {
+        const response = await axios.get(`${apiBaseUrl}/profile`, {
           headers: {
             "auth-token": localStorage.getItem("token"),
           },
@@ -60,15 +60,11 @@ const Settings = ({ onSettingsUpdate }) => {
     e.preventDefault();
 
     try {
-      const response = await axios.put(
-        "http://localhost:4000/profile",
-        formData,
-        {
-          headers: {
-            "auth-token": localStorage.getItem("token"),
-          },
-        }
-      );
+      const response = await axios.put(`${apiBaseUrl}/profile`, formData, {
+        headers: {
+          "auth-token": localStorage.getItem("token"),
+        },
+      });
 
       console.log(response.data); // Success message
     } catch (error) {
@@ -81,7 +77,7 @@ const Settings = ({ onSettingsUpdate }) => {
     <DefaultLayouts>
       <div className="mx-auto max-w-270 font-nunito">
         <UserTop pageName="Profile" />
-        <div className=" mt-12 overflow-y-auto ">
+        <div className=" mt-12 overflow-y-auto pb-4">
           <div className="settings__wrapper  rounded-lg ">
             <div className="details__form">
               <div className="bg-white h-full rounded-md p-8 shadow-lg shadow-gray-600">
