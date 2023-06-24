@@ -5,7 +5,10 @@ const nodemailer = require("nodemailer");
 
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
+const multer = require("multer");
 
+// Set up multer for handling file uploads
+const upload = multer();
 const dotenv = require("dotenv");
 dotenv.config();
 
@@ -486,42 +489,52 @@ app.put("/users/:userName", async (req, res) => {
 });
 // Update user profile
 
-app.put("/profile", authenticateToken, async (req, res) => {
-  const {
-    email,
-    phoneNumber,
-    accountNumber,
-    gender,
-    tetherWalletAddress,
-    bitcoinWalletAddress,
-    image,
-  } = req.body;
+app.put(
+  "/profile",
+  authenticateToken,
+  upload.single("image"),
+  async (req, res) => {
+    const {
+      email,
+      phoneNumber,
+      accountNumber,
+      gender,
+      tetherWalletAddress,
+      bitcoinWalletAddress,
+    } = req.body;
 
-  try {
-    const user = await userModel.findOneAndUpdate(
-      { _id: req.user._id },
-      {
-        email,
-        phoneNumber,
-        accountNumber,
-        gender,
-        bitcoinWalletAddress,
-        tetherWalletAddress,
-        image,
-      },
-      { new: true }
-    );
+    try {
+      let imageData = null;
 
-    if (!user) {
-      return res.status(404).json({ error: "User not found" });
+      // Check if an image file was uploaded
+      if (req.file) {
+        imageData = req.file.buffer; // Set the image data to the uploaded file's buffer
+      }
+      const user = await userModel.findOneAndUpdate(
+        { _id: req.user._id },
+        {
+          email,
+          phoneNumber,
+          accountNumber,
+          gender,
+          bitcoinWalletAddress,
+          tetherWalletAddress,
+          image: imageData,
+        },
+        { new: true }
+      );
+
+      if (!user) {
+        return res.status(404).json({ error: "User not found" });
+      }
+
+      res.status(200).json({ message: "Profile updated successfully" });
+    } catch (error) {
+      console.error("Error updating profile:", error);
+      res.status(500).json({ error: "Failed to update profile" });
     }
-
-    res.status(200).json({ message: "Profile updated successfully" });
-  } catch (error) {
-    console.error("Error updating profile:", error);
-    res.status(500).json({ error: "Failed to update profile" });
   }
-});
+);
 
 app.get("/accountno", authenticateToken, async (req, res) => {
   try {
