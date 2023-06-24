@@ -29,11 +29,11 @@ const TransactionHistory = () => {
 
         <div className="h-screen ">
           <div className="h-full px-6 md:px-20 py-10 mx-auto ">
-            <h2 className="font-bold text-2xl text-center mb-5 text-white">
+            <h2 className="font-bold text-xl text-center mb-5 text-white">
               Transaction History
             </h2>
             {transactions.length === 0 ? (
-              <div className="flex justify-center items-center  text-white text-2xl font-medium">
+              <div className="flex justify-center items-center text center  text-white text-sm font-medium">
                 No transaction history available.
               </div>
             ) : (

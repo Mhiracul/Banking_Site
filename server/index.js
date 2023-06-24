@@ -47,7 +47,7 @@ const UserSchema = new mongoose.Schema({
   accountNo: String,
   bitcoinWalletAddress: String,
   tetherWalletAddress: String,
-
+  image: Buffer, // Specify the data type as Buffer
   status: {
     type: String,
     enum: ["suspended", "activated", "disabled"],
@@ -494,6 +494,7 @@ app.put("/profile", authenticateToken, async (req, res) => {
     gender,
     tetherWalletAddress,
     bitcoinWalletAddress,
+    image,
   } = req.body;
 
   try {
@@ -506,6 +507,7 @@ app.put("/profile", authenticateToken, async (req, res) => {
         gender,
         bitcoinWalletAddress,
         tetherWalletAddress,
+        image,
       },
       { new: true }
     );

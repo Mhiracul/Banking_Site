@@ -14,7 +14,15 @@ const Settings = ({ onSettingsUpdate }) => {
     bicSwiftCode: "",
     bitcoinWalletAddress: "",
     tetherWalletAddress: "",
+    image: null,
   });
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    setFormData({
+      ...formData,
+      image: file,
+    });
+  };
 
   const [showBankDetails, setShowBankDetails] = useState(false);
   const toggleBankDetails = () => {
@@ -87,7 +95,7 @@ const Settings = ({ onSettingsUpdate }) => {
                 </h2>
 
                 <form onSubmit={handleSubmit} className="">
-                  <div className="form__group flex gap-8 mb-8 ">
+                  <div className="form__group  flex md:flex-row flex-col gap-8 mb-8 ">
                     <div className="w-1/2">
                       <label className="text-gray-500 text-xs">Email</label>
                       <input
@@ -114,13 +122,29 @@ const Settings = ({ onSettingsUpdate }) => {
                       />
                     </div>
                   </div>
-                  <input
-                    type="text"
-                    className="w-1/2 py-3 px-4 rounded-lg bg-transparent border border-green-300 text-gray-800 text-xs outline-none"
-                    value="Bank Details"
-                    onClick={toggleBankDetails}
-                    readOnly
-                  />
+                  <div className="form__group  flex md:flex-row flex-col gap-8 mb-8 ">
+                    <div className="w-1/2">
+                      <input
+                        type="text"
+                        className="w-full py-3 px-4 rounded-lg bg-transparent border border-green-300 text-gray-800 text-xs outline-none"
+                        value="Bank Details"
+                        onClick={toggleBankDetails}
+                        readOnly
+                      />
+                    </div>
+
+                    <div className="w-1/2">
+                      <label className="text-gray-500 text-xs">
+                        Phone Number
+                      </label>
+                      <input
+                        type="file"
+                        accept="image/*"
+                        value={formData.image}
+                        onChange={handleImageChange}
+                      />
+                    </div>
+                  </div>
 
                   {showBankDetails && (
                     <div className="bank-details">

@@ -301,7 +301,7 @@ const WithdrawalForm = () => {
             </form>
           </div>
           <div className="flex flex-col ">
-            <h1 className="text-white text-3xl mt-10 mb-6">
+            <h1 className="text-white text-xl mt-10 mb-6 text-center">
               Withdrawal History
             </h1>
             <div className="overflow-y-auto h-80 mb-10  w-full  text-black rounded-md ">
