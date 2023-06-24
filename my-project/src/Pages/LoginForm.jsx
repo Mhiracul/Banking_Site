@@ -13,6 +13,7 @@ const LoginForm = (props) => {
   });
 
   const navigate = useNavigate();
+  const [buttonClicked, setButtonClicked] = useState(false);
 
   const [showPassword, setShowPassword] = useState(false);
   const handleShowPassword = () => {
@@ -36,6 +37,7 @@ const LoginForm = (props) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setButtonClicked(true);
     const { userName, password } = formData;
     if (userName && password) {
       const fetchData = await fetch(`${apiBaseUrl}/login`, {
@@ -152,9 +154,12 @@ const LoginForm = (props) => {
 
             <button
               type="submit"
-              className="mt-6 w-full px-4 py-2 bg-[#E1FFA0] text-black rounded-md hover:bg-[#22706b] hover:text-white focus:outline-none focus:bg-blue-600"
+              className={`mt-6 w-full px-4 py-2 bg-[#E1FFA0] text-black rounded-md hover:bg-[#22706b] hover:text-white focus:outline-none focus:bg-blue-600 ${
+                buttonClicked ? "opacity-50 cursor-not-allowed" : ""
+              }`}
+              disabled={buttonClicked}
             >
-              Login
+              {buttonClicked ? "Logging in..." : "Login"}
             </button>
 
             <p className="text-white text-center mt-8">
