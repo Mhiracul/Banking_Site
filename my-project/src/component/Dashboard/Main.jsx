@@ -83,7 +83,7 @@ const Main = () => {
             </h2>
             <div className="flex-grow" />
             <div className="flex justify-between items-end">
-              <p className="text-2xl font-bold">${accountBalance}</p>
+              <p className="text-2xl font-bold">${accountBalance.toFixed(2)}</p>
               <p className="text-xs">Balance</p>
             </div>
           </div>
