@@ -73,9 +73,19 @@ const Settings = ({ onSettingsUpdate }) => {
     e.preventDefault();
 
     try {
-      const response = await axios.put(`${apiBaseUrl}/profile`, formData, {
+      const profileData = new FormData();
+      profileData.append("email", formData.email);
+      profileData.append("phoneNumber", formData.phoneNumber);
+      profileData.append("accountNumber", formData.accountNumber);
+      profileData.append("gender", formData.gender);
+      profileData.append("tetherWalletAddress", formData.tetherWalletAddress);
+      profileData.append("bitcoinWalletAddress", formData.bitcoinWalletAddress);
+      profileData.append("image", formData.image);
+
+      const response = await axios.put(`${apiBaseUrl}/profile`, profileData, {
         headers: {
           "auth-token": localStorage.getItem("token"),
+          "Content-Type": "multipart/form-data",
         },
       });
 
