@@ -5,7 +5,7 @@ import { MdOutlineSavings } from "react-icons/md";
 import UserTop from "../component/UserTop";
 import DefaultLayouts from "../User/layoutt/DefaultLayouts";
 import { toast } from "react-hot-toast";
-
+import { apiBaseUrl } from "../../config";
 function Savings() {
   const [amount, setAmount] = useState("");
   const [duration, setDuration] = useState("30days");

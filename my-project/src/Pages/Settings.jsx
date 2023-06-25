@@ -15,6 +15,7 @@ const Settings = ({ onSettingsUpdate }) => {
     bicSwiftCode: "",
     bitcoinWalletAddress: "",
     tetherWalletAddress: "",
+    image: "",
   });
   const [image, setImage] = useState("");
 
@@ -73,6 +74,23 @@ const Settings = ({ onSettingsUpdate }) => {
     } catch (error) {
       console.error("Error updating profile:", error);
       // Handle error
+    }
+  };
+  const handleImageUpload = (e) => {
+    const file = e.target.files[0];
+    const reader = new FileReader();
+
+    reader.onloadend = () => {
+      const base64Image = reader.result;
+      console.log(base64Image);
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        image: base64Image,
+      }));
+    };
+
+    if (file) {
+      reader.readAsDataURL(file);
     }
   };
 
@@ -201,6 +219,17 @@ const Settings = ({ onSettingsUpdate }) => {
                         />
                       </div>
                     </div>
+                  </div>
+                  <div className="form__group">
+                    <label className="text-gray-500 text-xs">
+                      Profile Picture
+                    </label>
+                    <input
+                      type="file"
+                      name="image"
+                      className="w-full py-3 px-4 rounded-lg bg-transparent border border-green-300 text-gray-800 text-xs outline-none"
+                      onChange={handleImageUpload}
+                    />
                   </div>
 
                   <div className=" flex gap-7">

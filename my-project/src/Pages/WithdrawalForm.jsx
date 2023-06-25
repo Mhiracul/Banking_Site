@@ -7,6 +7,8 @@ import UserTop from "../component/UserTop";
 import Polite from "../assets/PoliteChicky.gif";
 import { BsX } from "react-icons/bs";
 import { apiBaseUrl } from "../../config";
+import ReactTailwindTable from "../ReactTailwindTable";
+
 const Dropdown = ({ options, selectedOption, onOptionSelect }) => {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -304,44 +306,9 @@ const WithdrawalForm = () => {
             <h1 className="text-white text-xl mt-10 mb-6 text-center">
               Withdrawal History
             </h1>
-            <div className="overflow-y-auto h-80 mb-10  w-full  text-black rounded-md ">
+            <div className=" h-full mb-10  w-full  text-black rounded-md ">
               {withdrawals && withdrawals.length > 0 ? (
-                <table className="border-collapse border border-white w-full">
-                  <thead>
-                    <tr>
-                      <th className="shadow-md shadow-[#ccc] px-4 py-2 ">
-                        Type
-                      </th>
-                      <th className="shadow-md shadow-[#ccc] px-4 py-2 ">
-                        Wallet
-                      </th>
-                      <th className="shadow-md shadow-[#ccc] px-4 py-2 ">
-                        Amount
-                      </th>
-                      <th className="shadow-md shadow-[#ccc] px-4 py-2 ">
-                        Status
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {withdrawals.map((withdrawal) => (
-                      <tr key={withdrawal._id}>
-                        <td className="shadow-md shadow-[#ccc] px-4 py-2 text-sm w-48 capitalize">
-                          {withdrawal.type}
-                        </td>
-                        <td className="shadow-md shadow-[#ccc] px-4 py-2 text-sm w-48">
-                          {withdrawal.wallet}
-                        </td>
-                        <td className="shadow-md shadow-[#ccc] px-4 py-2 text-sm">
-                          ${withdrawal.amount}
-                        </td>
-                        <td className="shadow-md capitalize shadow-[#ccc] px-4 py-2 text-sm">
-                          {withdrawal.status}
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
+                <ReactTailwindTable data={withdrawals} />
               ) : (
                 <div className="flex flex-col items-center justify-center w-full h-full">
                   <img src={Polite} alt="PoliteChicky" className="mb-4" />

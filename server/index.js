@@ -54,6 +54,8 @@ const UserSchema = new mongoose.Schema({
   tetherWalletAddress: String,
   country: String,
   state: String,
+  account: String,
+  currency: String,
   image: { type: String },
   status: {
     type: String,
@@ -186,9 +188,8 @@ app.post("/signup", async (req, res) => {
       country,
       state,
       city,
-      currentType,
-      accountType,
-      currencyType,
+      account,
+      currency,
     } = req.body;
     console.log("Received country:", country);
     console.log("Received state:", state);
@@ -224,9 +225,8 @@ app.post("/signup", async (req, res) => {
       country,
       state,
       city,
-      currentType,
-      accountType,
-      currencyType, // Add the OTP to the user object
+      account,
+      currency, // Add the OTP to the user object
     });
     console.log("Country:", country);
     console.log("State:", state);
@@ -527,6 +527,7 @@ app.put(
       gender,
       tetherWalletAddress,
       bitcoinWalletAddress,
+      image,
     } = req.body;
 
     try {
@@ -539,6 +540,7 @@ app.put(
           gender,
           bitcoinWalletAddress,
           tetherWalletAddress,
+          image: image,
         },
         { new: true }
       );
@@ -554,6 +556,21 @@ app.put(
     }
   }
 );
+
+app.get("/image", authenticateToken, async (req, res) => {
+  try {
+    const user = await userModel.findById({ _id: req.user._id });
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.json({ image: user.image });
+  } catch (error) {
+    console.error("Error fetching user image:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
 
 app.get("/accountno", authenticateToken, async (req, res) => {
   try {
