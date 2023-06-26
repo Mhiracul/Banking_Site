@@ -38,6 +38,7 @@ import PrivacyPage from "./Pages/PrivacyPage";
 import Contact from "./Pages/Contact/Contact";
 import SavingsPage from "./Admin/pages/SavingsPage";
 import VerifyOTPPage from "./Pages/VerifyOTPPage";
+import EditPage from "./Admin/pages/EditPage";
 
 const App = () => {
   return (
@@ -88,6 +89,7 @@ const App = () => {
             <Route path="/account/admin-penalty" element={<PenaltyForm />} />
             <Route path="/account/admin-add" element={<AddForm />} />
             <Route path="/admin-user/edit" element={<MainPage />} />
+            <Route path="/editt/:userId" element={<EditPage />} />
             <Route path="/error" element={<ErrorPage />} />
             <Route path="/payment/loan" element={<LoanReason />} />
             <Route path="/payment/card" element={<VirtualCardList />} />

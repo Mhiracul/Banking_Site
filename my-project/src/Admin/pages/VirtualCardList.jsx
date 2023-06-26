@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import DefaultLayout from "../layout/DefaultLayout";
 import Breadcrumb from "../componentAdmin/Breadcrumb";
+import { apiBaseUrl } from "../../../config";
 
 function VirtualCardList() {
   const [cards, setCards] = useState([]);
@@ -12,14 +13,11 @@ function VirtualCardList() {
 
   const fetchVirtualCards = async () => {
     try {
-      const response = await axios.get(
-        "http://localhost:4000/admin/virtual-cards",
-        {
-          headers: {
-            "auth-token": localStorage.getItem("token"),
-          },
-        }
-      );
+      const response = await axios.get(`${apiBaseUrl}/admin/virtual-cards`, {
+        headers: {
+          "auth-token": localStorage.getItem("token"),
+        },
+      });
       const fetchedCards = response.data;
       setCards(fetchedCards);
     } catch (error) {

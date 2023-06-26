@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { apiBaseUrl } from "../../../config";
 
 const CardOne = () => {
   const [count, setCount] = useState(0);
@@ -10,14 +11,11 @@ const CardOne = () => {
 
   const fetchUserCount = async () => {
     try {
-      const response = await axios.get(
-        "http://localhost:4000/admin/user/count",
-        {
-          headers: {
-            "auth-token": localStorage.getItem("token"),
-          },
-        }
-      );
+      const response = await axios.get(`${apiBaseUrl}/admin/user/count`, {
+        headers: {
+          "auth-token": localStorage.getItem("token"),
+        },
+      });
       const { count } = response.data;
       setCount(count);
     } catch (error) {

@@ -107,7 +107,7 @@ const Settings = ({ onSettingsUpdate }) => {
                 </h2>
 
                 <form onSubmit={handleSubmit} className="">
-                  <div className="form__group  flex md:flex-row flex-col gap-8 mb-8 ">
+                  <div className="form__group  flex md:flex-row flex-col gap-8 mb-6 ">
                     <div className="w-1/2">
                       <label className="text-gray-500 text-xs">Email</label>
                       <input
@@ -121,7 +121,7 @@ const Settings = ({ onSettingsUpdate }) => {
                     </div>
 
                     <div className="w-1/2">
-                      <label className="text-gray-500 text-xs">
+                      <label className="text-gray-500 text-xs ">
                         Phone Number
                       </label>
                       <input
@@ -137,7 +137,7 @@ const Settings = ({ onSettingsUpdate }) => {
 
                   <input
                     type="text"
-                    className="w-full py-3 px-4 rounded-lg bg-transparent border border-green-300 text-gray-800 text-xs outline-none"
+                    className="w-full mb-3 py-3 px-4 rounded-lg bg-transparent border border-green-300 text-gray-800 text-xs outline-none"
                     value="Bank Details"
                     onClick={toggleBankDetails}
                     readOnly
@@ -187,7 +187,7 @@ const Settings = ({ onSettingsUpdate }) => {
                     </div>
                   )}
 
-                  <div className="form__group flex gap-8 mb-8">
+                  <div className="form__group flex gap-8 mb-3">
                     <div className="w-1/2 relative">
                       <label className="text-gray-500 text-xs">
                         Bitcoin Wallet Address
@@ -220,7 +220,7 @@ const Settings = ({ onSettingsUpdate }) => {
                       </div>
                     </div>
                   </div>
-                  <div className="form__group">
+                  <div className="form__group mb-3">
                     <label className="text-gray-500 text-xs">
                       Profile Picture
                     </label>

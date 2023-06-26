@@ -3,6 +3,7 @@ import axios from "axios";
 import { toast } from "react-hot-toast";
 import DefaultLayout from "../layout/DefaultLayout";
 import Breadcrumb from "../componentAdmin/Breadcrumb";
+import { apiBaseUrl } from "../../../config";
 
 function SavingsPage() {
   const [interestRate, setInterestRate] = useState("");
@@ -16,7 +17,7 @@ function SavingsPage() {
     try {
       // Send a PUT request to the backend API to update the interest rate
       await axios.put(
-        "http://localhost:4000/admin/interest-rate",
+        `${apiBaseUrl}/admin/interest-rate`,
         {
           interestRate,
         },

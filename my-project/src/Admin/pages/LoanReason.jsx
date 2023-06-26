@@ -3,7 +3,8 @@ import axios from "axios";
 import DefaultLayout from "../layout/DefaultLayout";
 import Breadcrumb from "../componentAdmin/Breadcrumb";
 import { toast } from "react-hot-toast";
-const apiUrl = "http://localhost:4000/admin/dynamic-values"; // Replace with your API endpoint
+import { apiBaseUrl } from "../../../config";
+const apiUrl = `${apiBaseUrl}/admin/dynamic-values`; // Replace with your API endpoint
 
 const LoanReason = () => {
   const [message, setMessage] = useState("");

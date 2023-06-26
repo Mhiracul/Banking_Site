@@ -7,6 +7,7 @@ import DefaultLayout from "../layout/DefaultLayout";
 import Breadcrumb from "../componentAdmin/Breadcrumb";
 import { toast } from "react-hot-toast";
 import { apiBaseUrl } from "../../../config";
+import { useNavigate } from "react-router-dom";
 function MainPage() {
   const dispatch = useDispatch();
   const usersData = useSelector((state) => state.user.users);
@@ -15,6 +16,7 @@ function MainPage() {
   const [editingUserId, setEditingUserId] = useState(null);
   const [penalties, setPenalties] = useState({});
   const [addition, setAddition] = useState({});
+  const navigate = useNavigate(); // Use the useNavigate hook
 
   useEffect(() => {
     const fetchData = async () => {
@@ -238,6 +240,11 @@ function MainPage() {
     }
   };
 
+  const handleEditNavigation = (userId) => {
+    navigate(`/editt/${userId}`); // Navigate to the EditPage with the user ID
+  };
+
+  // ...
   return (
     <DefaultLayout>
       <Breadcrumb pageName="Users" />
@@ -246,101 +253,72 @@ function MainPage() {
           {loading ? (
             <p>Loading...</p>
           ) : (
-            <div className=" h-[650px] rounded-lg overflow-x-auto overflow-y-auto">
-              {myUsers.map((data) => (
-                <React.Fragment key={data._id}>
-                  {editingUserId === data._id ? (
-                    <EditPage
-                      user={data}
-                      onCancel={() => setEditingUserId(null)}
-                      onEdit={handleEditUser}
-                      userName={data.userName}
-                      email={data.email}
-                      password={data.password}
-                      accountBalance={data.accountBalance}
-                      status={data.status}
-                      // Handle user edit
+            <div className=" h-[650px] rounded-lg o overflow-y-auto">
+              <table className="min-w-full divide-y divide-gray-200">
+                <thead className="bg-gray-50">
+                  <tr>
+                    <th scope="col" className="px-4 py-2">
+                      Username
+                    </th>
+                    <th scope="col" className="px-4 py-2">
+                      Email
+                    </th>
+                    <th scope="col" className="px-4 py-2">
+                      Password
+                    </th>
+                    <th scope="col" className="px-4 py-2">
+                      Account Balance
+                    </th>
+                    <th scope="col" className="px-4 py-2">
+                      Status
+                    </th>
+                    <th scope="col" className="px-4 py-2">
+                      Action
+                    </th>
+                  </tr>
+                </thead>
+                <tbody className="bg-white divide-y divide-gray-200">
+                  {myUsers.map((data) => (
+                    <React.Fragment key={data._id}>
+                      {editingUserId === data._id ? (
+                        <EditPage
+                          user={data}
+                          onCancel={() => setEditingUserId(null)}
+                          onEdit={handleEditUser}
+                          userName={data.userName}
+                          email={data.email}
+                          password={data.password}
+                          accountBalance={data.accountBalance}
+                          status={data.status}
+                          // Handle user edit
 
-                      key={data._id}
-                      onDelete={() => deleteUser(data._id)}
-                      onSuspend={() => suspendUser(data._id)}
-                      onDisable={() => disableUser(data._id)}
-                      onActivate={() => activateUser(data._id)}
-                    />
-                  ) : (
-                    <div className="user-card p py-1">
-                      {/* Render user details */}
-                      <div className="bg-stroke rounded-md flex shadow-md w-full">
-                        <div className="w-full">
-                          <div className="w-full mb-2 rounded border border-stroke  py-1 px-4.5 text-black f">
-                            <strong>Username:</strong> {data.userName}
-                          </div>
-                          <div className="w-full mb-2 rounded border border-stroke  py-1 px-4.5 text-black ">
-                            <strong>Email:</strong> {data.email}
-                          </div>
-                          <div className="w-full mb-2 rounded border border-stroke  py-1 px-4.5 text-black ">
-                            <strong>Password:</strong> {data.password}
-                          </div>
-                          <div className="w-full mb-2 rounded border border-stroke  py-1 px-4.5 text-black ">
-                            <strong>Account Balance:</strong>{" "}
-                            {data.accountBalance}
-                          </div>
-                          <div className="w-full mb-2 rounded border border-stroke  py-1 px-4.5 text-black ">
-                            <strong>status:</strong> {data.status}
-                          </div>
-                          <div className="w-full mb-2 rounded border border-stroke  py-1 px-4.5 text-black ">
-                            <input
-                              type="number"
-                              className="rounded-md border border-stroke py-1 px-2 text-black "
-                              placeholder="Penalty amount"
-                              value={penalties[data._id] || ""}
-                              onChange={(e) =>
-                                handlePenaltyChange(data._id, e.target.value)
-                              }
-                            />
+                          key={data._id}
+                          onDelete={() => deleteUser(data._id)}
+                          onSuspend={() => suspendUser(data._id)}
+                          onDisable={() => disableUser(data._id)}
+                          onActivate={() => activateUser(data._id)}
+                        />
+                      ) : (
+                        <tr>
+                          <td className="px-4 py-2">{data.userName}</td>
+                          <td className="px-4 py-2">{data.email}</td>
+                          <td className="px-4 py-2">{data.password}</td>
+                          <td className="px-4 py-2">{data.accountBalance}</td>
+                          <td className="px-4 py-2">{data.status}</td>
+                          <td className="px-4 py-2">
                             <button
-                              className="action-button edit bg-[#5321a8] text-white px-4 py-2 text-sm ml-2 rounded-md"
-                              onClick={() => handleApplyPenalty(data._id)}
+                              className="action-button edit bg-[#5321a8] text-white px-4 py-2 rounded-md"
+                              onClick={() => handleEditNavigation(data._id)}
                             >
-                              Apply Penalty
+                              Edit
                             </button>
-                          </div>
-                          <div className="w-full mb-2 rounded border border-stroke  py-1 px-4.5 text-black ">
-                            <input
-                              type="number"
-                              className="rounded-md border border-stroke py-1 px-2 text-black "
-                              placeholder="Addition amount"
-                              value={addition[data._id] || ""}
-                              onChange={(e) =>
-                                handleAdditionChange(data._id, e.target.value)
-                              }
-                            />
-                            <button
-                              className="action-button edit bg-[#5321a8] text-white px-4 py-2 text-sm ml-2 rounded-md"
-                              onClick={() => handleApplyAddition(data._id)}
-                            >
-                              Apply Addition
-                            </button>
-                          </div>
-                        </div>
-                        {/* ... Render other user details */}
-                        {/* ... */}
-                        <div className="h-full  w-20 my-auto px-2">
-                          <button
-                            className="action-button edit bg-[#5321a8] text-white px-4 py-2 rounded-md"
-                            onClick={() => setEditingUserId(data._id)}
-                          >
-                            Edit
-                          </button>
-                        </div>
-
-                        {/* Render other action buttons */}
-                        {/* ... */}
-                      </div>
-                    </div>
-                  )}
-                </React.Fragment>
-              ))}
+                          </td>
+                        </tr>
+                      )}
+                    </React.Fragment>
+                  ))}
+                </tbody>
+              </table>
             </div>
           )}
         </div>

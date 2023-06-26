@@ -231,7 +231,7 @@ const WithdrawalForm = () => {
               </p>
             </div>
           )}
-          <div className="bg-white px-10 py-10 text-black mt-10 rounded-md shadow-md shadow-[#ccc] w-full">
+          <div className="bg-[#21635f] text-white px-10 py-10  mt-10 rounded-md shadow-md shadow-[#ccc] w-full">
             <div className="flex justify-between  items-center mb-5 ">
               <h1 className="text-2xl ">Account Balance:</h1>
               <h1 className="text-2xl ">${accountBalance.toFixed(2)}</h1>
@@ -240,7 +240,7 @@ const WithdrawalForm = () => {
               <div className="py-2">
                 <label
                   htmlFor="withdrawalType"
-                  className="text-black text-sm mb-2 md:mb-0 md:mr-4"
+                  className="text-white text-sm mb-2 md:mb-0 md:mr-4"
                 >
                   Withdrawal Type:
                 </label>
@@ -295,7 +295,7 @@ const WithdrawalForm = () => {
               <div className=" mt-6 ">
                 <button
                   type="submit"
-                  className="bg-[#21635f] hover:bg-[#23867f] text-white w-full font-bold py-2 px-6 rounded-full outline-none"
+                  className="bg-[#DBFF8E] hover:bg-[#23867f] text-[#23867f] hover:text-white w-full font-bold py-2 px-6 rounded-full outline-none"
                 >
                   Submit Withdrawal
                 </button>

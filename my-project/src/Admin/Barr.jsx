@@ -12,6 +12,7 @@ import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { logoutRedux } from "../redux/userSlice";
 import { toast } from "react-hot-toast";
+import { apiBaseUrl } from "../../config";
 const Barr = ({ sidebarOpen, setSidebarOpen }) => {
   const location = useLocation();
   const { pathname } = location;
@@ -45,7 +46,7 @@ const Barr = ({ sidebarOpen, setSidebarOpen }) => {
     const fetchPendingCount = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:4000/admin/transactions/pending/count",
+          `${apiBaseUrl}/admin/transactions/pending/count`,
           {
             headers: {
               "auth-token": localStorage.getItem("token"),

@@ -390,3 +390,39 @@ span.flatpickr-weekday.dark,
     width: 100%;
   }
 }
+
+.popup-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.popup {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  width: 400px;
+}
+
+.popup h2 {
+  margin-bottom: 10px;
+}
+
+.popup .form {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  margin-top: 20px;
+}
+
+.popup form .popup-button {
+  margin-left: 10px;
+}

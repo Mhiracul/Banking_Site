@@ -129,12 +129,11 @@ const LoanForm = () => {
     <DefaultLayouts>
       <div className="mx-auto max-w-270 font-nunito">
         <UserTop pageName="Loan" />
-        <p className="px-10">Account Balance: ${accountBalance}</p>
 
         <div className="mt-8  overflow-scroll overflow-y-auto md:flex md:flex-row flex flex-col gap-8">
           <div className="w-full px-4 py-6 bg-white rounded-md">
-            <label className="block mb-2 md:text-sm text-xs">Loan Amount</label>
-            <div className="mb-4">
+            <label className="block  md:text-sm text-xs ">Loan Amount</label>
+            <div className="mt-4">
               <div className="relative">
                 <input
                   type="text"
@@ -147,7 +146,7 @@ const LoanForm = () => {
               </div>
             </div>
 
-            <label className="block mt-9 text-xs">
+            <label className="block mt-10  text-xs">
               Repay Day{" "}
               {selectedRepayDays ? `(${selectedRepayDays} days)` : null}
             </label>
@@ -231,6 +230,7 @@ const LoanForm = () => {
 
             <>
               <h2 className="text-lg font-bold mb-2">Payment Plan</h2>
+
               <ul>
                 {paymentPlan.map((installment, index) => (
                   <li key={index}>

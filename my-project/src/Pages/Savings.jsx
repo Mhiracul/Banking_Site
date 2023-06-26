@@ -170,6 +170,13 @@ function Savings() {
                 />
               </div>
 
+              <button
+                className="bg-[#21635f] hover:bg-[#23867f] text-white w-full font-bold py-2 px-4 rounded mt-4"
+                type="submit"
+              >
+                Create Savings
+              </button>
+
               <div className="">
                 <div className="grid lg:grid-cols-4 md:grid-cols-2 grid-cols-1 gap-8 w-full">
                   {reasons.map((dynamicReason, index) => (
@@ -208,13 +215,6 @@ function Savings() {
                   ))}
                 </div>
               </div>
-
-              <button
-                className="bg-[#21635f] hover:bg-[#23867f] text-white w-full font-bold py-2 px-4 rounded mt-4"
-                type="submit"
-              >
-                Create Savings
-              </button>
             </form>
           </div>
         </div>

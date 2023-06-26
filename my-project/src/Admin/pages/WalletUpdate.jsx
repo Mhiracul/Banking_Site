@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import DefaultLayout from "../layout/DefaultLayout";
 import Breadcrumb from "../componentAdmin/Breadcrumb";
+import { apiBaseUrl } from "../../../config";
 
 function WalletUpdate() {
   const [cryptos, setCryptos] = useState([]);
@@ -16,7 +17,7 @@ function WalletUpdate() {
       const authToken = localStorage.getItem("token");
       const headers = { "auth-token": authToken };
 
-      const response = await axios.get("http://localhost:4000/admin/cryptos", {
+      const response = await axios.get(`${apiBaseUrl}/admin/cryptos`, {
         headers,
       });
       const fetchedCryptos = response.data;
@@ -45,7 +46,7 @@ function WalletUpdate() {
 
       // Update the status of the cryptocurrency in the database
       await axios.put(
-        `http://localhost:4000/admin/cryptos/${cryptoId}`,
+        `${apiBaseUrl}/admin/cryptos/${cryptoId}`,
         {
           active: updatedCryptos.find((crypto) => crypto._id === cryptoId)
             ?.active,

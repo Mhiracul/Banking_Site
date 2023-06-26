@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
+import { apiBaseUrl } from "../../../config";
 
 const CardOne = () => {
   const [totalDeposit, setTotalDeposit] = useState(0);
 
   useEffect(() => {
     // Fetch the total deposit amount from the server
-    fetch("http://localhost:4000/admin/deposits/total", {
+    fetch(`${apiBaseUrl}/admin/deposits/total`, {
       method: "GET",
       headers: {
         "auth-token": localStorage.getItem("token"), // Pass the auth token

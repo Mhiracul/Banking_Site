@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import DefaultLayout from "../layout/DefaultLayout";
 import Breadcrumb from "../componentAdmin/Breadcrumb";
+import { apiBaseUrl } from "../../../config";
 
 const PenaltyForm = () => {
   const [userId, setUserId] = useState("");
@@ -12,7 +13,7 @@ const PenaltyForm = () => {
 
     try {
       await axios.post(
-        `http://localhost:4000/users/${userId}/balance/penalty`,
+        `${apiBaseUrl}/${userId}/balance/penalty`,
         { amount },
         {
           headers: {

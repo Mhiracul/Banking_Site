@@ -51,7 +51,7 @@ const TransactionHistory = () => {
             ) : (
               <div className=" h-full w-full text-black rounded-md">
                 <table className=" min-w-full divide-y divide-gray">
-                  <thead className="bg-[#c7c4c4]">
+                  <thead className="bg-[#DBFF8E] text-[#21635f]">
                     <tr>
                       <th className=" px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider  ">
                         Date
@@ -64,7 +64,7 @@ const TransactionHistory = () => {
                       </th>
                     </tr>
                   </thead>
-                  <tbody className="bg-white divide-y divide-gray font-light">
+                  <tbody className="bg-[#21635f] text-white divide-y divide-gray font-light">
                     {currentData.map((transaction) => (
                       <tr key={transaction._id}>
                         <td className="capitalize px-6 py-4  whitespace-nowrap text-sm text-gray-500">

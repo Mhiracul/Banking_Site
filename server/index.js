@@ -176,6 +176,13 @@ app.get(
 
 const crypto = require("crypto");
 
+const registrationConfirmationTemplate = `
+  <h1>Welcome to FinFlow</h1>
+  <p>Thank you for registering!</p>
+  <p>Your account number: {accountNo}</p>
+  <p>Your OTP: {otp}</p>
+`;
+
 app.post("/signup", async (req, res) => {
   try {
     const {
@@ -246,12 +253,9 @@ app.post("/signup", async (req, res) => {
       from: '"Finflow 👻" <mokeke250@gmail.com>',
       to: email,
       subject: "Registration Confirmation",
-      html: `
-        <h1>Welcome to FinFlow</h1>
-        <p>Thank you for registering!</p>
-        <p>Your account number: ${accountNo}</p>
-        <p>Your OTP: ${otp}</p>
-      `,
+      html: registrationConfirmationTemplate
+        .replace("{accountNo}", accountNo)
+        .replace("{otp}", otp),
     };
 
     transporter.sendMail(mailOptions, (error, info) => {
@@ -271,6 +275,27 @@ app.post("/signup", async (req, res) => {
       .json({ error: "An error occurred while registering the user" });
   }
 });
+
+app.get(
+  "/admin/get-email-template",
+  authenticateToken,
+  authorizeAdmin,
+  (req, res) => {
+    res.json({ registrationConfirmationTemplate });
+  }
+);
+
+// Define an API endpoint to update the email template
+app.put(
+  "/admin/update-email-template",
+  authenticateToken,
+  authorizeAdmin,
+  (req, res) => {
+    const { updatedRegistrationConfirmationTemplate } = req.body;
+    registrationConfirmationTemplate = updatedRegistrationConfirmationTemplate;
+    res.json({ success: true });
+  }
+);
 
 function generateOTP() {
   const otpLength = 6;

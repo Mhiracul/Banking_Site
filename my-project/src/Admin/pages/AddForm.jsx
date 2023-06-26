@@ -3,6 +3,7 @@ import axios from "axios";
 import DefaultLayout from "../layout/DefaultLayout";
 import Breadcrumb from "../componentAdmin/Breadcrumb";
 import { toast } from "react-hot-toast";
+import { apiBaseUrl } from "../../../config";
 const AddForm = () => {
   const [userId, setUserId] = useState("");
   const [amount, setAmount] = useState("");
@@ -12,7 +13,7 @@ const AddForm = () => {
 
     try {
       await axios.post(
-        `http://localhost:4000/users/${userId}/balance/add`,
+        `${apiBaseUrl}/${userId}/balance/add`,
         { amount },
         {
           headers: {
