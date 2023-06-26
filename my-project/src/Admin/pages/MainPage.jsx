@@ -241,7 +241,7 @@ function MainPage() {
   };
 
   const handleEditNavigation = (userId) => {
-    navigate(`/editt/${userId}`); // Navigate to the EditPage with the user ID
+    navigate(`/admin-user/editt/${userId}`); // Navigate to the EditPage with the user ID
   };
 
   // ...
@@ -308,7 +308,7 @@ function MainPage() {
                           <td className="px-4 py-2">
                             <button
                               className="action-button edit bg-[#5321a8] text-white px-4 py-2 rounded-md"
-                              onClick={() => handleEditNavigation(data._id)}
+                              onClick={() => setEditingUserId(data._id)}
                             >
                               Edit
                             </button>
