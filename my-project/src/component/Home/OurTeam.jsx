@@ -1,6 +1,7 @@
 import React from "react";
 import { Glasses, Smith, Tylor } from "../../assets/cards";
 import { FaInstagram, FaFacebook, FaTwitter, FaLinkedin } from "react-icons/fa";
+
 const Team = () => {
   return (
     <div className="bg-white w-full  py-10 border border-gray-400">
@@ -8,11 +9,11 @@ const Team = () => {
         <div className="flex items-center justify-center">
           <div className="h-7 w-1 bg-gradient-to-r from-[#DBFF8E] via-[#DBFF8E] to-[#FFD7A6] "></div>
           <p className="text-[#1C1F35] bg-[#E8E8E880] w-30 text-sm p-1 text-center">
-            The Operators
+            The Team
           </p>
         </div>
         <h1 className="font-extrabold text-[#1C1F35] text-3xl text-center mt-2">
-          Meet the Expert Team
+          Meet the Banking Experts
         </h1>
         <div className="grid  lg:grid-cols-3 md:grid-cols-2 grid-cols-1 mt-10 gap-4 px-10">
           <div className=" w-full mx-auto max-w-[350px]">
@@ -30,10 +31,9 @@ const Team = () => {
             </div>
             <div className="bg-[#1C1F35] w-full h-20 text-white p-4 ">
               <h1 className="text-xl font-bold ">Jessica Arow</h1>
-              <p className="text-xs">Designer</p>
+              <p className="text-xs">Banking Specialist</p>
             </div>
           </div>
-
           <div className=" w-full mx-auto max-w-[350px]">
             <div className="relative">
               <img src={Smith} alt="" />
@@ -49,7 +49,7 @@ const Team = () => {
 
             <div className="bg-[#1C1F35] h-20 text-white p-4 ">
               <h1 className="text-xl font-bold ">Kathleen Smith</h1>
-              <p className="text-xs">Designer</p>
+              <p className="text-xs">Account Manager</p>
             </div>
           </div>
           <div className=" w-full mx-auto max-w-[350px]">
@@ -66,7 +66,7 @@ const Team = () => {
             </div>
             <div className="bg-[#1C1F35] h-20 w-full text-white p-4 ">
               <h1 className="text-xl font-bold ]">Rebecca Tylor</h1>
-              <p className="text-xs">Designer</p>
+              <p className="text-xs">Customer Care</p>
             </div>
           </div>
         </div>

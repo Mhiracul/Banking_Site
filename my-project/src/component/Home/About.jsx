@@ -30,8 +30,9 @@ const About = () => {
                 <FaMoneyBillAlt size={20} color="#E1FFA0" />
               </div>
               <h2 className="text-white text-xl mt-2">Checkings account</h2>
-              <p className="text-[#afaeae] text-sm font-medium mt-2">
-                Facilisis id diam eget quam. Nisi vestibulum accumsan lectus.
+              <p className="text-[#afaeae] text-sm  mt-2">
+                Easily manage your day-to-day expenses with our checking
+                account.
               </p>
             </div>
             <div className="items-center ">
@@ -40,7 +41,8 @@ const About = () => {
               </div>
               <h2 className="text-white text-xl mt-2">Savings account</h2>
               <p className="text-[#afaeae] text-sm mt-2">
-                Facilisis id diam eget quam. Nisi vestibulum accumsan lectus.
+                Start saving for your future with our convenient savings
+                account.
               </p>
             </div>
             <div className="items-center ">
@@ -49,7 +51,7 @@ const About = () => {
               </div>
               <h2 className="text-white text-xl mt-2">Low Interest Loan</h2>
               <p className="text-[#afaeae] text-sm mt-2">
-                Facilisis id diam eget quam. Nisi vestibulum accumsan lectus.
+                Get a loan with low interest rates for your financial needs.
               </p>
             </div>
             <div className="items-center ">
@@ -58,7 +60,7 @@ const About = () => {
               </div>
               <h2 className="text-white text-xl mt-2">Flexible Credit Cards</h2>
               <p className="text-[#afaeae] text-sm mt-2">
-                Facilisis id diam eget quam. Nisi vestibulum accumsan lectus.
+                Enjoy the flexibility and convenience of our credit cards.
               </p>
             </div>
           </div>

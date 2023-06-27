@@ -27,13 +27,8 @@ const Hero = () => {
               </span>
             </div>
             <div className="flex md:flex-row md:items-center md:justify-center flex-col mt-10 w-full">
-              <input
-                type="email"
-                placeholder="Your Email"
-                className="border-l-4 border-t-4 border-b-4 border-[#689273] md:mb-0 mb-2 md:w-[420px] w-full p-4 md:rounded-l-md rounded-md"
-              />
-              <button className="bg-[#123432] text-white p-4 md:rounded-r-md rounded-md border-r-4 border-t-4 border-b-4  border-[#689273]">
-                Sign up
+              <button className="bg-[#fff] mx-auto  text-[#123432] p-4 md:rounded-r-md rounded-md border-l-4  border-r-4 border-t-4 border-b-4  border-[#689273]">
+                Get Started
               </button>
             </div>
           </div>

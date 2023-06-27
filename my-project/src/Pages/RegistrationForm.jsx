@@ -71,7 +71,6 @@ const RegistrationForm = () => {
     lastName: "",
     userName: "",
     country: "",
-    state: "",
     currency: "",
     account: "",
     email: "",
@@ -112,7 +111,6 @@ const RegistrationForm = () => {
       password,
       confirmPassword,
       country,
-      state,
       currency,
       account,
     } = formData;
@@ -123,7 +121,6 @@ const RegistrationForm = () => {
       password &&
       confirmPassword &&
       country &&
-      state &&
       currency &&
       account
     ) {
@@ -135,7 +132,6 @@ const RegistrationForm = () => {
           password,
           confirmPassword,
           country, // Add country property
-          state,
           currency,
           account, // Add state property
         };
@@ -562,20 +558,6 @@ const RegistrationForm = () => {
                 onOptionSelect={(option) =>
                   handleChange({
                     target: { name: "country", value: option.value },
-                  })
-                }
-              />
-            </div>
-
-            <div className="mt-8 text-[#9c9b9b]">
-              <Dropdown
-                options={stateOptions}
-                selectedOption={stateOptions.find(
-                  (option) => option.value === formData.state
-                )}
-                onOptionSelect={(option) =>
-                  handleChange({
-                    target: { name: "state", value: option.value },
                   })
                 }
               />
