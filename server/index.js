@@ -17,6 +17,15 @@ dotenv.config();
 const app = express();
 
 app.use(cors());
+app.use((req, res, next) => {
+  res.setHeader("Access-Control-Allow-Origin", "https://finflow.netlify.app");
+  res.setHeader(
+    "Access-Control-Allow-Methods",
+    "GET, POST, PUT, PATCH, DELETE"
+  );
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type, auth-token");
+  next();
+});
 app.use(express.json({ limit: "10mb" }));
 const PORT = 4000;
 
@@ -176,7 +185,7 @@ app.get(
 
 const crypto = require("crypto");
 
-const registrationConfirmationTemplate = `
+let registrationConfirmationTemplate = `
   <h1>Welcome to FinFlow</h1>
   <p>Thank you for registering!</p>
   <p>Your account number: {accountNo}</p>

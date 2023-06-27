@@ -493,6 +493,8 @@ const RegistrationForm = () => {
     // Add more currency type options
   ];
   const accountOptions = [
+    { label: "Select Account Type", value: "" },
+
     { label: "Checkings Account", value: "Checkings Account" },
     { label: "Savings Account", value: "Savings Account" },
     { label: "Fixed Deposit Account", value: "Fixed Deposit Account" },
@@ -551,7 +553,7 @@ const RegistrationForm = () => {
                 required
               />
             </div>
-            <div className="mt-8">
+            <div className="mt-8 text-[#9c9b9b]">
               <Dropdown
                 options={countryOptions}
                 selectedOption={countryOptions.find(
@@ -565,7 +567,7 @@ const RegistrationForm = () => {
               />
             </div>
 
-            <div className="mt-8">
+            <div className="mt-8 text-[#9c9b9b]">
               <Dropdown
                 options={stateOptions}
                 selectedOption={stateOptions.find(
@@ -579,7 +581,7 @@ const RegistrationForm = () => {
               />
             </div>
 
-            <div className="mt-8">
+            <div className="mt-8 text-[#9c9b9b]">
               <Dropdown
                 options={currencyOptions}
                 selectedOption={currencyOptions.find(
@@ -593,7 +595,7 @@ const RegistrationForm = () => {
               />
             </div>
 
-            <div className="mt-8">
+            <div className="mt-8 text-[#9c9b9b]">
               <Dropdown
                 options={accountOptions}
                 selectedOption={accountOptions.find(

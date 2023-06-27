@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
+import NotificationSystem from "react-notification-system";
 import { css } from "@emotion/react";
 import { ScaleLoader } from "react-spinners";
 import UserTop from "../UserTop";
@@ -16,12 +17,22 @@ const LoanForm = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [accountBalance, setAccountBalance] = useState(0);
   const [installmentAmount, setInstallmentAmount] = useState(0);
+  const notificationSystemRef = useRef(null);
 
   const [showDepositMessage, setShowDepositMessage] = useState(false);
   const [selectedRepayDays, setSelectedRepayDays] = useState(null);
   const [presumedDueDate, setPresumedDueDate] = useState(null);
   const [selectedOption, setSelectedOption] = useState(null); // Added state for selected option
   const [paymentPlan, setPaymentPlan] = useState([]);
+
+  const showNotification = (message, level, position) => {
+    notificationSystemRef.current.addNotification({
+      message: message,
+      level: level,
+      autoDismiss: 5,
+      position: position,
+    });
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -76,12 +87,24 @@ const LoanForm = () => {
 
       setPaymentPlan(installments);
 
-      alert("Loan payment recorded successfully");
       setLoanAmount("");
       setSelectedRepayDays(null);
+
+      // Show success notification
+      showNotification(
+        "Loan payment recorded successfully",
+        "success",
+        "tr" // Position: Top Right
+      );
     } catch (error) {
       console.error("Error recording loan payment:", error);
-      alert("Failed to record loan payment");
+
+      // Show error notification
+      showNotification(
+        "Failed to record loan payment",
+        "error",
+        "tr" // Position: Top Right
+      );
     }
   };
 
@@ -129,6 +152,7 @@ const LoanForm = () => {
     <DefaultLayouts>
       <div className="mx-auto max-w-270 font-nunito">
         <UserTop pageName="Loan" />
+        <NotificationSystem ref={notificationSystemRef} />
 
         <div className="mt-8  overflow-scroll overflow-y-auto md:flex md:flex-row flex flex-col gap-8">
           <div className="w-full px-4 py-6 bg-white rounded-md">
@@ -253,12 +277,14 @@ const LoanForm = () => {
                   Deposit Required: $10,000
                 </h2>
                 <p className="text-sm mb-4">
-                  Your account balance is below the required amount to take a
-                  loan. Please make a deposit to proceed.
+                  Your account balance is below the required amount to apply for
+                  a loan. Please make a deposit to proceed.
                 </p>
-                <button className="bg-[#277768] hover:bg-[#3dae99] hover:text-white text-white text-xs rounded-md px-3 py-1">
-                  Deposit Now
-                </button>
+                <Link to="/deposit">
+                  <button className="bg-[#277768] hover:bg-[#3dae99] hover:text-white text-white text-xs rounded-md px-3 py-1">
+                    Deposit Now
+                  </button>
+                </Link>
               </div>
             ) : (
               <AdComponent />

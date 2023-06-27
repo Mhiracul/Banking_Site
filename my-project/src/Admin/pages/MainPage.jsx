@@ -156,7 +156,7 @@ function MainPage() {
         }
       );
 
-      if (res.status === 200) {
+      if (res.data.message === "User updated successfully") {
         // User edited successfully
         // Update the user list by dispatching a new action
         const updatedUsers = myUsers.map((user) =>
@@ -166,12 +166,14 @@ function MainPage() {
         setEditingUserId(null); // Reset the editing state
       } else {
         // Handle other response statuses
+        console.log("Failed to edit user");
       }
     } catch (err) {
       console.error("Failed to edit user:", err);
       // Handle the error state or display an error message
     }
   };
+
   const handlePenaltyChange = (userId, amount) => {
     setPenalties((prevPenalties) => ({
       ...prevPenalties,
@@ -284,19 +286,17 @@ function MainPage() {
                         <EditPage
                           user={data}
                           onCancel={() => setEditingUserId(null)}
-                          onEdit={handleEditUser}
                           userName={data.userName}
                           email={data.email}
                           password={data.password}
                           accountBalance={data.accountBalance}
                           status={data.status}
-                          // Handle user edit
-
                           key={data._id}
                           onDelete={() => deleteUser(data._id)}
                           onSuspend={() => suspendUser(data._id)}
                           onDisable={() => disableUser(data._id)}
                           onActivate={() => activateUser(data._id)}
+                          onEdit={handleEditUser} // Pass the handleEditUser function directly
                         />
                       ) : (
                         <tr>

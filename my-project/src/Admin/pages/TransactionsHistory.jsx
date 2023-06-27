@@ -3,11 +3,13 @@ import axios from "axios";
 import DefaultLayout from "../layout/DefaultLayout";
 import Breadcrumb from "../componentAdmin/Breadcrumb";
 import { apiBaseUrl } from "../../../config";
+import ReactPaginate from "react-paginate";
 
 const TransactionsHistory = () => {
   const [transactions, setTransactions] = useState([]);
   const [updated, setUpdated] = useState("");
-
+  const [currentPage, setCurrentPage] = useState(0);
+  const perPage = 20; //
   useEffect(() => {
     fetchTransaction();
   }, []);
@@ -47,44 +49,51 @@ const TransactionsHistory = () => {
       console.error("Error updating transaction status:", error);
     }
   };
+  const handlePageChange = (selected) => {
+    setCurrentPage(selected.selected);
+  };
+
+  const offset = currentPage * perPage;
+  const currentData = transactions.slice(offset, offset + perPage);
+  const pageCount = Math.ceil(transactions.length / perPage);
 
   return (
     <DefaultLayout>
       <div className="mx-auto max-w-270">
         <Breadcrumb pageName="Transaction history" />
         <div>
-          <div className="h-full px-6 md:px-20 py-10 mx-auto">
-            <div className="bg-[#fff] border border-stroke shadow-default dark:border-strokedark dark:bg-boxdark  overflow-y-auto  md:h-[600px] h-[650px] w-full text-black rounded-md">
-              <table className="w-full  text-black dark:text-white">
+          <div className="h-full   py-6 ">
+            <div className="bg-[#fff] w-full overflow-x-auto border border-stroke shadow-default dark:border-strokedark dark:bg-boxdark     text-black rounded-md">
+              <table className="w-full   text-black dark:text-white">
                 <thead>
                   <tr>
-                    <th className="font-medium shadow-md uppercase text-xs px-4 py-2">
+                    <th className="font-medium text-left shadow-md uppercase text-xs px-4 py-2">
                       Date
                     </th>
-                    <th className="font-medium shadow-md uppercase text-xs px-4 py-2">
+                    <th className="font-medium text-left shadow-md uppercase text-xs px-4 py-2">
                       Type
                     </th>
-                    <th className="font-medium shadow-md uppercase text-xs px-4">
+                    <th className="font-medium text-left shadow-md uppercase text-xs px-4">
                       Status
                     </th>
-                    <th className="font-medium shadow-md uppercase text-xs px-4 py-2">
+                    <th className="font-medium text-left shadow-md uppercase text-xs px-4 py-2">
                       Amount
                     </th>
-                    <th className="font-medium shadow-md uppercase text-xs px-4 py-2">
+                    <th className="font-medium text-left shadow-md uppercase text-xs px-4 py-2">
                       Update
                     </th>
                   </tr>
                 </thead>
                 <tbody>
-                  {transactions.map((transaction) => (
+                  {currentData.map((transaction) => (
                     <tr key={transaction._id}>
-                      <td className="shadow-md shadow-[#ccc]  px-4 py-2 text-sm  w-48">
+                      <td className="shadow-md shadow-[#ccc]  px-4 py-2 text-xs  w-48">
                         {transaction.date}
                       </td>
-                      <td className="shadow-md shadow-[#ccc]  px-4 py-2 text-sm  w-48">
+                      <td className="shadow-md shadow-[#ccc]  px-4 py-2 text-xs  w-48">
                         {transaction.type}
                       </td>
-                      <td className="shadow-md shadow-[#ccc]  px-4 py-2 text-sm  w-48">
+                      <td className="shadow-md shadow-[#ccc]  px-4 py-2 text-xs  w-48">
                         {transaction.status === "pending" ? (
                           <span className=" bg-[#FED5D6] text-[#FC444C]  flex justify-center items-center w-16 h-6 rounded-md">
                             {transaction.status}
@@ -95,11 +104,11 @@ const TransactionsHistory = () => {
                           </span>
                         )}
                       </td>
-                      <td className="shadow-md shadow-[#ccc]  px-4 py-2 text-sm  w-48">
+                      <td className="shadow-md shadow-[#ccc]  px-4 py-2 text-xs  w-48">
                         {transaction.amount}
                       </td>
 
-                      <td className="py-2 px-4 shadow-md shadow-[#ccc]  text-sm">
+                      <td className="py-2 px-4 shadow-md shadow-[#ccc]  text-xs">
                         <div className="flex items-center">
                           <button
                             onClick={() => handleUpdateStatus(transaction._id)}
@@ -113,6 +122,23 @@ const TransactionsHistory = () => {
                   ))}
                 </tbody>
               </table>
+              <div className="flex flex-row items-center justify-center mt-4 outline-none">
+                <ReactPaginate
+                  previousLabel="Previous"
+                  nextLabel="Next"
+                  pageCount={pageCount}
+                  onPageChange={handlePageChange}
+                  containerClassName="pagination flex gap-3 items-center rounded-md outline-none"
+                  previousClassName="pagination__prev flex items-center outline-none justify-center px-2 py-1 bg-transparent border border-[#ccc] text-primary text-xs  outline-none rounded-full"
+                  nextClassName="pagination__next flex items-center outline-none justify-center px-2 py-1 bg-transparent border border-[#ccc] text-primary text-xs outline-none  rounded-full"
+                  activeClassName="pagination__active"
+                  disabledClassName="pagination__disabled"
+                  pageClassName="pagination__page border border-[#ccc] text-xs flex items-center gap-7 outline-none text-primary px-2 py-1 rounded-full"
+                  breakClassName="pagination__break"
+                  marginPagesDisplayed={2}
+                  pageRangeDisplayed={5}
+                />
+              </div>
             </div>
           </div>
         </div>

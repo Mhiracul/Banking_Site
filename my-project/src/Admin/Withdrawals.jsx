@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { apiBaseUrl } from "../../config";
 
 const Withdrawals = () => {
   const [withdrawals, setWithdrawals] = useState([]);
@@ -12,14 +13,11 @@ const Withdrawals = () => {
 
   const fetchWithdrawals = async () => {
     try {
-      const response = await axios.get(
-        "http://localhost:4000/admin/withdrawals",
-        {
-          headers: {
-            "auth-token": localStorage.getItem("token"),
-          },
-        }
-      );
+      const response = await axios.get(`${apiBaseUrl}/admin/withdrawals`, {
+        headers: {
+          "auth-token": localStorage.getItem("token"),
+        },
+      });
       setWithdrawals(response.data.withdrawals);
     } catch (error) {
       console.error("Error fetching withdrawals:", error);
@@ -34,7 +32,7 @@ const Withdrawals = () => {
     try {
       setUpdatedStatus("success"); // Set updatedStatus to "success"
       await axios.patch(
-        `http://localhost:4000/admin/withdrawals/${withdrawalId}`,
+        `${apiBaseUrl}/admin/withdrawals/${withdrawalId}`,
         {
           status: updatedStatus,
         },

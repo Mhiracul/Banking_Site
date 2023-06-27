@@ -29,12 +29,15 @@ const EmailTemplateEditor = () => {
     }
   };
 
+  // ...
+
   const updateRegistrationConfirmationTemplate = async () => {
     try {
       const response = await axios.put(
         `${apiBaseUrl}/admin/update-email-template`,
         {
-          registrationConfirmationTemplate,
+          updatedRegistrationConfirmationTemplate:
+            registrationConfirmationTemplate,
         },
         {
           headers: {
@@ -46,8 +49,11 @@ const EmailTemplateEditor = () => {
       console.log(response.data); // Success message from the server
     } catch (error) {
       console.log(error);
+      // Handle the error, show an error message, etc.
     }
   };
+
+  // ...
 
   const handleTemplateChange = (e) => {
     setRegistrationConfirmationTemplate(e.target.value);

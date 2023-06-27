@@ -17,7 +17,7 @@ function EditPage({ user, onDelete, onSuspend, onDisable, onEdit }) {
   };
 
   const handleSaveClick = () => {
-    onEdit(editedUser); // Pass the editedUser object as an argument
+    onEdit(editedUser); // Pass the editedUser object directly
     setIsEditing(false);
   };
 

@@ -14,8 +14,8 @@ const ReactTailwindTable = ({ data }) => {
   };
 
   return (
-    <div>
-      <table className="min-w-full  divide-y divide-gray-200 ">
+    <div className=" w-full ">
+      <table className=" max-w-md  mx-auto divide-y divide-gray-200 ">
         <thead className="bg-[#DBFF8E] text-[#21635f]">
           <tr>
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -38,7 +38,7 @@ const ReactTailwindTable = ({ data }) => {
               <td className="px-6 py-4 capitalize whitespace-nowrap text-sm text-gray-500">
                 {withdrawal.type}
               </td>
-              <td className="px-6 py-4  whitespace-nowrap text-sm text-gray-500">
+              <td className="px-6 py-4  whitespace-nowrap text-xs text-gray">
                 {withdrawal.wallet}
               </td>
               <td className="px-6 py-4 capitalize whitespace-nowrap text-sm text-gray-500">
@@ -52,18 +52,18 @@ const ReactTailwindTable = ({ data }) => {
         </tbody>
       </table>
 
-      <div className="flex flex-row  items-center mt-4 font-light">
+      <div className="flex flex-row justify-center items-center mt-4 font-light">
         <ReactPaginate
           previousLabel="Previous"
           nextLabel="Next"
           pageCount={pageCount}
           onPageChange={handlePageChange}
-          containerClassName="pagination flex gap-5 items-center rounded-md"
-          previousClassName="pagination__prev flex items-center justify-center px-4 py-1 bg-transparent border border-gray text-[#DBFF8E] text-sm   rounded-full"
-          nextClassName="pagination__next flex items-center justify-center px-4 py-1 bg-transparent border border-gray text-[#DBFF8E] text-sm   rounded-full"
+          containerClassName="pagination flex gap-3 items-center rounded-md"
+          previousClassName="pagination__prev flex items-center justify-center px-4 py-1 bg-transparent border border-gray text-[#DBFF8E] text-xs   rounded-full"
+          nextClassName="pagination__next flex items-center justify-center px-4 py-1 bg-transparent border border-gray text-[#DBFF8E] text-xs   rounded-full"
           activeClassName="pagination__active"
           disabledClassName="pagination__disabled"
-          pageClassName="pagination__page border border-gray text-[#DBFF8E] px-3 py-1 rounded-full"
+          pageClassName="pagination__page border text-xs border-gray text-[#DBFF8E] px-2 py-1 rounded-full"
           breakClassName="pagination__break"
           marginPagesDisplayed={2}
           pageRangeDisplayed={5}

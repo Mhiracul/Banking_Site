@@ -80,18 +80,18 @@ const TransactionHistory = () => {
                     ))}
                   </tbody>
                 </table>
-                <div className="flex flex-row items-center   mt-4 outline-none">
+                <div className="flex flex-row items-center justify-center mt-4 outline-none">
                   <ReactPaginate
                     previousLabel="Previous"
                     nextLabel="Next"
                     pageCount={pageCount}
                     onPageChange={handlePageChange}
-                    containerClassName="pagination flex gap-5 items-center rounded-md outline-none"
-                    previousClassName="pagination__prev flex items-center outline-none justify-center px-4 py-1 bg-transparent border border-gray text-[#DBFF8E] text-sm  outline-none rounded-full"
-                    nextClassName="pagination__next flex items-center outline-none justify-center px-4 py-1 bg-transparent border border-gray text-[#DBFF8E] text-sm outline-none  rounded-full"
+                    containerClassName="pagination flex gap-3 items-center rounded-md outline-none"
+                    previousClassName="pagination__prev flex items-center outline-none justify-center px-2 py-1 bg-transparent border border-gray text-[#DBFF8E] text-xs  outline-none rounded-full"
+                    nextClassName="pagination__next flex items-center outline-none justify-center px-2 py-1 bg-transparent border border-gray text-[#DBFF8E] text-xs outline-none  rounded-full"
                     activeClassName="pagination__active"
                     disabledClassName="pagination__disabled"
-                    pageClassName="pagination__page border border-gray flex items-center gap-7 outline-none text-[#DBFF8E] px-3 py-1 rounded-full"
+                    pageClassName="pagination__page border border-gray text-xs flex items-center gap-7 outline-none text-[#DBFF8E] px-2 py-1 rounded-full"
                     breakClassName="pagination__break"
                     marginPagesDisplayed={2}
                     pageRangeDisplayed={5}

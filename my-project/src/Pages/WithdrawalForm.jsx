@@ -231,8 +231,8 @@ const WithdrawalForm = () => {
               </p>
             </div>
           )}
-          <div className="bg-[#21635f] text-white px-10 py-10  mt-10 rounded-md shadow-md shadow-[#ccc] w-full">
-            <div className="flex justify-between  items-center mb-5 ">
+          <div className="bg-[#21635f]  px-10 py-10  mt-10 rounded-md shadow-md shadow-[#ccc] w-full">
+            <div className="flex justify-between  items-center mb-5 text-white lg:text-xl md:text-sm text-xs">
               <h1 className="text-2xl ">Account Balance:</h1>
               <h1 className="text-2xl ">${accountBalance.toFixed(2)}</h1>
             </div>
@@ -244,7 +244,7 @@ const WithdrawalForm = () => {
                 >
                   Withdrawal Type:
                 </label>
-                <div className="w-full  ">
+                <div className="w-full  text-[#21635f]">
                   <Dropdown
                     options={[
                       { label: "Tether", value: "tether" },
@@ -260,11 +260,11 @@ const WithdrawalForm = () => {
               <div className="  py-2">
                 <label
                   htmlFor="withdrawalAmount"
-                  className="text-sm mb-2 md:mb-0 md:mr-4"
+                  className="text-sm mb-2 md:mb-0 md:mr-4 text-white"
                 >
                   Withdrawal Amount:
                 </label>
-                <div className="w-full">
+                <div className="w-full text-[#21635f]">
                   <input
                     type="number"
                     step="0.01"
@@ -280,11 +280,11 @@ const WithdrawalForm = () => {
               <div className=" py-2">
                 <label
                   htmlFor="wallet"
-                  className="text-sm mb-2 md:mb-0 md:mr-4"
+                  className="text-sm mb-2 md:mb-0 md:mr-4 text-white"
                 >
                   Wallet:
                 </label>
-                <div className="w-full ">
+                <div className="w-full text-[#21635f]">
                   <Dropdown
                     options={walletOptions}
                     selectedOption={selectedWallet}
@@ -302,7 +302,7 @@ const WithdrawalForm = () => {
               </div>
             </form>
           </div>
-          <div className="flex flex-col ">
+          <div className="flex flex-col items-center justify-center">
             <h1 className="text-white text-xl mt-10 mb-6 text-center">
               Withdrawal History
             </h1>
