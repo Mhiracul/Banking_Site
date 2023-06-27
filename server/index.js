@@ -891,18 +891,10 @@ const withdrawalSchema = new mongoose.Schema({
 
 const Withdrawal = mongoose.model("Withdrawal", withdrawalSchema);
 
-const generateReceiptContent = (withdrawal, withdrawalUser) => {
-  const { type, wallet, amount, date } = withdrawal;
-
-  // Customizable content by the admin
-  const adminNote =
-    "A new withdrawal request just occured in your finflow account.";
-
-  // Receipt HTML template
-  return `
-    <html>
-      <head>
-      <style>
+let withdrawalConfirmationTemplate = `
+<html>
+  <head>
+    <style>
       .amount {
         color: rgb(255, 0, 0);
         font-weight: bolder;
@@ -940,66 +932,33 @@ const generateReceiptContent = (withdrawal, withdrawalUser) => {
       }
       h2 {
         font-size: 20px;
-        font-weight : bold;
+        font-weight: bold;
       }
     </style>
-      </head>
-      <body>
-      <div class="receipt">
+  </head>
+  <body>
+    <div class="receipt">
       <img
         src="https://finflow.uicore.co/online-banking/wp-content/uploads/sites/2/2023/01/finflow-logo-1.webp"
         alt=""
         width="70"
         height="20"
       />
-      <h2> Hey,${withdrawalUser.userName} </h2>
+      <h2> Hey, {userName} </h2>
       <h1>Withdrawal Receipt</h1>
-      <p class="amount"><strong>Amount: $</strong>${amount}</p>
-      <p class="mine"><strong>Type:</strong> ${wallet}</p>
-      <p class="mine"><strong>Type:</strong> ${type}</p>
-      <p class="date"><strong>Date:</strong> ${date.toISOString()}</p>
-      <p class="mine">
-        <strong>User:</strong> ${withdrawalUser.userName}
-      </p>
-      <p class="date">
-        <strong>Transaction ID:</strong> ${withdrawal._id} 
-      </p>
-      <p class="mine"><strong>Balance:$</strong>${
-        withdrawalUser.accountBalance
-      }</p>
-      <p class="date"><strong>Note:</strong> ${adminNote}</p>
+      <p class="amount"><strong>Amount: $</strong>{amount}</p>
+      <p class="mine"><strong>Type:</strong> {wallet}</p>
+      <p class="mine"><strong>Type:</strong> {type}</p>
+      <p class="date"><strong>Date:</strong> {date}</p>
+      <p class="mine"><strong>User:</strong> {userName}</p>
+      <p class="date"><strong>Transaction ID:</strong> {transactionId}</p>
+      <p class="mine"><strong>Balance: $</strong>{balance}</p>
+      <p class="date"><strong>Note:</strong> {adminNote}</p>
     </div>
-      </body>
-    </html>
-  `;
-};
+  </body>
+</html>
+`;
 
-// Send receipt email function
-const sendReceiptEmail = async (user, receiptContent) => {
-  try {
-    // Send email using nodemailer
-    const transporter = nodemailer.createTransport({
-      service: "gmail",
-      auth: {
-        user: "mokeke250@gmail.com",
-        pass: "lxvycnellvurscyl",
-      },
-    });
-
-    const mailOptions = {
-      from: '"Finflow 👻" <mokeke250@gmail.com>',
-      to: user.email,
-      subject: "Withdrawal Receipt",
-      html: receiptContent,
-    };
-
-    await transporter.sendMail(mailOptions);
-  } catch (error) {
-    console.error("Failed to send email:", error);
-  }
-};
-
-// Route to handle user withdrawal
 app.post("/withdrawal", authenticateToken, async (req, res) => {
   const { type, wallet, amount } = req.body;
   const userId = req.user._id;
@@ -1022,7 +981,7 @@ app.post("/withdrawal", authenticateToken, async (req, res) => {
     await result.save();
 
     // Save the transaction
-    //const emailTemplate = await EmailTemplate.findOne({}); // Modify this line to fetch the email template from your database or storage system
+    // const emailTemplate = await EmailTemplate.findOne({}); // Modify this line to fetch the email template from your database or storage system
 
     // Update the user's pending requests
     await userModel.findByIdAndUpdate(userId, {
@@ -1037,8 +996,25 @@ app.post("/withdrawal", authenticateToken, async (req, res) => {
 
     // Generate and send the receipt to the user's email
     const withdrawalUser = await userModel.findById(userId);
-    const receiptContent = generateReceiptContent(result, withdrawalUser);
-    sendReceiptEmail(withdrawalUser, receiptContent);
+    const adminNote =
+      "A new withdrawal request just occurred in your Finflow account.";
+    const formattedDate = result.date.toISOString();
+    const withdrawalReceipt = withdrawalConfirmationTemplate
+      .replace("{userName}", withdrawalUser.userName)
+      .replace("{amount}", amount)
+      .replace("{wallet}", wallet)
+      .replace("{type}", type)
+      .replace("{date}", formattedDate)
+      .replace("{userName}", withdrawalUser.userName)
+      .replace("{transactionId}", result._id)
+      .replace("{balance}", withdrawalUser.accountBalance)
+      .replace("{adminNote}", adminNote);
+
+    sendReceiptEmail(
+      withdrawalUser.email,
+      "Withdrawal Receipt",
+      withdrawalReceipt
+    );
 
     res.status(201).json(result);
   } catch (error) {
