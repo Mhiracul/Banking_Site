@@ -164,12 +164,15 @@ function MainPage() {
         );
         dispatch(setUsers(updatedUsers));
         setEditingUserId(null); // Reset the editing state
+        toast.success("User updated successfully");
       } else {
         // Handle other response statuses
         console.log("Failed to edit user");
       }
     } catch (err) {
       console.error("Failed to edit user:", err);
+      toast.error("Failed to edit user");
+
       // Handle the error state or display an error message
     }
   };
