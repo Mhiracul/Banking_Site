@@ -17,7 +17,7 @@ dotenv.config();
 const app = express();
 
 app.use(cors());
-/*app.use((req, res, next) => {
+app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "https://finflow.netlify.app");
   res.setHeader(
     "Access-Control-Allow-Methods",
@@ -25,7 +25,7 @@ app.use(cors());
   );
   res.setHeader("Access-Control-Allow-Headers", "Content-Type, auth-token");
   next();
-}); */
+});
 app.use(express.json({ limit: "10mb" }));
 const PORT = 4000;
 
