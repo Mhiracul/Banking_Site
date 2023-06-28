@@ -9,7 +9,6 @@ import WithdrawalForm from "./Pages/WithdrawalForm";
 import Settings from "./Pages/Settings";
 import DepositForm from "./Pages/DepositForm";
 import Withdrawals from "./Admin/Withdrawals";
-import Users from "./Admin/Users";
 import Main from "./MainPage";
 import { Toaster } from "react-hot-toast";
 import TextCarousel from "./component/TextCarousel";
@@ -18,7 +17,6 @@ import Wallet from "./Admin/Wallet";
 import LoanForm from "./component/Dashboard/LoanForm";
 import UserPage from "./Pages/UserPage";
 import TransactionHistory from "./Pages/TransactionHistory";
-import AccountBalance from "./Admin/AccountBalance";
 import Admins from "./Admin/Admins";
 import AdminSettings from "./Admin/pages/AdminSettings";
 import Profile from "./Admin/pages/Profile";
@@ -74,7 +72,6 @@ const App = () => {
             <Route path="/savings" element={<Savings />} />
             <Route path="/sss" element={<Withdrawals />} />
             <Route path="/bbb" element={<Crypto />} />
-            <Route path="/users" element={<Users />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/card" element={<VirtualCardRegistrationForm />} />
 
@@ -83,7 +80,6 @@ const App = () => {
             <Route path="/bat" element={<UserPage />} />
             <Route path="/mimi" element={<Admins />} />
             <Route path="/save" element={<SavingsPage />} />
-            <Route path="/account" element={<AccountBalance />} />
             <Route path="/set" element={<AdminSettings />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/admin-user" element={<MainPage />} />

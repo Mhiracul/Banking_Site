@@ -16,7 +16,6 @@ import whale from "../assets/whale.svg";
 import xrp from "../assets/xrp.svg";
 import paypal from "../assets/paypal.svg";
 import berty from "../assets/berty.svg";
-import Sidebar from "./AdminSidebar";
 import Select from "react-select";
 import { toast } from "react-hot-toast";
 import { apiBaseUrl } from "../../config";
