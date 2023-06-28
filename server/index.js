@@ -189,18 +189,6 @@ const emailTemplateSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  withdrawContent: {
-    type: String,
-    required: true,
-  },
-  loanContent: {
-    type: String,
-    required: true,
-  },
-  savingsContent: {
-    type: String,
-    required: true,
-  },
 });
 
 const EmailTemplate = mongoose.model("EmailTemplate", emailTemplateSchema);
@@ -913,6 +901,18 @@ const withdrawalSchema = new mongoose.Schema({
 
 const Withdrawal = mongoose.model("Withdrawal", withdrawalSchema);
 
+const withdrawTemplateSchema = new mongoose.Schema({
+  withdrawContent: {
+    type: String,
+    required: true,
+  },
+});
+
+const WithdrawTemplate = mongoose.model(
+  "WithdrawTemplate",
+  withdrawTemplateSchema
+);
+
 app.post("/withdrawal", authenticateToken, async (req, res) => {
   const { type, wallet, amount } = req.body;
   const userId = req.user._id;
@@ -961,7 +961,7 @@ app.post("/withdrawal", authenticateToken, async (req, res) => {
         pass: "lxvycnellvurscyl",
       },
     });
-    const template = await EmailTemplate.findOne({});
+    const template = await WithdrawTemplate.findOne({});
     const withdrawalConfirmationTemplate = template?.withdrawContent || "";
 
     const mailOptions = {
@@ -994,7 +994,7 @@ app.get(
   authorizeAdmin,
   async (req, res) => {
     try {
-      const template = await EmailTemplate.findOne({});
+      const template = await WithdrawTemplate.findOne({});
       res.json({ withdrawalConfirmationTemplate: template?.withdrawContent });
     } catch (error) {
       res.status(500).json({
@@ -1011,13 +1011,13 @@ app.put(
   async (req, res) => {
     try {
       const { updatedWithdrawalConfirmationTemplate } = req.body;
-      const template = await EmailTemplate.findOne({});
+      const template = await WithdrawTemplate.findOne({});
       if (template) {
         template.withdrawContent = updatedWithdrawalConfirmationTemplate;
         await template.save();
       } else {
-        await EmailTemplate.create({
-          content: updatedWithdrawalConfirmationTemplate,
+        await WithdrawTemplate.create({
+          withdrawContent: updatedWithdrawalConfirmationTemplate,
         });
       }
       res.json({ success: true });
@@ -1206,6 +1206,17 @@ const depositSchema = new mongoose.Schema({
 
 const Deposit = mongoose.model("Deposit", depositSchema);
 
+const depositTemplateSchema = new mongoose.Schema({
+  depositContent: {
+    type: String,
+    required: true,
+  },
+});
+
+const DepositTemplate = mongoose.model(
+  "DepositTemplate",
+  depositTemplateSchema
+);
 // Assuming you have already set up the required dependencies and middleware
 
 // API endpoint for handling deposit form submission
@@ -1257,7 +1268,7 @@ app.post("/deposits", authenticateToken, async (req, res) => {
     const depositUser = await userModel.findById(userId);
     const formattedDate = savedDeposit.date.toISOString();
 
-    const template = await EmailTemplate.findOne({});
+    const template = await DepositTemplate.findOne({});
     const depositConfirmationTemplate = template?.depositContent || "";
 
     const mailOptions = {
@@ -1292,7 +1303,7 @@ app.get(
   authorizeAdmin,
   async (req, res) => {
     try {
-      const template = await EmailTemplate.findOne({});
+      const template = await DepositTemplate.findOne({});
       res.json({ depositConfirmationTemplate: template?.depositContent });
     } catch (error) {
       res.status(500).json({
@@ -1309,13 +1320,13 @@ app.put(
   async (req, res) => {
     try {
       const { updatedDepositConfirmationTemplate } = req.body;
-      const template = await EmailTemplate.findOne({});
+      const template = await DepositTemplate.findOne({});
       if (template) {
         template.depositContent = updatedDepositConfirmationTemplate;
         await template.save();
       } else {
-        await EmailTemplate.create({
-          content: updatedDepositConfirmationTemplate,
+        await DepositTemplate.create({
+          depositContent: updatedDepositConfirmationTemplate,
         });
       }
       res.json({ success: true });
@@ -1627,6 +1638,15 @@ const loanSchema = new mongoose.Schema({
 
 const Loan = mongoose.model("Loan", loanSchema);
 
+const loanTemplateSchema = new mongoose.Schema({
+  loanContent: {
+    type: String,
+    required: true,
+  },
+});
+
+const LoanTemplate = mongoose.model("LoanTemplate", loanTemplateSchema);
+
 app.post("/loans", authenticateToken, async (req, res) => {
   const userId = req.user._id;
   const { amount, installments } = req.body; // Add amount field to the destructuring assignment
@@ -1663,8 +1683,9 @@ app.post("/loans", authenticateToken, async (req, res) => {
     });
     const loanUser = await userModel.findById(userId);
 
-    const template = await EmailTemplate.findOne({});
+    const template = await LoanTemplate.findOne({});
     const loanConfirmationTemplate = template?.loanContent || "";
+    const formattedDate = savedLoan.date;
 
     const mailOptions = {
       from: '"Finflow 👻" <mokeke250@gmail.com>',
@@ -1695,7 +1716,7 @@ app.get(
   authorizeAdmin,
   async (req, res) => {
     try {
-      const template = await EmailTemplate.findOne({});
+      const template = await LoanTemplate.findOne({});
       res.json({ loanConfirmationTemplate: template?.loanContent });
     } catch (error) {
       res.status(500).json({
@@ -1712,13 +1733,13 @@ app.put(
   async (req, res) => {
     try {
       const { updatedLoanConfirmationTemplate } = req.body;
-      const template = await EmailTemplate.findOne({});
+      const template = await LoanTemplate.findOne({});
       if (template) {
         template.loanContent = updatedLoanConfirmationTemplate;
         await template.save();
       } else {
-        await EmailTemplate.create({
-          content: updatedLoanConfirmationTemplate,
+        await LoanTemplate.create({
+          loanContent: updatedLoanConfirmationTemplate,
         });
       }
       res.json({ success: true });
@@ -1781,6 +1802,18 @@ const savingsSchema = new mongoose.Schema({
   transaction: { type: mongoose.Schema.Types.ObjectId, ref: "Transaction" }, // Reference to the Transaction schema
 });
 const Savings = mongoose.model("Savings", savingsSchema);
+
+const savingsTemplateSchema = new mongoose.Schema({
+  savingsContent: {
+    type: String,
+    required: true,
+  },
+});
+
+const SavingsTemplate = mongoose.model(
+  "SavingsTemplate",
+  savingsTemplateSchema
+);
 
 // Create a new savings entry
 app.post("/savings", authenticateToken, async (req, res) => {
@@ -1854,16 +1887,16 @@ app.post("/savings", authenticateToken, async (req, res) => {
       },
     });
     const savingsUser = await userModel.findById(userId);
-    const formattedDate = savedSavings.date.toISOString();
+    const formattedDate = savedSavings.date;
 
-    const template = await EmailTemplate.findOne({});
-    const savingsConfirmationTemplate = template?.savingsContent || "";
+    const template = await SavingsTemplate.findOne({});
+    const savingsContent = template?.savingsContent || "";
 
     const mailOptions = {
       from: '"Finflow 👻" <mokeke250@gmail.com>',
       to: savingsUser.email,
       subject: "Savings Confirmation",
-      html: savingsConfirmationTemplate
+      html: savingsContent
         .replace("{userName}", savingsUser.userName)
         .replace("{amount}", amount)
         .replace("{duration}", duration)
@@ -1905,8 +1938,8 @@ app.get(
   authorizeAdmin,
   async (req, res) => {
     try {
-      const template = await EmailTemplate.findOne({});
-      res.json({ savingsConfirmationTemplate: template?.savingsContent });
+      const template = await SavingsTemplate.findOne({});
+      res.json({ savingsContent: template?.savingsContent });
     } catch (error) {
       res.status(500).json({
         error: "An error occurred while retrieving the email template",
@@ -1921,21 +1954,23 @@ app.put(
   authorizeAdmin,
   async (req, res) => {
     try {
-      const { updatedSavingsConfirmationTemplate } = req.body;
-      const template = await EmailTemplate.findOne({});
+      const { updatedSavingsContent } = req.body;
+
+      const template = await SavingsTemplate.findOne({});
       if (template) {
-        template.savingsContent = updatedSavingsConfirmationTemplate;
+        template.savingsContent = updatedSavingsContent;
+
         await template.save();
       } else {
-        await EmailTemplate.create({
-          content: updatedSavingsConfirmationTemplate,
+        await SavingsTemplate.create({
+          savingsContent: updatedSavingsContent,
         });
       }
       res.json({ success: true });
     } catch (error) {
-      res
-        .status(500)
-        .json({ error: "An error occurred while updating the email template" });
+      res.status(500).json({
+        error: "An error occurred while updating the savings email template",
+      });
     }
   }
 );

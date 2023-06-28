@@ -15,8 +15,7 @@ const TabGroup = () => {
     useState("");
 
   const [loanConfirmationTemplate, setLoanConfirmationTemplate] = useState("");
-  const [savingsConfirmationTemplate, setSavingsConfirmationTemplate] =
-    useState("");
+  const [savingsContent, setSavingsContent] = useState("");
   const [depositConfirmationTemplate, setDepositConfirmationTemplate] =
     useState("");
 
@@ -182,8 +181,8 @@ const TabGroup = () => {
           },
         }
       );
-      const { savingsConfirmationTemplate } = response.data;
-      setSavingsConfirmationTemplate(savingsConfirmationTemplate);
+      const { savingsContent } = response.data;
+      setSavingsContent(savingsContent);
     } catch (error) {
       console.log(error);
     }
@@ -191,12 +190,12 @@ const TabGroup = () => {
 
   // ...
 
-  const updateSavingsConfirmationTemplate = async () => {
+  const updateSavingsContent = async () => {
     try {
       const response = await axios.put(
         `${apiBaseUrl}/admin/update-email-savings`,
         {
-          updatedSavingsConfirmationTemplate: savingsConfirmationTemplate,
+          updatedSavingsContent: savingsContent,
         },
         {
           headers: {
@@ -214,7 +213,7 @@ const TabGroup = () => {
   };
 
   const handleSavingsChange = (e) => {
-    setSavingsConfirmationTemplate(e.target.value);
+    setSavingsContent(e.target.value);
   };
 
   useEffect(() => {
@@ -392,14 +391,14 @@ const TabGroup = () => {
                         Edit Savings Mail Template
                       </h1>
                       <textarea
-                        value={savingsConfirmationTemplate}
+                        value={savingsContent}
                         onChange={handleSavingsChange}
                         rows={10}
                         cols={50}
                         className="w-full rounded border border-stroke bg-gray py-3 px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
                       />
                       <button
-                        onClick={updateSavingsConfirmationTemplate}
+                        onClick={updateSavingsContent}
                         className="w-full flex justify-center rounded bg-[#5321a8] py-2 px-6 font-medium text-gray hover:bg-opacity-70"
                       >
                         Save Savings Template

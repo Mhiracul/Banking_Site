@@ -257,16 +257,28 @@ const LoanForm = () => {
             <>
               <h2 className="text-lg font-bold mb-2">Payment Plan</h2>
 
-              <ul>
+              <ul className="text-sm">
                 {paymentPlan.map((installment, index) => (
-                  <li key={index}>
-                    Installment{index + 1}: $
-                    {installment.amount.toLocaleString(undefined, {
-                      minimumFractionDigits: 2,
-                      maximumFractionDigits: 2,
-                    })}
+                  <li key={index} className="mb-2 ">
+                    <span className="text-sm text-[#277768] mr-1 ">
+                      {" "}
+                      Installment{index + 1}:{" "}
+                    </span>
+                    <span className="text-xs text-left">
+                      {" "}
+                      $
+                      {installment.amount.toLocaleString(undefined, {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2,
+                      })}{" "}
+                    </span>
                     <br />
-                    Due Date: {installment.dueDate.toDateString()}
+                    <li className="mt-2 mr-2 inline-flex font-medium text-[#277768] text-sm">
+                      Due Date:
+                    </li>
+                    <span className="text-xs text-left">
+                      {installment.dueDate.toDateString()}
+                    </span>
                   </li>
                 ))}
               </ul>

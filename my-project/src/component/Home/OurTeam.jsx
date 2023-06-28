@@ -1,5 +1,5 @@
 import React from "react";
-import { Glasses, Smith, Tylor } from "../../assets/cards";
+import { Glasses, Three, Ten, One } from "../../assets/cards";
 import { FaInstagram, FaFacebook, FaTwitter, FaLinkedin } from "react-icons/fa";
 
 const Team = () => {
@@ -15,10 +15,10 @@ const Team = () => {
         <h1 className="font-extrabold text-[#1C1F35] text-3xl text-center mt-2">
           Meet the Banking Experts
         </h1>
-        <div className="grid  lg:grid-cols-3 md:grid-cols-2 grid-cols-1 mt-10 gap-4 px-10">
+        <div className="grid  lg:grid-cols-3 md:grid-cols-2 grid-cols-1 mt-10 gap-4 md:px-10 px-4">
           <div className=" w-full mx-auto max-w-[350px]">
             <div className="relative w-full">
-              <img src={Glasses} alt="" />
+              <img src={One} alt="" />
               <div className="bg-gradient-to-r from-[#DBFF8E] via-[#DBFF8E] to-[#FFD7A6] w-28 h-10 absolute bottom-0 translate-y-5 right-0">
                 <h1 className="text-black text-xl font-bold absolute bottom-2 right-2">
                   <div className="flex gap-4">
@@ -30,13 +30,13 @@ const Team = () => {
               </div>
             </div>
             <div className="bg-[#1C1F35] w-full h-20 text-white p-4 ">
-              <h1 className="text-xl font-bold ">Jessica Arow</h1>
+              <h1 className="text-xl font-bold ">John Arow</h1>
               <p className="text-xs">Banking Specialist</p>
             </div>
           </div>
           <div className=" w-full mx-auto max-w-[350px]">
             <div className="relative">
-              <img src={Smith} alt="" />
+              <img src={Ten} alt="" />
               <div className="bg-gradient-to-r from-[#DBFF8E] via-[#DBFF8E] to-[#FFD7A6] w-20 h-10 absolute bottom-0 translate-y-5 right-0">
                 <h1 className="text-black text-xl font-bold absolute bottom-2 right-2">
                   <div className="flex gap-4">
@@ -48,13 +48,13 @@ const Team = () => {
             </div>
 
             <div className="bg-[#1C1F35] h-20 text-white p-4 ">
-              <h1 className="text-xl font-bold ">Kathleen Smith</h1>
+              <h1 className="text-xl font-bold ">Rebecca Tylor</h1>
               <p className="text-xs">Account Manager</p>
             </div>
           </div>
           <div className=" w-full mx-auto max-w-[350px]">
             <div className="relative ">
-              <img src={Tylor} alt="" />
+              <img src={Three} alt="" />
               <div className="bg-gradient-to-r from-[#DBFF8E] via-[#DBFF8E] to-[#FFD7A6] w-20 h-10 absolute bottom-0 translate-y-5 right-0">
                 <h1 className="text-black text-xl font-bold absolute bottom-2 right-2">
                   <div className="flex gap-4">
@@ -65,7 +65,7 @@ const Team = () => {
               </div>
             </div>
             <div className="bg-[#1C1F35] h-20 w-full text-white p-4 ">
-              <h1 className="text-xl font-bold ]">Rebecca Tylor</h1>
+              <h1 className="text-xl font-bold ]">Smith Kathelen</h1>
               <p className="text-xs">Customer Care</p>
             </div>
           </div>

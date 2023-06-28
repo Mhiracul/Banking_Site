@@ -1,5 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
+import NotificationSystem from "react-notification-system";
+
 import DropdownSelect from "react-dropdown-select";
 import { MdOutlineSavings } from "react-icons/md";
 import UserTop from "../component/UserTop";
@@ -10,9 +12,20 @@ function Savings() {
   const [amount, setAmount] = useState("");
   const [duration, setDuration] = useState("30days");
   const [reason, setReason] = useState("");
+  const notificationSystemRef = useRef(null);
+
   const [message, setMessage] = useState("");
   const [reasons, setReasons] = useState([]);
   const [interestRate, setInterestRate] = useState(5);
+
+  const showNotification = (message, level, position) => {
+    notificationSystemRef.current.addNotification({
+      message: message,
+      level: level,
+      autoDismiss: 5,
+      position: position,
+    });
+  };
 
   const handleReasonClick = (selectedReason) => {
     if (selectedReason === reason) {
@@ -77,15 +90,20 @@ function Savings() {
         }
       );
 
-      toast.success("Savings created successfully.");
-
       // Update the account balance in the database
 
-      toast.success(
-        "Dear customer, your savings will be processed or approved within 5 minutes."
+      showNotification(
+        "Dear customer, your savings will be processed or approved within 5 minutes",
+        "success",
+        "tr" // Position: Top Right
       );
     } catch (error) {
-      toast.error("An error occurred while creating savings.");
+      console.error("An error occurred while creating savings.");
+      showNotification(
+        "Failed to record savings payment",
+        "error",
+        "tr" // Position: Top Right
+      );
     }
   };
 
@@ -99,6 +117,8 @@ function Savings() {
     <DefaultLayouts>
       <div className="mx-auto max-w-270 ">
         <UserTop pageName="Savings" />
+        <NotificationSystem ref={notificationSystemRef} />
+
         <div className=" ">
           <div className="mt-8 px-10 py-8 h-full  overflow-y-auto bg-white rounded-md ">
             <h1 className="text-2xl font-bold mb-4 text-[#123831]">

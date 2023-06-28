@@ -4,7 +4,7 @@ const cards = [
   {
     id: 1,
     name: "Thomas Christopher",
-    image: "https://picsum.photos/id/237/200/300",
+    image: Two,
     country: "United Kingdom",
     testimonial: (
       <>
@@ -17,10 +17,9 @@ const cards = [
   },
   {
     id: 2,
-    name: "Robert John",
+    name: "Shila Ree",
     country: "Mexico",
-    image:
-      "https://harnishdesign.net/demo/react/simone/demo/images/profile.jpg",
+    image: Five,
     testimonial: (
       <>
         I've been using <WebsiteName /> for over a year now, and it has
@@ -52,4 +51,9 @@ export default cards;
 import Glasses from "./Glasses.png";
 import Smith from "./Smith.png";
 import Tylor from "./Tylor.png";
-export { Smith, Tylor, Glasses };
+import One from "./1.png";
+import Ten from "./10.png";
+import Three from "./3.png";
+import Five from "./5.png";
+import Two from "./2.png";
+export { Smith, Tylor, Glasses, One, Ten, Three, Five, Two };

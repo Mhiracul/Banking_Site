@@ -37,7 +37,7 @@ const Testimonials = () => {
           </h1>
         </div>
         <div>
-          <div className="container mx-auto px-10 md:px-8 py-16 max-w-screen-lg">
+          <div className="container mx-auto  md:px-10 px-7 py-16 max-w-screen-lg">
             <Slider {...settings}>
               {cards.map((card) => (
                 <div key={card.id} className="">
@@ -46,7 +46,7 @@ const Testimonials = () => {
                       <img
                         src={card.image}
                         alt=""
-                        className="w-12 h-12 rounded-full mr-4"
+                        className="w-12 h-12 rounded-full mr-4 object-cover"
                       />
                       <div>
                         <h3 className="font-bold text-[#102F2D]">
