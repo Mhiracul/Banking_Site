@@ -10,16 +10,18 @@ import DefaultLayouts from "../User/layoutt/DefaultLayouts";
 import DropdownSelect from "react-dropdown-select";
 import icon from "../assets/icons8-done.gif";
 import { apiBaseUrl } from "../../config";
+
 const DepositForm = () => {
   const [depositAmount, setDepositAmount] = useState("");
   const [selectedCryptoAddress, setSelectedCryptoAddress] = useState("");
   const [selectedMethod, setSelectedMethod] = useState(null);
-  const [bankName, setBankName] = useState(""); // Add bankName state variable
-  const [successMessage, setSuccessMessage] = useState(""); // Add successMessage state variable
-  const [showSuccessMessage, setShowSuccessMessage] = useState(false); // Add showSuccessMessage state variable
+  const [selectedBank, setSelectedBank] = useState(null); // Add selectedBank state variable
+  const [successMessage, setSuccessMessage] = useState("");
+  const [showSuccessMessage, setShowSuccessMessage] = useState(false);
 
   const [cryptocurrencies, setCryptocurrencies] = useState([]);
   const [selectedCrypto, setSelectedCrypto] = useState(null);
+
   const handleMethodChange = (selectedOptions) => {
     setSelectedMethod(selectedOptions[0]);
   };
@@ -31,10 +33,17 @@ const DepositForm = () => {
   const fetchCryptocurrencies = async () => {
     try {
       const response = await axios.get(`${apiBaseUrl}/cryptos`);
-      setCryptocurrencies(response.data);
-      if (response.data.length > 0) {
-        setSelectedCryptoAddress(response.data[0].address);
-        setSelectedCrypto(response.data[0]);
+      const modifiedCryptocurrencies = response.data.map((crypto) => {
+        return {
+          ...crypto,
+          bankName: crypto.bankName,
+          bankNumber: crypto.bankNumber,
+        };
+      });
+      setCryptocurrencies(modifiedCryptocurrencies);
+      if (modifiedCryptocurrencies.length > 0) {
+        setSelectedCryptoAddress(modifiedCryptocurrencies[0].address);
+        setSelectedCrypto(modifiedCryptocurrencies[0]);
       }
     } catch (error) {
       console.error("Error fetching cryptocurrencies:", error);
@@ -66,15 +75,15 @@ const DepositForm = () => {
           depositAmount,
           selectedCryptoAddress,
           selectedMethod: selectedMethod.value,
-          bankName,
+          bankName: selectedBank?.bankName || "", // Use selectedBank for bankName
+          bankNumber: selectedBank?.bankNumber || "", // Use selectedBank for bankNumber
         },
         {
           headers: {
-            "auth-token": localStorage.getItem("token"), // Pass the auth token
+            "auth-token": localStorage.getItem("token"),
           },
         }
       );
-      // Handle the response as needed
       console.log(response.data);
       toast.success("Deposit successful");
       setSuccessMessage(
@@ -92,6 +101,12 @@ const DepositForm = () => {
     setSelectedCrypto(selectedCryptoOption);
     setSelectedCryptoAddress(selectedCryptoOption?.address || "");
   };
+
+  const handleBankChange = (selectedOptions) => {
+    const selectedBankOption = selectedOptions[0];
+    setSelectedBank(selectedBankOption);
+  };
+
   const isLoggedIn = () => {
     const authToken = localStorage.getItem("token");
     return authToken !== null;
@@ -101,15 +116,14 @@ const DepositForm = () => {
     return (
       <>
         <div className="mt-4 text-sm bg-white  border-gray-400 w-full">
-          <label htmlFor="paymentMethod" className="font-medium text-sm p-2 ">
+          <label htmlFor="paymentMethod" className="font-medium text-sm p-2">
             Payment Method:
           </label>
-
           <DropdownSelect
             id="paymentMethod"
             options={[
               { label: "Cryptocurrency", value: "crypto" },
-              { label: "Wire Transfer", value: "wire" },
+              { label: "Wire Transfer", value: "wire-transfer" },
             ]}
             values={selectedMethod ? [selectedMethod] : []}
             onChange={(selectedOptions) => handleMethodChange(selectedOptions)}
@@ -137,9 +151,8 @@ const DepositForm = () => {
           />
         </div>
 
-        {/* Cryptocurrency Form */}
         {selectedMethod && selectedMethod.value === "crypto" && (
-          <div className="mt-4 w-full ">
+          <div className="mt-4 w-full">
             <label htmlFor="cryptoSelect" className="font-medium text-sm">
               Select Cryptocurrency:
             </label>
@@ -181,33 +194,58 @@ const DepositForm = () => {
           </div>
         )}
 
-        {/* Wire Transfer Form */}
         {selectedMethod && selectedMethod.value === "wire-transfer" && (
           <div className="mt-4">
-            <label htmlFor="bankName" className="font-medium text-sm">
-              Bank Name:
+            <label htmlFor="bankSelect" className="font-medium text-sm">
+              Select Bank:
             </label>
-            <input
-              type="text"
-              id="bankName"
-              className="border border-gray-300 rounded-md px-2 py-1 mt-1"
-              value={bankName}
-              onChange={(e) => setBankName(e.target.value)}
+            <DropdownSelect
+              id="bankSelect"
+              options={cryptocurrencies.map((crypto) => ({
+                label: crypto.bankName,
+                value: crypto._id,
+                bankName: crypto.bankName,
+                bankNumber: crypto.bankNumber,
+              }))}
+              values={selectedBank ? [selectedBank] : []}
+              onChange={(selectedOptions) => handleBankChange(selectedOptions)}
+              labelField="label"
+              valueField="value"
+              clearable={false}
+              dropdownHandleRenderer={() => (
+                <WiDirectionDown size={20} className="text-gray-600" />
+              )}
+              dropdownGap={0}
+              searchable={false}
+              dropdownHeight="auto"
+              direction="ltr"
+              dropdownPosition="bottom"
+              keepSelectedInList={false}
+              closeOnSelect={true}
+              style={{
+                control: (base) => ({
+                  ...base,
+                  border: "none",
+                  boxShadow: "none",
+                  width: "100%",
+                }),
+              }}
             />
-            {/* Add other wire transfer form fields here */}
           </div>
         )}
       </>
     );
   };
+
   const handleCloseSuccessMessage = () => {
-    setShowSuccessMessage(false); // Hide the success message
+    setShowSuccessMessage(false);
   };
+
   return (
     <DefaultLayouts>
-      <div className="mx-auto max-w-270 ">
+      <div className="mx-auto max-w-270">
         <UserTop pageName="Deposit" />
-        {showSuccessMessage && ( // Check if the success message should be shown
+        {showSuccessMessage && (
           <div className="relative">
             <p className="bg-gradient bg-gradient-to-br from-[#043f34] to-transparent bg-opacity-20  text-[#fff] font-medium p-2 text-center rounded-md py-6  mt-2">
               ✅ {successMessage}
@@ -268,29 +306,43 @@ const DepositForm = () => {
                     </div>
                   </form>
                   <p className="mt-4 bg-[#21635f]  text-white p-4 text-xs rounded-md">
-                    Note: Please copy the Wallet Address provided below and make
-                    the payment. After completing the payment, click on the "I
-                    have paid" button to proceed. Please ensure that you copy
+                    Note: Please copy the Wallet Address or Bank Number provided
+                    below and make the payment. After filling the form, click on
+                    the "Deposit" button to proceed. Please ensure that you copy
                     the address accurately and double-check before making the
-                    payment. Once the payment is made, click on the "I have
-                    paid" button to continue with the process.
+                    payment. Once the payment is made, wait while we confirm the
+                    payment.
                     <br />
-                    <div className="flex md:flex-row flex-col  items-center mt-4">
-                      {selectedCryptoAddress && (
-                        <>
-                          Wallet Address: {selectedCryptoAddress}
-                          <button
-                            className="ml-2 focus:outline-none gap-1 flex "
-                            onClick={handleCopyClick}
-                          >
-                            <TiClipboard size={15} color="white" />{" "}
-                            <p className="text-[#45dcd4] hover:text-[#57f4ec] font-medium capitalize">
-                              {" "}
-                              copy here
-                            </p>
-                          </button>
-                        </>
-                      )}
+                    <div className="flex md:flex-row flex-col items-center mt-4">
+                      {selectedMethod &&
+                        selectedMethod.value === "crypto" &&
+                        selectedCryptoAddress && (
+                          <>
+                            Wallet Address: {selectedCryptoAddress}
+                            <button
+                              className="ml-2 focus:outline-none gap-1 flex"
+                              onClick={handleCopyClick}
+                            >
+                              <TiClipboard size={20} />
+                              <span>Copy</span>
+                            </button>
+                          </>
+                        )}
+
+                      {selectedMethod &&
+                        selectedMethod.value === "wire-transfer" &&
+                        selectedBank && (
+                          <>
+                            Bank Number: {selectedBank.bankNumber}
+                            <button
+                              className="ml-2 focus:outline-none gap-1 flex"
+                              onClick={handleCopyClick}
+                            >
+                              <TiClipboard size={20} />
+                              <span>Copy</span>
+                            </button>
+                          </>
+                        )}
                     </div>
                   </p>
                 </div>

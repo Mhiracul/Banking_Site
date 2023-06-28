@@ -3,6 +3,7 @@ import DefaultLayout from "../layout/DefaultLayout";
 import Breadcrumb from "../componentAdmin/Breadcrumb";
 import { apiBaseUrl } from "../../../config";
 import axios from "axios";
+import { toast } from "react-hot-toast";
 const EmailTemplateEditor = () => {
   const [
     registrationConfirmationTemplate,
@@ -46,7 +47,8 @@ const EmailTemplateEditor = () => {
           },
         }
       );
-      console.log(response.data); // Success message from the server
+      console.log(response.data);
+      toast.success("Email Template Updated Successfully"); // Success message from the server
     } catch (error) {
       console.log(error);
       // Handle the error, show an error message, etc.

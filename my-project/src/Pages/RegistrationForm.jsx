@@ -55,7 +55,6 @@ const Dropdown = ({ options, selectedOption, onOptionSelect }) => {
 
 const RegistrationForm = () => {
   const navigate = useNavigate(); // Use the useNavigate hook
-  const [availableStates, setAvailableStates] = useState([]);
 
   const [showPassword, setShowPassword] = useState(false);
   const handleShowPassword = () => {
@@ -87,14 +86,6 @@ const RegistrationForm = () => {
       ...prev,
       [name]: newValue,
     }));
-
-    if (name === "country") {
-      const selectedCountry = countryOptions.find(
-        (option) => option.value === newValue
-      );
-
-      setAvailableStates(selectedCountry ? selectedCountry.states : []);
-    }
 
     console.log("Updated form data:", {
       ...formData,
@@ -171,299 +162,109 @@ const RegistrationForm = () => {
     {
       label: "United States",
       value: "USA",
-      states: [
-        { label: "California", value: "CA" },
-        { label: "New York", value: "NY" },
-        { label: "Texas", value: "TX" },
-        { label: "Florida", value: "FL" },
-        { label: "Illinois", value: "IL" },
-        { label: "Pennsylvania", value: "PA" },
-        { label: "Ohio", value: "OH" },
-        { label: "Georgia", value: "GA" },
-        { label: "North Carolina", value: "NC" },
-        { label: "Michigan", value: "MI" },
-        { label: "New Jersey", value: "NJ" },
-        { label: "Virginia", value: "VA" },
-        { label: "Washington", value: "WA" },
-        { label: "Arizona", value: "AZ" },
-        { label: "Massachusetts", value: "MA" },
-        { label: "Tennessee", value: "TN" },
-        { label: "Indiana", value: "IN" },
-        { label: "Missouri", value: "MO" },
-        { label: "Maryland", value: "MD" },
-        { label: "Wisconsin", value: "WI" },
-        // Add more states...
-      ],
     },
     {
       label: "United Kingdom",
       value: "UK",
-      states: [
-        { label: "England", value: "ENG" },
-        { label: "Scotland", value: "SCT" },
-        { label: "Wales", value: "WLS" },
-        { label: "Northern Ireland", value: "NIR" },
-        // Add more states...
-      ],
     },
     {
       label: "Canada",
       value: "CANADA",
-      states: [
-        { label: "Ontario", value: "ON" },
-        { label: "Quebec", value: "QC" },
-        { label: "British Columbia", value: "BC" },
-        { label: "Alberta", value: "AB" },
-        { label: "Manitoba", value: "MB" },
-        { label: "Saskatchewan", value: "SK" },
-        { label: "Nova Scotia", value: "NS" },
-        { label: "New Brunswick", value: "NB" },
-        { label: "Newfoundland and Labrador", value: "NL" },
-        { label: "Prince Edward Island", value: "PE" },
-        // Add more states...
-      ],
     },
     {
       label: "Australia",
       value: "AUSTRALIA",
-      states: [
-        { label: "New South Wales", value: "NSW" },
-        { label: "Victoria", value: "VIC" },
-        { label: "Queensland", value: "QLD" },
-        { label: "Western Australia", value: "WA" },
-        { label: "South Australia", value: "SA" },
-        { label: "Tasmania", value: "TAS" },
-        { label: "Northern Territory", value: "NT" },
-        { label: "Australian Capital Territory", value: "ACT" },
-        // Add more states...
-      ],
     },
     {
       label: "Germany",
       value: "GERMANY",
-      states: [
-        { label: "Berlin", value: "BER" },
-        { label: "Bavaria", value: "BAV" },
-        { label: "Hamburg", value: "HAM" },
-        { label: "North Rhine-Westphalia", value: "NRW" },
-        // Add more states...
-      ],
     },
     {
       label: "France",
       value: "FRANCE",
-      states: [
-        { label: "Île-de-France", value: "IDF" },
-        { label: "Provence-Alpes-Côte d'Azur", value: "PACA" },
-        { label: "Auvergne-Rhône-Alpes", value: "ARA" },
-        { label: "Occitanie", value: "OCC" },
-        // Add more states...
-      ],
     },
     {
       label: "Japan",
       value: "JAPAN",
-      states: [
-        { label: "Tokyo", value: "TOK" },
-        { label: "Kanagawa", value: "KAN" },
-        { label: "Osaka", value: "OSA" },
-        { label: "Aichi", value: "AIC" },
-        // Add more states...
-      ],
     },
     {
       label: "China",
       value: "CHINA",
-      states: [
-        { label: "Beijing", value: "BJ" },
-        { label: "Shanghai", value: "SH" },
-        { label: "Guangdong", value: "GD" },
-        { label: "Zhejiang", value: "ZJ" },
-      ],
     },
     {
       label: "India",
       value: "INDIA",
-      states: [
-        { label: "Maharashtra", value: "MH" },
-        { label: "Delhi", value: "DL" },
-        { label: "Karnataka", value: "KA" },
-        { label: "Tamil Nadu", value: "TN" },
-      ],
     },
     {
       label: "Brazil",
       value: "BRAZIL",
-      states: [
-        { label: "São Paulo", value: "SP" },
-        { label: "Minas Gerais", value: "MG" },
-        { label: "Rio de Janeiro", value: "RJ" },
-        { label: "Bahia", value: "BA" },
-      ],
     },
     {
       label: "Mexico",
       value: "MEXICO",
-      states: [
-        { label: "Mexico City", value: "MEX" },
-        { label: "Jalisco", value: "JAL" },
-        { label: "Nuevo León", value: "NL" },
-        { label: "Veracruz", value: "VER" },
-      ],
     },
     {
       label: "Italy",
       value: "ITALY",
-      states: [
-        { label: "Lombardy", value: "LOM" },
-        { label: "Lazio", value: "LAZ" },
-        { label: "Campania", value: "CAM" },
-        { label: "Sicily", value: "SIC" },
-      ],
     },
     {
       label: "Spain",
       value: "SPAIN",
-      states: [
-        { label: "Madrid", value: "MAD" },
-        { label: "Catalonia", value: "CAT" },
-        { label: "Andalusia", value: "AND" },
-        { label: "Valencia", value: "VAL" },
-      ],
     },
     {
       label: "Russia",
       value: "RUSSIA",
-      states: [
-        { label: "Moscow", value: "MOW" },
-        { label: "Saint Petersburg", value: "SPB" },
-        { label: "Krasnodar Krai", value: "KDA" },
-        { label: "Novosibirsk Oblast", value: "NVS" },
-      ],
     },
     {
       label: "South Korea",
       value: "SOUTH KOREA",
-      states: [
-        { label: "Seoul", value: "SEO" },
-        { label: "Busan", value: "BUS" },
-        { label: "Incheon", value: "INC" },
-        { label: "Gyeonggi Province", value: "GGP" },
-      ],
     },
     {
       label: "Netherlands",
       value: "NL",
-      states: [
-        { label: "North Holland", value: "NHO" },
-        { label: "South Holland", value: "SHO" },
-        { label: "Utrecht", value: "UTR" },
-        { label: "Gelderland", value: "GEL" },
-      ],
     },
 
     {
       label: "Switzerland",
       value: "CH",
-      states: [
-        { label: "Zurich", value: "ZUR" },
-        { label: "Geneva", value: "GEN" },
-        { label: "Bern", value: "BER" },
-        { label: "Vaud", value: "VAU" },
-      ],
     },
     {
       label: "Sweden",
       value: "SE",
-      states: [
-        { label: "Stockholm County", value: "STC" },
-        { label: "Skåne County", value: "SKC" },
-        { label: "Västra Götaland County", value: "VGC" },
-        { label: "Östergötland County", value: "OGC" },
-      ],
     },
     {
       label: "Norway",
       value: "NO",
-      states: [
-        { label: "Oslo", value: "OSL" },
-        { label: "Akershus", value: "AKR" },
-        { label: "Rogaland", value: "ROG" },
-        { label: "Hordaland", value: "HOR" },
-      ],
     },
     {
       label: "Denmark",
       value: "DK",
-      states: [
-        { label: "Capital Region of Denmark", value: "CRD" },
-        { label: "Central Denmark Region", value: "CDR" },
-        { label: "Region of Southern Denmark", value: "RSD" },
-        { label: "North Denmark Region", value: "NDR" },
-      ],
     },
     {
       label: "Finland",
       value: "FI",
-      states: [
-        { label: "Uusimaa", value: "UUS" },
-        { label: "Southwest Finland", value: "SFI" },
-        { label: "Pirkanmaa", value: "PIR" },
-        { label: "Kanta-Häme", value: "KHA" },
-      ],
     },
     {
       label: "Singapore",
       value: "SG",
-      states: [
-        { label: "Central Region", value: "CTR" },
-        { label: "East Region", value: "EAS" },
-        { label: "North Region", value: "NOR" },
-        { label: "West Region", value: "WES" },
-      ],
     },
     {
       label: "Hong Kong",
       value: "HK",
-      states: [
-        { label: "Hong Kong Island", value: "HKI" },
-        { label: "Kowloon", value: "KLN" },
-        { label: "New Territories", value: "NTR" },
-      ],
     },
     {
       label: "United Arab Emirates",
       value: "AE",
-      states: [
-        { label: "Dubai", value: "DXB" },
-        { label: "Abu Dhabi", value: "AUH" },
-        { label: "Sharjah", value: "SHJ" },
-        { label: "Ajman", value: "AJM" },
-      ],
     },
     {
       label: "Saudi Arabia",
       value: "SA",
-      states: [
-        { label: "Riyadh", value: "RIY" },
-        { label: "Mecca", value: "MEC" },
-        { label: "Medina", value: "MED" },
-        { label: "Eastern Province", value: "EAS" },
-      ],
     },
     {
       label: "South Africa",
       value: "ZA",
-      states: [
-        { label: "Gauteng", value: "GAU" },
-        { label: "Western Cape", value: "WCA" },
-        { label: "KwaZulu-Natal", value: "KZN" },
-        { label: "Eastern Cape", value: "ECP" },
-      ],
     },
   ];
-
-  const stateOptions = availableStates;
 
   const currencyOptions = [
     { label: "Select Currency Type *", value: "" },

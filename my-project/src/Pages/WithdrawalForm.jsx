@@ -233,8 +233,12 @@ const WithdrawalForm = () => {
           )}
           <div className="bg-[#21635f]  px-10 py-10  mt-10 rounded-md shadow-md shadow-[#ccc] w-full">
             <div className="flex justify-between  items-center mb-5 text-white lg:text-xl md:text-sm text-xs">
-              <h1 className="text-2xl ">Account Balance:</h1>
-              <h1 className="text-2xl ">${accountBalance.toFixed(2)}</h1>
+              <h1 className="lg:text-2xl md:text-xl text-sm">
+                Account Balance:
+              </h1>
+              <h1 className="lg:text-2xl md:text-xl text-sm">
+                ${accountBalance.toFixed(2)}
+              </h1>
             </div>
             <form onSubmit={handleWithdrawalSubmit}>
               <div className="py-2">
@@ -306,7 +310,7 @@ const WithdrawalForm = () => {
             <h1 className="text-white text-xl mt-10 mb-6 text-center">
               Withdrawal History
             </h1>
-            <div className=" h-full mb-10  w-full  text-black rounded-md ">
+            <div className=" h-full mb-10  w-full overflow-x-auto text-black rounded-md ">
               {withdrawals && withdrawals.length > 0 ? (
                 <ReactTailwindTable data={withdrawals} />
               ) : (

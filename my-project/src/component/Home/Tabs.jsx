@@ -42,8 +42,7 @@ const Tabs = ({ selectedTab, onTabClick }) => {
               </span>
             </div>
             <span className="bdt-tab-sub-title bdt-text-small text-[#6E7674] text-sm">
-              Vitae nec at eget sit nunc suspendisse maecenas id. Consectetur
-              tristique purus nibh adipiscing odio vitae et.
+              Manage and track your income and expenses
             </span>
           </div>
         </a>
@@ -74,8 +73,7 @@ const Tabs = ({ selectedTab, onTabClick }) => {
               </span>
             </div>
             <span className="bdt-tab-sub-title bdt-text-small text-[#6E7674] text-sm ">
-              Molestie porttitor luctus vel ultricies scelerisque mi proin
-              imperdiet. Nulla faucibus ultrices at vitae ipsum leo vestibulum.
+              Generate and manage invoices automatically with this tool.
             </span>
           </div>
         </a>
@@ -104,8 +102,7 @@ const Tabs = ({ selectedTab, onTabClick }) => {
               </span>
             </div>
             <span className="bdt-tab-sub-title bdt-text-small text-[#6E7674] text-sm">
-              Proin posuere hendrerit at magna sit condimentum aenean. Penatibus
-              nibh egestas risus et metus libero. Sem odio eu.
+              Connect with the world of cryptocurrencies using this tool.
             </span>
           </div>
         </a>

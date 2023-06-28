@@ -15,7 +15,7 @@ const ReactTailwindTable = ({ data }) => {
 
   return (
     <div className=" w-full ">
-      <table className=" max-w-md  mx-auto divide-y divide-gray-200 ">
+      <table className=" max-w-md overflow-x-auto mx-auto divide-y divide-gray-200 ">
         <thead className="bg-[#DBFF8E] text-[#21635f]">
           <tr>
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">

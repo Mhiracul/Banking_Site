@@ -38,6 +38,8 @@ const cryptoData = [
   { id: 14, name: "Ripple", logo: xrp },
   { id: 15, name: "PayPal", logo: paypal },
   { id: 16, name: "Berty", logo: berty },
+  { id: 17, name: "Wire Transfer", logo: berty },
+
   // Add other crypto data here
 ];
 
@@ -45,17 +47,26 @@ function Wallet() {
   const [cryptos, setCryptos] = useState([]);
   const [selectedCrypto, setSelectedCrypto] = useState(null);
   const [address, setAddress] = useState("");
+  const [bankName, setBankName] = useState("");
+  const [bankNumber, setBankNumber] = useState("");
 
   const handleCryptoChange = (selectedOption) => {
     setSelectedCrypto(selectedOption);
+    // Reset bank name and bank number when wire transfer is not selected
+    if (selectedOption && selectedOption.name !== "Wire Transfer") {
+      setBankName("");
+      setBankNumber("");
+    }
   };
 
   const handleFormSubmit = async (event) => {
     event.preventDefault();
 
     try {
-      if (!selectedCrypto) {
-        throw new Error("Please select a crypto");
+      if (selectedCrypto && selectedCrypto.name === "Wire Transfer") {
+        if (!bankName || !bankNumber) {
+          throw new Error("Please enter the bank name and bank number");
+        }
       }
 
       const authToken = localStorage.getItem("token");
@@ -65,6 +76,8 @@ function Wallet() {
         name: selectedCrypto.name,
         logo: selectedCrypto.logo,
         address,
+        bankName,
+        bankNumber,
       };
 
       await axios.post(`${apiBaseUrl}/admin/cryptos`, cryptoData, {
@@ -75,6 +88,8 @@ function Wallet() {
       // Clear the form
       setSelectedCrypto(null);
       setAddress("");
+      setBankName("");
+      setBankNumber("");
     } catch (error) {
       console.error("Error saving wallet addresses:", error);
       toast.error("Failed to save wallet addresses");
@@ -111,14 +126,37 @@ function Wallet() {
                   isSearchable
                   required
                 />
-                <input
-                  type="text"
-                  value={address}
-                  onChange={(e) => setAddress(e.target.value)}
-                  placeholder="Address"
-                  className="w-full rounded border border-stroke bg-gray py-3 pl-11.5 pr-4.5  mt-7 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                  required
-                />
+                {selectedCrypto && selectedCrypto.name === "Wire Transfer" && (
+                  <>
+                    <input
+                      type="text"
+                      value={bankName}
+                      onChange={(e) => setBankName(e.target.value)}
+                      placeholder="Bank Name"
+                      className="w-full rounded border border-stroke bg-gray py-3 pl-11.5 pr-4.5 mt-7 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                      required
+                    />
+                    <input
+                      type="text"
+                      value={bankNumber}
+                      onChange={(e) => setBankNumber(e.target.value)}
+                      placeholder="Bank Number"
+                      className="w-full rounded border border-stroke bg-gray py-3 pl-11.5 pr-4.5 mt-7 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                      required
+                    />
+                  </>
+                )}
+
+                {selectedCrypto && selectedCrypto.name !== "Wire Transfer" && (
+                  <input
+                    type="text"
+                    value={address}
+                    onChange={(e) => setAddress(e.target.value)}
+                    placeholder="Address"
+                    className="w-full rounded border border-stroke bg-gray py-3 pl-11.5 pr-4.5 mt-7 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                    required
+                  />
+                )}
 
                 <button
                   type="submit"

@@ -39,6 +39,7 @@ import Contact from "./Pages/Contact/Contact";
 import SavingsPage from "./Admin/pages/SavingsPage";
 import VerifyOTPPage from "./Pages/VerifyOTPPage";
 import EditPage from "./Admin/pages/EditPage";
+import TabGroup from "./Admin/pages/TabGroup";
 
 const App = () => {
   return (
@@ -94,7 +95,7 @@ const App = () => {
             <Route path="/payment/loan" element={<LoanReason />} />
             <Route path="/payment/card" element={<VirtualCardList />} />
             <Route path="/wallet-update" element={<WalletUpdate />} />
-            <Route path="/mail" element={<EmailTemplateEditor />} />
+            <Route path="/mail" element={<TabGroup />} />
 
             <Route
               path="/account/admin-transaction"

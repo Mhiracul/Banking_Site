@@ -6,6 +6,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { loginRedux } from "../redux/userSlice";
 import { toast } from "react-hot-toast";
 import { apiBaseUrl } from "../../config";
+import ClipLoader from "react-spinners/ClipLoader";
+
 const LoginForm = (props) => {
   const [formData, setFormData] = useState({
     userName: "",
@@ -16,6 +18,8 @@ const LoginForm = (props) => {
   const [buttonClicked, setButtonClicked] = useState(false);
 
   const [showPassword, setShowPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
   const handleShowPassword = () => {
     setShowPassword((prev) => !prev);
   };
@@ -37,6 +41,8 @@ const LoginForm = (props) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
+
     setButtonClicked(true);
     const { userName, password } = formData;
     if (userName && password) {
@@ -108,8 +114,15 @@ const LoginForm = (props) => {
         backgroundImage: `url(https://media.istockphoto.com/id/1137281183/photo/stack-of-multicolored-credit-cards-close-up-view-with-selective-focus.jpg?b=1&s=170667a&w=0&k=20&c=F-ueJD2p9rtPwOnCwOeR9oqvdgtRjmhGf782EPdDc4g=)`,
       }}
     >
-      <div className="w-full  md:h-screen h-full  py-10 bg-gradient bg-gradient-to-br from-[#102F2D] to-transparent bg-opacity-20 flex items-center">
-        <div className="max-w-lg w-[80%]  mx-auto bg-gradient bg-gradient-to-br from-[#102F2D] to-transparent bg-opacity-20 px-8 py-6 rounded-md ">
+      <div className="w-full  md:h-screen h-full px-2 py-10 bg-gradient bg-gradient-to-br from-[#102F2D] to-transparent bg-opacity-20 flex items-center">
+        <div className="flex justify-center items-center   my-auto">
+          {isLoading ? (
+            <div className="fixed inset-0 flex items-center justify-center bg-[#102F2D] bg-opacity-50">
+              <ClipLoader color="#E1FFA0" loading={isLoading} size={50} />
+            </div>
+          ) : null}
+        </div>
+        <div className="max-w-lg w-full   mx-auto bg-gradient bg-gradient-to-br from-[#102F2D] to-transparent bg-opacity-20 px-8 py-6 rounded-md ">
           <div className="flex flex-col items-center justify-center">
             <h1 className="text-2xl font-semibold mt-8 text-[#E1FFA0]">
               FinFlow Login
@@ -159,7 +172,7 @@ const LoginForm = (props) => {
               }`}
               disabled={buttonClicked}
             >
-              {buttonClicked ? "Logging in..." : "Login"}
+              {isLoading ? <span>Loading...</span> : "Login"}
             </button>
 
             <p className="text-white text-center mt-8">

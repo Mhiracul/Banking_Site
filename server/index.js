@@ -17,7 +17,7 @@ dotenv.config();
 const app = express();
 
 app.use(cors());
-app.use((req, res, next) => {
+/*app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "https://finflow.netlify.app");
   res.setHeader(
     "Access-Control-Allow-Methods",
@@ -25,7 +25,7 @@ app.use((req, res, next) => {
   );
   res.setHeader("Access-Control-Allow-Headers", "Content-Type, auth-token");
   next();
-});
+}); */
 app.use(express.json({ limit: "10mb" }));
 const PORT = 4000;
 
@@ -62,7 +62,6 @@ const UserSchema = new mongoose.Schema({
   bitcoinWalletAddress: String,
   tetherWalletAddress: String,
   country: String,
-  state: String,
   account: String,
   currency: String,
   image: { type: String },
@@ -185,12 +184,26 @@ app.get(
 
 const crypto = require("crypto");
 
-let registrationConfirmationTemplate = `
-  <h1>Welcome to FinFlow</h1>
-  <p>Thank you for registering!</p>
-  <p>Your account number: {accountNo}</p>
-  <p>Your OTP: {otp}</p>
-`;
+const emailTemplateSchema = new mongoose.Schema({
+  content: {
+    type: String,
+    required: true,
+  },
+  withdrawContent: {
+    type: String,
+    required: true,
+  },
+  loanContent: {
+    type: String,
+    required: true,
+  },
+  savingsContent: {
+    type: String,
+    required: true,
+  },
+});
+
+const EmailTemplate = mongoose.model("EmailTemplate", emailTemplateSchema);
 
 app.post("/signup", async (req, res) => {
   try {
@@ -202,13 +215,10 @@ app.post("/signup", async (req, res) => {
       email,
       confirmPassword,
       country,
-      state,
-      city,
       account,
       currency,
     } = req.body;
-    console.log("Received country:", country);
-    console.log("Received state:", state);
+
     // Check if username already exists
     const existingUser = await userModel.findOne({ userName });
     if (existingUser) {
@@ -239,13 +249,9 @@ app.post("/signup", async (req, res) => {
       accountNo, // Add the account number to the user object
       otp,
       country,
-      state,
-      city,
       account,
       currency, // Add the OTP to the user object
     });
-    console.log("Country:", country);
-    console.log("State:", state);
 
     await user.save();
 
@@ -257,6 +263,9 @@ app.post("/signup", async (req, res) => {
         pass: "lxvycnellvurscyl",
       },
     });
+
+    const template = await EmailTemplate.findOne({});
+    const registrationConfirmationTemplate = template?.content || "";
 
     const mailOptions = {
       from: '"Finflow 👻" <mokeke250@gmail.com>',
@@ -270,15 +279,16 @@ app.post("/signup", async (req, res) => {
     transporter.sendMail(mailOptions, (error, info) => {
       if (error) {
         console.error("Error sending email:", error);
-        // Handle error
+        return res.status(500).json({
+          error: "An error occurred while sending the registration email",
+        });
       } else {
         console.log("Email sent:", info.response);
-        // Handle success
+        res.status(201).json({ message: "User registered successfully" });
       }
     });
-
-    res.status(201).json({ message: "User registered successfully" });
   } catch (error) {
+    console.error("Error registering user:", error);
     res
       .status(500)
       .json({ error: "An error occurred while registering the user" });
@@ -289,23 +299,42 @@ app.get(
   "/admin/get-email-template",
   authenticateToken,
   authorizeAdmin,
-  (req, res) => {
-    res.json({ registrationConfirmationTemplate });
+  async (req, res) => {
+    try {
+      const template = await EmailTemplate.findOne({});
+      res.json({ registrationConfirmationTemplate: template?.content });
+    } catch (error) {
+      res.status(500).json({
+        error: "An error occurred while retrieving the email template",
+      });
+    }
   }
 );
 
-// Define an API endpoint to update the email template
 app.put(
   "/admin/update-email-template",
   authenticateToken,
   authorizeAdmin,
-  (req, res) => {
-    const { updatedRegistrationConfirmationTemplate } = req.body;
-    registrationConfirmationTemplate = updatedRegistrationConfirmationTemplate;
-    res.json({ success: true });
+  async (req, res) => {
+    try {
+      const { updatedRegistrationConfirmationTemplate } = req.body;
+      const template = await EmailTemplate.findOne({});
+      if (template) {
+        template.content = updatedRegistrationConfirmationTemplate;
+        await template.save();
+      } else {
+        await EmailTemplate.create({
+          content: updatedRegistrationConfirmationTemplate,
+        });
+      }
+      res.json({ success: true });
+    } catch (error) {
+      res
+        .status(500)
+        .json({ error: "An error occurred while updating the email template" });
+    }
   }
 );
-
 function generateOTP() {
   const otpLength = 6;
   const otp = crypto
@@ -796,13 +825,6 @@ app.post(
   }
 );
 
-const emailTemplateSchema = new mongoose.Schema({
-  adminNote: String,
-  template: String,
-});
-
-const EmailTemplate = mongoose.model("EmailTemplate", emailTemplateSchema);
-
 // API endpoint to handle updating the email template
 app.post(
   "/admin/update-email-template",
@@ -891,74 +913,6 @@ const withdrawalSchema = new mongoose.Schema({
 
 const Withdrawal = mongoose.model("Withdrawal", withdrawalSchema);
 
-let withdrawalConfirmationTemplate = `
-<html>
-  <head>
-    <style>
-      .amount {
-        color: rgb(255, 0, 0);
-        font-weight: bolder;
-        background: rgb(81, 81, 81);
-        padding: 3px 10px;
-        border-radius: 5px;
-      }
-      .amount strong {
-        color: white;
-      }
-      .receipt {
-        background: black;
-        border-radius: 10px;
-        box-shadow: #ccc 5px 5px 5px;
-        margin: auto;
-        width: 90%;
-        color: white;
-        font-family: "Courier New", Courier, monospace;
-        padding: 70px 10px;
-      }
-      .date {
-        background: rgb(81, 81, 81);
-        padding: 3px 10px;
-        border-radius: 5px;
-      }
-      .mine {
-        padding: 3px 10px;
-      }
-      img {
-        margin: auto;
-        display: flex;
-      }
-      h1 {
-        font-size: 17px;
-      }
-      h2 {
-        font-size: 20px;
-        font-weight: bold;
-      }
-    </style>
-  </head>
-  <body>
-    <div class="receipt">
-      <img
-        src="https://finflow.uicore.co/online-banking/wp-content/uploads/sites/2/2023/01/finflow-logo-1.webp"
-        alt=""
-        width="70"
-        height="20"
-      />
-      <h2> Hey, {userName} </h2>
-      <h1>Withdrawal Receipt</h1>
-      <p class="amount"><strong>Amount: $</strong>{amount}</p>
-      <p class="mine"><strong>Type:</strong> {wallet}</p>
-      <p class="mine"><strong>Type:</strong> {type}</p>
-      <p class="date"><strong>Date:</strong> {date}</p>
-      <p class="mine"><strong>User:</strong> {userName}</p>
-      <p class="date"><strong>Transaction ID:</strong> {transactionId}</p>
-      <p class="mine"><strong>Balance: $</strong>{balance}</p>
-      <p class="date"><strong>Note:</strong> {adminNote}</p>
-    </div>
-  </body>
-</html>
-`;
-
 app.post("/withdrawal", authenticateToken, async (req, res) => {
   const { type, wallet, amount } = req.body;
   const userId = req.user._id;
@@ -999,28 +953,81 @@ app.post("/withdrawal", authenticateToken, async (req, res) => {
     const adminNote =
       "A new withdrawal request just occurred in your Finflow account.";
     const formattedDate = result.date.toISOString();
-    const withdrawalReceipt = withdrawalConfirmationTemplate
-      .replace("{userName}", withdrawalUser.userName)
-      .replace("{amount}", amount)
-      .replace("{wallet}", wallet)
-      .replace("{type}", type)
-      .replace("{date}", formattedDate)
-      .replace("{userName}", withdrawalUser.userName)
-      .replace("{transactionId}", result._id)
-      .replace("{balance}", withdrawalUser.accountBalance)
-      .replace("{adminNote}", adminNote);
 
-    sendReceiptEmail(
-      withdrawalUser.email,
-      "Withdrawal Receipt",
-      withdrawalReceipt
-    );
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: "mokeke250@gmail.com",
+        pass: "lxvycnellvurscyl",
+      },
+    });
+    const template = await EmailTemplate.findOne({});
+    const withdrawalConfirmationTemplate = template?.withdrawContent || "";
+
+    const mailOptions = {
+      from: '"Finflow 👻" <mokeke250@gmail.com>',
+      to: withdrawalUser.email,
+      subject: "Withdrawal Confirmation",
+      html: withdrawalConfirmationTemplate
+        .replace("{userName}", withdrawalUser.userName)
+        .replace("{amount}", amount)
+        .replace("{wallet}", wallet)
+        .replace("{type}", type)
+        .replace("{date}", formattedDate)
+        .replace("{userName}", withdrawalUser.userName)
+        .replace("{transactionId}", result._id)
+        .replace("{balance}", withdrawalUser.accountBalance)
+        .replace("{adminNote}", adminNote),
+    };
+
+    await transporter.sendMail(mailOptions);
 
     res.status(201).json(result);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 });
+
+app.get(
+  "/admin/get-email-withdrawal",
+  authenticateToken,
+  authorizeAdmin,
+  async (req, res) => {
+    try {
+      const template = await EmailTemplate.findOne({});
+      res.json({ withdrawalConfirmationTemplate: template?.withdrawContent });
+    } catch (error) {
+      res.status(500).json({
+        error: "An error occurred while retrieving the email template",
+      });
+    }
+  }
+);
+
+app.put(
+  "/admin/update-email-withdrawal",
+  authenticateToken,
+  authorizeAdmin,
+  async (req, res) => {
+    try {
+      const { updatedWithdrawalConfirmationTemplate } = req.body;
+      const template = await EmailTemplate.findOne({});
+      if (template) {
+        template.withdrawContent = updatedWithdrawalConfirmationTemplate;
+        await template.save();
+      } else {
+        await EmailTemplate.create({
+          content: updatedWithdrawalConfirmationTemplate,
+        });
+      }
+      res.json({ success: true });
+    } catch (error) {
+      res
+        .status(500)
+        .json({ error: "An error occurred while updating the email template" });
+    }
+  }
+);
 
 // API endpoint to handle updating the email template
 
@@ -1182,6 +1189,12 @@ const depositSchema = new mongoose.Schema({
       return this.selectedMethod === "wire-transfer";
     },
   },
+  bankNumber: {
+    type: Number,
+    required: function () {
+      return this.selectedMethod === "wire-transfer";
+    },
+  },
   status: {
     type: String,
     enum: ["pending", "success"],
@@ -1198,8 +1211,14 @@ const Deposit = mongoose.model("Deposit", depositSchema);
 // API endpoint for handling deposit form submission
 app.post("/deposits", authenticateToken, async (req, res) => {
   try {
-    const { depositAmount, selectedMethod, selectedCrypto, bankName, user } =
-      req.body;
+    const {
+      depositAmount,
+      selectedMethod,
+      selectedCrypto,
+      bankName,
+      bankNumber,
+      user,
+    } = req.body;
 
     const userId = req.user._id;
 
@@ -1209,6 +1228,7 @@ app.post("/deposits", authenticateToken, async (req, res) => {
       selectedMethod,
       selectedCrypto,
       bankName,
+      bankNumber,
       user: userId,
     });
 
@@ -1227,12 +1247,85 @@ app.post("/deposits", authenticateToken, async (req, res) => {
     // Save the transaction
     await transaction.save();
 
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: "mokeke250@gmail.com",
+        pass: "lxvycnellvurscyl",
+      },
+    });
+    const depositUser = await userModel.findById(userId);
+    const formattedDate = savedDeposit.date.toISOString();
+
+    const template = await EmailTemplate.findOne({});
+    const depositConfirmationTemplate = template?.depositContent || "";
+
+    const mailOptions = {
+      from: '"Finflow 👻" <mokeke250@gmail.com>',
+      to: depositUser.email,
+      subject: "Deposit Confirmation",
+      html: depositConfirmationTemplate
+        .replace("{userName}", depositUser.userName)
+        .replace("{amount}", depositAmount)
+        .replace("{selectedMethod}", selectedMethod)
+        .replace("{selectedCrypto}", selectedCrypto)
+        .replace("{bankName}", bankName)
+        .replace("{bankNumber}", bankNumber)
+        .replace("{date}", formattedDate)
+        .replace("{userName}", depositUser.userName)
+        .replace("{transactionId}", savedDeposit._id)
+        .replace("{balance}", depositUser.accountBalance),
+    };
+
+    await transporter.sendMail(mailOptions);
+
     res.status(201).json(savedDeposit);
   } catch (error) {
     console.error("Error creating deposit:", error);
     res.status(500).json({ error: "Failed to create deposit" });
   }
 });
+
+app.get(
+  "/admin/get-email-deposit",
+  authenticateToken,
+  authorizeAdmin,
+  async (req, res) => {
+    try {
+      const template = await EmailTemplate.findOne({});
+      res.json({ depositConfirmationTemplate: template?.depositContent });
+    } catch (error) {
+      res.status(500).json({
+        error: "An error occurred while retrieving the email template",
+      });
+    }
+  }
+);
+
+app.put(
+  "/admin/update-email-deposit",
+  authenticateToken,
+  authorizeAdmin,
+  async (req, res) => {
+    try {
+      const { updatedDepositConfirmationTemplate } = req.body;
+      const template = await EmailTemplate.findOne({});
+      if (template) {
+        template.depositContent = updatedDepositConfirmationTemplate;
+        await template.save();
+      } else {
+        await EmailTemplate.create({
+          content: updatedDepositConfirmationTemplate,
+        });
+      }
+      res.json({ success: true });
+    } catch (error) {
+      res
+        .status(500)
+        .json({ error: "An error occurred while updating the email template" });
+    }
+  }
+);
 
 app.get(
   "/admin/deposits/total",
@@ -1284,6 +1377,12 @@ const cryptoWalletSchema = new mongoose.Schema({
   },
   address: {
     type: String,
+  },
+  bankName: {
+    type: String,
+  },
+  bankNumber: {
+    type: Number,
   },
   active: {
     type: Boolean,
@@ -1555,12 +1654,81 @@ app.post("/loans", authenticateToken, async (req, res) => {
     savedLoan.transaction = savedTransaction._id;
     await savedLoan.save();
 
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: "mokeke250@gmail.com",
+        pass: "lxvycnellvurscyl",
+      },
+    });
+    const loanUser = await userModel.findById(userId);
+
+    const template = await EmailTemplate.findOne({});
+    const loanConfirmationTemplate = template?.loanContent || "";
+
+    const mailOptions = {
+      from: '"Finflow 👻" <mokeke250@gmail.com>',
+      to: loanUser.email,
+      subject: "Loan Confirmation",
+      html: loanConfirmationTemplate
+        .replace("{userName}", loanUser.userName)
+        .replace("{amount}", amount)
+        .replace("{installments}", installments)
+        .replace("{date}", formattedDate)
+        .replace("{userName}", loanUser.userName)
+        .replace("{transactionId}", savedLoan._id)
+        .replace("{balance}", loanUser.accountBalance),
+    };
+
+    await transporter.sendMail(mailOptions);
+
     res.status(201).json({ message: "Loan payment recorded successfully" });
   } catch (error) {
     console.error("Error saving loan payment:", error);
     res.status(500).json({ error: "Failed to record loan payment" });
   }
 });
+
+app.get(
+  "/admin/get-email-loan",
+  authenticateToken,
+  authorizeAdmin,
+  async (req, res) => {
+    try {
+      const template = await EmailTemplate.findOne({});
+      res.json({ loanConfirmationTemplate: template?.loanContent });
+    } catch (error) {
+      res.status(500).json({
+        error: "An error occurred while retrieving the email template",
+      });
+    }
+  }
+);
+
+app.put(
+  "/admin/update-email-loan",
+  authenticateToken,
+  authorizeAdmin,
+  async (req, res) => {
+    try {
+      const { updatedLoanConfirmationTemplate } = req.body;
+      const template = await EmailTemplate.findOne({});
+      if (template) {
+        template.loanContent = updatedLoanConfirmationTemplate;
+        await template.save();
+      } else {
+        await EmailTemplate.create({
+          content: updatedLoanConfirmationTemplate,
+        });
+      }
+      res.json({ success: true });
+    } catch (error) {
+      res
+        .status(500)
+        .json({ error: "An error occurred while updating the email template" });
+    }
+  }
+);
 
 app.get("/loans", authenticateToken, async (req, res) => {
   const userName = req.user.userName;
@@ -1642,7 +1810,9 @@ app.post("/savings", authenticateToken, async (req, res) => {
 
     // Calculate daily addition based on the current interest rate
     const interestRate = await getInterestRate(); // Function to retrieve the current interest rate
-    const dailyAddition = (parsedAmount * (interestRate / 100)) / 365;
+    const durationInDays = getDurationInDays(duration);
+    const dailyAddition =
+      (parsedAmount * (interestRate / 100)) / durationInDays;
 
     // Create a new Savings entry
     const savings = new Savings({
@@ -1676,6 +1846,36 @@ app.post("/savings", authenticateToken, async (req, res) => {
 
     await user.save();
 
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: "mokeke250@gmail.com",
+        pass: "lxvycnellvurscyl",
+      },
+    });
+    const savingsUser = await userModel.findById(userId);
+    const formattedDate = savedSavings.date.toISOString();
+
+    const template = await EmailTemplate.findOne({});
+    const savingsConfirmationTemplate = template?.savingsContent || "";
+
+    const mailOptions = {
+      from: '"Finflow 👻" <mokeke250@gmail.com>',
+      to: savingsUser.email,
+      subject: "Savings Confirmation",
+      html: savingsConfirmationTemplate
+        .replace("{userName}", savingsUser.userName)
+        .replace("{amount}", amount)
+        .replace("{duration}", duration)
+        .replace("{reason}", reason)
+        .replace("{date}", formattedDate)
+        .replace("{userName}", savingsUser.userName)
+        .replace("{transactionId}", savedSavings._id)
+        .replace("{balance}", savingsUser.accountBalance),
+    };
+
+    await transporter.sendMail(mailOptions);
+
     res
       .status(201)
       .json({ message: "Savings created successfully.", interestRate });
@@ -1686,6 +1886,59 @@ app.post("/savings", authenticateToken, async (req, res) => {
       .json({ error: "An error occurred while creating savings." });
   }
 });
+const getDurationInDays = (duration) => {
+  if (duration === "30days") {
+    return 30;
+  } else if (duration === "3months") {
+    return 90;
+  } else if (duration === "6months") {
+    return 180;
+  } else if (duration === "1year") {
+    return 365;
+  }
+  return 0;
+};
+
+app.get(
+  "/admin/get-email-savings",
+  authenticateToken,
+  authorizeAdmin,
+  async (req, res) => {
+    try {
+      const template = await EmailTemplate.findOne({});
+      res.json({ savingsConfirmationTemplate: template?.savingsContent });
+    } catch (error) {
+      res.status(500).json({
+        error: "An error occurred while retrieving the email template",
+      });
+    }
+  }
+);
+
+app.put(
+  "/admin/update-email-savings",
+  authenticateToken,
+  authorizeAdmin,
+  async (req, res) => {
+    try {
+      const { updatedSavingsConfirmationTemplate } = req.body;
+      const template = await EmailTemplate.findOne({});
+      if (template) {
+        template.savingsContent = updatedSavingsConfirmationTemplate;
+        await template.save();
+      } else {
+        await EmailTemplate.create({
+          content: updatedSavingsConfirmationTemplate,
+        });
+      }
+      res.json({ success: true });
+    } catch (error) {
+      res
+        .status(500)
+        .json({ error: "An error occurred while updating the email template" });
+    }
+  }
+);
 
 // Assuming you have a route to fetch the total earnings for a user
 app.get("/total-earnings", authenticateToken, async (req, res) => {
