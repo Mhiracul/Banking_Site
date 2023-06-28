@@ -7,6 +7,8 @@ import WebsiteName from "../WebsiteName";
 import { Link } from "react-router-dom";
 const Footer = () => {
   const currentURL = window.location.hostname;
+  const domainExtension = currentURL.split(".")[1];
+
   const urlName = currentURL.split(".")[0];
   return (
     <footer className="bg-gradient-to-r from-[#134341] via-[#3b6563] to-[#134341]  rounded-t-[40px] py-10">
@@ -84,8 +86,8 @@ const Footer = () => {
             <div className="flex md:flex-row justify-between flex-col items-center mt-3">
               <img src={Finflow} alt="" className="w-48 h-10 " />
               <p className="md:text-[17px] text-[12px] text-[#DBFF8E] mt-3">
-                Copyright &copy; {new Date().getFullYear()} {urlName} All Rights
-                Reserved.
+                Copyright &copy; {new Date().getFullYear()} {urlName}.
+                {domainExtension} All Rights Reserved.
               </p>
             </div>
           </div>

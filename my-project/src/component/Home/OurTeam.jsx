@@ -1,5 +1,5 @@
 import React from "react";
-import { Glasses, Three, Ten, One } from "../../assets/cards";
+import { Three, Ten, One } from "../../assets/cards";
 import { FaInstagram, FaFacebook, FaTwitter, FaLinkedin } from "react-icons/fa";
 
 const Team = () => {
