@@ -5,6 +5,7 @@ import UserOne from "../../assets/bay.svg";
 import UserTwo from "../../assets/bay.svg";
 import UserThree from "../../assets/bay.svg";
 import UserFour from "../../assets/bay.svg";
+import { apiBaseUrl } from "../../../config";
 
 const DropdownMessage = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -42,7 +43,7 @@ const DropdownMessage = () => {
     const fetchPendingCount = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:4000/admin/transactions/pending/count",
+          `${apiBaseUrl}/admin/transactions/pending/count`,
           {
             headers: {
               "auth-token": localStorage.getItem("token"),
