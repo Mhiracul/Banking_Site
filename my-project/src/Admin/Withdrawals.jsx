@@ -101,7 +101,7 @@ const Withdrawals = () => {
                         {withdrawal.amount}
                       </td>
                       <td className="py-2 px-4 shadow-md shadow-[#ccc]  text-sm">
-                        {withdrawal.user.userName}
+                        {withdrawal.user && withdrawal.user.userName}
                       </td>
                       {/* Access the userName property */}
                       <td className="py-2 px-4 shadow-md shadow-[#ccc]  text-sm">

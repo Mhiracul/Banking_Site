@@ -7,6 +7,8 @@ import { loginRedux } from "../redux/userSlice";
 import { toast } from "react-hot-toast";
 import { apiBaseUrl } from "../../config";
 import ClipLoader from "react-spinners/ClipLoader";
+import errorImage from "../assets/giraffe.png";
+import eye from "../assets/eye.gif"; // Replace with the actual path to your local image file
 
 const LoginForm = (props) => {
   const [formData, setFormData] = useState({
@@ -42,69 +44,58 @@ const LoginForm = (props) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
-
     setButtonClicked(true);
+
     const { userName, password } = formData;
+
     if (userName && password) {
-      const fetchData = await fetch(`${apiBaseUrl}/login`, {
-        method: "POST",
-        headers: {
-          "content-type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
+      try {
+        const fetchData = await fetch(`${apiBaseUrl}/login`, {
+          method: "POST",
+          headers: {
+            "content-type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        });
 
-      const dataRes = await fetchData.json();
-      console.log(dataRes);
-      toast(dataRes.message);
+        const dataRes = await fetchData.json();
+        console.log(dataRes);
+        toast(dataRes.message);
 
-      if (dataRes.user) {
-        if (dataRes.user.status === "disabled") {
-          navigate("/error", {
-            state: {
-              message: "Your account has been disabled.",
-              imagePath:
-                "https://assets2.lottiefiles.com/packages/lf20_1dhXVSU9Tr.json",
-            },
-          });
-          return;
+        if (dataRes.alert) {
+          // Handle successful login
+          localStorage.setItem("token", dataRes.token);
+          dispatch(loginRedux(dataRes));
+
+          setTimeout(() => {
+            navigate("/main"); // Redirect to user page
+          }, 1000);
+        } else {
+          // Handle unsuccessful login
+          if (dataRes.message === "Your account has been suspended") {
+            navigate("/error", {
+              state: {
+                message: "Your account has been suspended.",
+                imagePath: errorImage,
+                image: eye,
+              },
+            });
+          } else {
+            toast.error(dataRes.message);
+            setFormData({ userName: "", password: "" }); // Reset form to default
+          }
         }
-        if (dataRes.user.status === "suspended") {
-          navigate("/error", {
-            state: {
-              message: "Your account has been suspended.",
-              imagePath:
-                "https://assets2.lottiefiles.com/packages/lf20_1dhXVSU9Tr.json",
-            },
-          });
-          return;
-        }
-      } else if (dataRes.alert) {
-        // Check if there is no error
-        // Save token to local storage
-        localStorage.setItem("token", dataRes.token);
-
-        dispatch(loginRedux(dataRes));
-        setTimeout(() => {
-          navigate("/main"); // Redirect to user page
-        }, 1000);
-      } else {
-        // Handle other error cases
-        toast.error(dataRes.message);
-      }
-
-      if (dataRes.alert) {
-        // Save token to local storage
-        localStorage.setItem("token", dataRes.token);
-
-        dispatch(loginRedux(dataRes));
-        setTimeout(() => {
-          navigate("/main"); // Redirect to user page
-        }, 1000);
+      } catch (error) {
+        console.error("Failed to login:", error);
+        toast.error("Failed to login");
+        setFormData({ userName: "", password: "" }); // Reset form to default
       }
     } else {
       alert("Please enter required fields");
     }
+
+    setIsLoading(false); // Stop the spinner
+    setButtonClicked(false); // Enable the button
   };
 
   return (

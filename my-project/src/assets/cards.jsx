@@ -1,4 +1,3 @@
-import { AiFillStar } from "react-icons/ai";
 import WebsiteName from "../WebsiteName";
 const cards = [
   {

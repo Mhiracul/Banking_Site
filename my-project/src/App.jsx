@@ -38,6 +38,7 @@ import SavingsPage from "./Admin/pages/SavingsPage";
 import VerifyOTPPage from "./Pages/VerifyOTPPage";
 import EditPage from "./Admin/pages/EditPage";
 import TabGroup from "./Admin/pages/TabGroup";
+import { ClipLoader } from "react-spinners";
 
 const App = () => {
   return (

@@ -17,7 +17,7 @@ dotenv.config();
 const app = express();
 
 app.use(cors());
-app.use((req, res, next) => {
+/*app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "https://finflow.netlify.app");
   res.setHeader(
     "Access-Control-Allow-Methods",
@@ -25,7 +25,7 @@ app.use((req, res, next) => {
   );
   res.setHeader("Access-Control-Allow-Headers", "Content-Type, auth-token");
   next();
-});
+}); */
 app.use(express.json({ limit: "10mb" }));
 const PORT = 4000;
 
@@ -347,7 +347,9 @@ app.post("/login", async (req, res) => {
   console.log(req.body);
   const { userName, password } = req.body;
   try {
-    const user = await userModel.findOne({ userName });
+    const user = await userModel.findOne({
+      userName: { $regex: new RegExp(`^${userName}$`, "i") },
+    });
 
     if (!user) {
       return res.status(401).json({ message: "Invalid username or password" });
