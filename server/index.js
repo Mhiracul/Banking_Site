@@ -1169,6 +1169,26 @@ app.get("/admin/users", authenticateToken, authorizeAdmin, async (req, res) => {
   }
 });
 
+app.get(
+  "/admin/users/:userId",
+  authenticateToken,
+  authorizeAdmin,
+  async (req, res) => {
+    try {
+      const { userId } = req.params;
+      const user = await userModel.findById(userId);
+
+      if (!user) {
+        return res.status(404).json({ message: "User not found" });
+      }
+
+      res.status(200).json({ data: user });
+    } catch (err) {
+      console.error("Failed to fetch user:", err);
+      res.status(500).json({ message: "Failed to fetch user" });
+    }
+  }
+);
 // Fetch all users from the database
 
 const depositSchema = new mongoose.Schema({

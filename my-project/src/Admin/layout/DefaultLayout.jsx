@@ -23,16 +23,8 @@ const DefaultLayout = ({ children }) => {
 
             {/* <!-- ===== Main Content Start ===== --> */}
             <main>
-              <div className="mx-auto  max-w-screen-2xl rounded-lg bg-[#DCEFFC] dark:border-strokedark  dark:bg-black p-4 md:p-6 2xl:p-10">
+              <div className="mx-auto  max-w-screen-2xl rounded-lg bg-[#DCEFFC] dark:border-strokedark  overflow-y-auto dark:bg-black p-4 md:p-6 2xl:p-10">
                 {children}
-                <div className="icon-container bg-[#5321a8] rounded-full">
-                  <div className="icon-wrapper">
-                    <div className="icon animate-spin-slow">
-                      <AiOutlineSetting color="#fff" size={25} />
-                    </div>
-                    <div className="dot"></div>
-                  </div>
-                </div>
               </div>
             </main>
 

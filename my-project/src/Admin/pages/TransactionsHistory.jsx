@@ -95,17 +95,24 @@ const TransactionsHistory = () => {
                       </td>
                       <td className="shadow-md shadow-[#ccc]  px-4 py-2 text-xs  w-48">
                         {transaction.status === "pending" ? (
-                          <span className=" bg-[#FED5D6] text-[#FC444C]  flex justify-center items-center w-16 h-6 rounded-md">
+                          <span className=" bg-[#FED5D6] text-[#FC444C] text-[11px] flex justify-center items-center w-16 h-4 font-bold rounded-full">
                             {transaction.status}
                           </span>
                         ) : (
-                          <span className=" bg-[#D2F3E0] text-[#34C164] flex justify-center items-center w-16 h-6 rounded-md">
+                          <span className=" bg-[#D2F3E0] text-[#34C164]  flex justify-center items-center font-bold w-16 h-4 rounded-full">
                             {transaction.status}
                           </span>
                         )}
                       </td>
-                      <td className="shadow-md shadow-[#ccc]  px-4 py-2 text-xs  w-48">
-                        {transaction.amount}
+                      <td
+                        className={`shadow-md shadow-[#ccc] px-4 font-bold py-2 text-xs w-48 ${
+                          transaction.type === "withdrawal" ||
+                          transaction.type === "savings"
+                            ? "text-red"
+                            : "text-green"
+                        }`}
+                      >
+                        ${transaction.amount}
                       </td>
 
                       <td className="py-2 px-4 shadow-md shadow-[#ccc]  text-xs">
@@ -128,12 +135,12 @@ const TransactionsHistory = () => {
                   nextLabel="Next"
                   pageCount={pageCount}
                   onPageChange={handlePageChange}
-                  containerClassName="pagination flex gap-3 items-center rounded-md outline-none"
-                  previousClassName="pagination__prev flex items-center outline-none justify-center px-2 py-1 bg-transparent border border-[#ccc] text-primary text-xs  outline-none rounded-full"
-                  nextClassName="pagination__next flex items-center outline-none justify-center px-2 py-1 bg-transparent border border-[#ccc] text-primary text-xs outline-none  rounded-full"
+                  containerClassName="pagination flex  items-center border border-[#ccc]  rounded-md outline-none mb-4 outline-none"
+                  previousClassName="pagination__prev flex items-center outline-none justify-center px-2 py-2 bg-transparent border border-[#ccc] text-primary text-xs  outline-none "
+                  nextClassName="pagination__next flex items-center outline-none justify-center px-2 py-2 bg-transparent border border-[#ccc] text-primary text-xs outline-none focus:border-transparent"
                   activeClassName="pagination__active"
                   disabledClassName="pagination__disabled"
-                  pageClassName="pagination__page border border-[#ccc] text-xs flex items-center gap-7 outline-none text-primary px-2 py-1 rounded-full"
+                  pageClassName="pagination__page border border-[#ccc] bg-[#5321a8] text-xs flex items-center gap-7 outline-none text-white px-3 py-2"
                   breakClassName="pagination__break"
                   marginPagesDisplayed={2}
                   pageRangeDisplayed={5}

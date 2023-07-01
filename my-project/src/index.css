@@ -426,3 +426,11 @@ span.flatpickr-weekday.dark,
 .popup form .popup-button {
   margin-left: 10px;
 }
+
+.text-red {
+  color: red;
+}
+
+.text-green {
+  color: green;
+}

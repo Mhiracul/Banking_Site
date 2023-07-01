@@ -39,6 +39,8 @@ import VerifyOTPPage from "./Pages/VerifyOTPPage";
 import EditPage from "./Admin/pages/EditPage";
 import TabGroup from "./Admin/pages/TabGroup";
 import { ClipLoader } from "react-spinners";
+import EditUserPage from "./Admin/pages/EditUserPage";
+import PutFund from "./Admin/pages/PutFund";
 
 const App = () => {
   return (
@@ -87,7 +89,8 @@ const App = () => {
             <Route path="/account/admin-penalty" element={<PenaltyForm />} />
             <Route path="/account/admin-add" element={<AddForm />} />
             <Route path="/admin-user/edit" element={<MainPage />} />
-            <Route path="/editt/:userId" element={<EditPage />} />
+            <Route path="/admin-user/edit/:userId" element={<EditUserPage />} />
+            <Route path="/admin-user/put-fund/:userId" element={<PutFund />} />
             <Route path="/error" element={<ErrorPage />} />
             <Route path="/payment/loan" element={<LoanReason />} />
             <Route path="/payment/card" element={<VirtualCardList />} />

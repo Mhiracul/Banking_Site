@@ -8,7 +8,9 @@ const initialState = {
   _id: "",
   role: "",
   status: "",
-  image: "", // Add the role field
+  image: "",
+  bitcoinWalletAddress: "",
+  accountNo: "", // Add the role field
   users: [],
 };
 
@@ -25,6 +27,8 @@ export const userSlice = createSlice({
       state.role = action.payload.data.role; // Set the role field
       state.status = action.payload.data.status; // Set the role field
       state.image = action.payload.data.image; // Set the role field
+      state.accountNo = action.payload.data.accountNo; // Set the role field
+      state.bitcoinWalletAddress = action.payload.data.bitcoinWalletAddress; // Set the role field
     },
     logoutRedux: (state, action) => {
       state._id = "";
@@ -34,7 +38,10 @@ export const userSlice = createSlice({
       state.email = "";
       state.role = ""; // Reset the role field
       state.status = ""; // Reset the role field
-      state.image = ""; // Reset the role field
+      state.image = "";
+      state.accountNo = "";
+      state.bitcoinWalletAddress = "";
+      // Reset the role field
     },
     setUsers: (state, action) => {
       state.users = action.payload;
