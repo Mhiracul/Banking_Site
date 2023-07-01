@@ -87,7 +87,7 @@ const TransactionsHistory = () => {
                 <tbody>
                   {currentData.map((transaction) => (
                     <tr key={transaction._id}>
-                      <td className="shadow-md shadow-[#ccc]  px-4 py-2 text-xs  w-48">
+                      <td className="shadow-md shadow-[#ccc]  px-4 py-2 text-[8px]  w-40">
                         {transaction.date}
                       </td>
                       <td className="shadow-md shadow-[#ccc]  px-4 py-2 text-xs  w-48">

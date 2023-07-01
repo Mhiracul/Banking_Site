@@ -58,6 +58,19 @@ function WalletUpdate() {
     }
   };
 
+  const handleAddressChange = (cryptoId, event) => {
+    const updatedCryptos = cryptos.map((crypto) => {
+      if (crypto._id === cryptoId) {
+        return {
+          ...crypto,
+          address: event.target.value,
+        };
+      }
+      return crypto;
+    });
+    setCryptos(updatedCryptos);
+  };
+
   return (
     <DefaultLayout>
       <Breadcrumb pageName="Wallet " />
@@ -104,7 +117,9 @@ function WalletUpdate() {
                         placeholder="Wallet Address"
                         value={crypto.address || ""}
                         className="rounded-md py-1 px-1 text-sm mt-2 shadow-md"
-                        disabled
+                        onChange={(event) =>
+                          handleAddressChange(crypto._id, event)
+                        }
                       />
                     </td>
                     <td className="py-2 px-20 shadow-md shadow-[#ccc]  text-sm">
