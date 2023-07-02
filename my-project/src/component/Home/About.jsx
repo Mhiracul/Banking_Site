@@ -7,7 +7,11 @@ const About = () => {
     <div className="bg-gradient-to-r from-[#0C1C19] to-[#102F2D] rounded-t-[60px] pb-30">
       <div>
         <div className="w-full h-full mx-auto text-center  justify-center leading-[20px] font-inter ">
-          <div className=" px-20 py-10">
+          <div
+            className=" px-20 py-10 "
+            data-aos="fade-up"
+            data-aos-duration="1000"
+          >
             <p className="text-sm text-[#E1FFA0] font-medium">
               Why <WebsiteName />?
             </p>
@@ -24,7 +28,13 @@ const About = () => {
               Our online banking platform is user-friendly and easy to navigate.
             </p>
           </div>
-          <div className="grid lg:grid-cols-4 md:grid-cols-2 grid-cols-1 gap-10 px-20  items-center justify-center">
+          <div
+            className="grid lg:grid-cols-4 md:grid-cols-2 grid-cols-1 gap-10 px-20  items-center justify-center"
+            data-aos="fade-left"
+            data-aos-duration="1000"
+            data-aos-delay="200"
+            data-aos-anchor=".grid"
+          >
             <div className="">
               <div className="justify-center items-center flex bg-[#517353] rounded-full w-16 h-16 border-8 border-[#284D3D] mx-auto">
                 <FaMoneyBillAlt size={20} color="#E1FFA0" />

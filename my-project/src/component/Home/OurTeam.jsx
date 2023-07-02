@@ -16,7 +16,11 @@ const Team = () => {
           Meet the Banking Experts
         </h1>
         <div className="grid  lg:grid-cols-3 md:grid-cols-2 grid-cols-1 mt-10 gap-4 md:px-10 px-4">
-          <div className=" w-full mx-auto max-w-[350px]">
+          <div
+            className=" w-full mx-auto max-w-[350px]"
+            data-aos="fade-right"
+            data-aos-duration="1000"
+          >
             <div className="relative w-full">
               <img src={One} alt="" />
               <div className="bg-gradient-to-r from-[#DBFF8E] via-[#DBFF8E] to-[#FFD7A6] w-28 h-10 absolute bottom-0 translate-y-5 right-0">
@@ -34,7 +38,11 @@ const Team = () => {
               <p className="text-xs">Banking Specialist</p>
             </div>
           </div>
-          <div className=" w-full mx-auto max-w-[350px]">
+          <div
+            className=" w-full mx-auto max-w-[350px]"
+            data-aos="fade-left"
+            data-aos-duration="1000"
+          >
             <div className="relative">
               <img src={Ten} alt="" />
               <div className="bg-gradient-to-r from-[#DBFF8E] via-[#DBFF8E] to-[#FFD7A6] w-20 h-10 absolute bottom-0 translate-y-5 right-0">
@@ -52,7 +60,11 @@ const Team = () => {
               <p className="text-xs">Account Manager</p>
             </div>
           </div>
-          <div className=" w-full mx-auto max-w-[350px]">
+          <div
+            className=" w-full mx-auto max-w-[350px]"
+            data-aos="fade-right"
+            data-aos-duration="1000"
+          >
             <div className="relative ">
               <img src={Three} alt="" />
               <div className="bg-gradient-to-r from-[#DBFF8E] via-[#DBFF8E] to-[#FFD7A6] w-20 h-10 absolute bottom-0 translate-y-5 right-0">

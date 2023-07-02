@@ -305,13 +305,15 @@ const DepositForm = () => {
                       </button>
                     </div>
                   </form>
-                  <p className="mt-4 bg-[#21635f]  text-white p-4 text-xs rounded-md">
-                    Note: Please copy the Wallet Address or Bank Number provided
-                    below and make the payment. After filling the form, click on
-                    the "Deposit" button to proceed. Please ensure that you copy
-                    the address accurately and double-check before making the
-                    payment. Once the payment is made, wait while we confirm the
-                    payment.
+                  <div className="mt-4 bg-[#21635f]  text-white p-4 text-xs rounded-md">
+                    <p>
+                      Note: Please copy the Wallet Address or Bank Number
+                      provided below and make the payment. After filling the
+                      form, click on the "Deposit" button to proceed. Please
+                      ensure that you copy the address accurately and
+                      double-check before making the payment. Once the payment
+                      is made, wait while we confirm the payment.
+                    </p>
                     <br />
                     <div className="flex md:flex-row flex-col items-center mt-4">
                       {selectedMethod &&
@@ -344,7 +346,7 @@ const DepositForm = () => {
                           </>
                         )}
                     </div>
-                  </p>
+                  </div>
                 </div>
               </div>
             </div>

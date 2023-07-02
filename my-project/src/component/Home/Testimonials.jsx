@@ -12,6 +12,8 @@ const Testimonials = () => {
     speed: 500,
     slidesToShow: 1,
     slidesToScroll: 1,
+    autoplay: true, // Added autoplay property
+    autoplaySpeed: 2000, // Adjust the autoplay speed (in milliseconds) as needed
     responsive: [
       {
         breakpoint: 768,
@@ -22,6 +24,7 @@ const Testimonials = () => {
       },
     ],
   };
+
   return (
     <div
       className="w-full md:h-full h-full bg-cover bg-center bg-opacity-10"
@@ -29,7 +32,11 @@ const Testimonials = () => {
         backgroundImage: `url(${bast})`,
       }}
     >
-      <div className="h-full bg-gradient bg-gradient-to-br from-[#102F2D] to-transparent bg-opacity-20 rounded-md shadow-md">
+      <div
+        className="h-full bg-gradient bg-gradient-to-br from-[#102F2D] to-transparent bg-opacity-20 rounded-md shadow-md"
+        data-aos="fade-right"
+        data-aos-duration="1000"
+      >
         <div className="py-10">
           <p className="text-[#DBFF8E] text-center text-xl">Testimonials</p>
           <h1 className="text-white text-center mt-3 text-4xl font-bold">

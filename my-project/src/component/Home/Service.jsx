@@ -48,15 +48,28 @@ const Service = () => {
           <h1 className="text-[#102F2D] font-bold lg:text-5xl md:text-3xl text-xl font-inter">
             Super convenient online banking
           </h1>
-          <p className="text-gray-500 mt-4 md:max-w-md w-full text-left">
+          <p
+            className="text-gray-500 mt-4 md:max-w-md w-full text-left"
+            data-aos="fade-right"
+            data-aos-duration="1000"
+          >
             You can view your account balances, transaction history, and
             statements, and even set up custom alerts to help you stay on top of
             your finances.
           </p>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 gap-5 py-10 w-full">
-          <Tabs selectedTab={selectedTab} onTabClick={handleTabClick} />
-          <div className="bg-[#EAEFEF] md:w-[80%]  w-full shadow-lg rounded-md flex justify-center items-center py-10">
+          <Tabs
+            selectedTab={selectedTab}
+            onTabClick={handleTabClick}
+            data-aos="fade-right"
+            data-aos-duration="1000"
+          />
+          <div
+            className="bg-[#EAEFEF] md:w-[80%]  w-full shadow-lg rounded-md flex justify-center items-center py-10"
+            data-aos="fade-left"
+            data-aos-duration="1000"
+          >
             {renderImage()}
           </div>
         </div>

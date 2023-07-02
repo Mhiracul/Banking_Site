@@ -30,7 +30,9 @@ const ErrorPage = (props) => {
           )}
         </div>
       )}
-      <h1 className="text-3xl font-semibold text-[#DBFF8E] mt-4">{message}</h1>
+      <h1 className="text-3xl font-semibold text-[#DBFF8E] mt-4 text-center">
+        {message}
+      </h1>
       <div className="flex gap-6 mt-3">
         <Link to="/">
           <button className=" bg-[#DBFF8E] hover:bg-[#134341] text-[#134341] hover:text-[#DBFF8E] hover:shadow-md px-4 py-2 font-medium rounded-sm ">

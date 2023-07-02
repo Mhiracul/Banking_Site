@@ -71,24 +71,31 @@ function Wallet() {
       const authToken = localStorage.getItem("token");
       const headers = { "auth-token": authToken };
 
-      const cryptoData = {
-        name: selectedCrypto.name,
-        logo: selectedCrypto.logo,
-        address,
-        bankName,
-        bankNumber,
+      const reader = new FileReader();
+      reader.onload = () => {
+        const base64Logo = reader.result;
+
+        const cryptoData = {
+          name: selectedCrypto.name,
+          logo: base64Logo,
+          address,
+          bankName,
+          bankNumber,
+        };
+
+        axios.post(`${apiBaseUrl}/admin/cryptos`, cryptoData, { headers });
+
+        toast.success("Wallet addresses saved successfully");
+        // Clear the form
+        setSelectedCrypto(null);
+        setAddress("");
+        setBankName("");
+        setBankNumber("");
       };
 
-      await axios.post(`${apiBaseUrl}/admin/cryptos`, cryptoData, {
-        headers,
-      });
-
-      toast.success("Wallet addresses saved successfully");
-      // Clear the form
-      setSelectedCrypto(null);
-      setAddress("");
-      setBankName("");
-      setBankNumber("");
+      if (selectedCrypto && selectedCrypto.logo) {
+        reader.readAsDataURL(selectedCrypto.logo);
+      }
     } catch (error) {
       console.error("Error saving wallet addresses:", error);
       toast.error("Failed to save wallet addresses");

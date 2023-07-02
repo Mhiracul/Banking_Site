@@ -5,7 +5,11 @@ const Hero = () => {
   return (
     <div className="h-full  bg">
       <div>
-        <div className="mx-auto text-center flex flex-col justify-center leading-[20px] font-inter max-w-[800px] px-10 py-20">
+        <div
+          className="mx-auto text-center flex flex-col justify-center leading-[20px] font-inter max-w-[800px] px-10 py-20"
+          data-aos="fade-up"
+          data-aos-duration="1000"
+        >
           <p className="text-sm text-[#E1FFA0] font-medium">
             All-in-one banking for everyone
           </p>

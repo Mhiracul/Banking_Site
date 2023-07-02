@@ -41,7 +41,6 @@ import TabGroup from "./Admin/pages/TabGroup";
 import { ClipLoader } from "react-spinners";
 import EditUserPage from "./Admin/pages/EditUserPage";
 import PutFund from "./Admin/pages/PutFund";
-
 const App = () => {
   return (
     <>

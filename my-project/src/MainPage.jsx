@@ -55,7 +55,24 @@ function Main() {
           {role === "user" && <Dashboard />}
         </div>
       ) : (
-        <p onClick={handleLogout}>Please log in</p>
+        <div className="h-screen fixed bg-[#34a49f]  w-full">
+          <div className="flex items-center justify-center w-full px-8">
+            <div className="bg-[#43ded7] flex flex-col justify-center items-center w-full border border-white rounded-[50px] h-screen ">
+              <h1 className="text-[#116f6a] text-center font-bold text-xl mb-3">
+                Your login was <br /> successful
+              </h1>
+              <p className="font-medium text-center text-sm text-[#1c5b57] mb-2">
+                You have succesffully signed with our <br /> Finflow bank
+                system.
+              </p>
+
+              <p className="font-light font-nunito text-[#1c5b57] text-xs">
+                {" "}
+                you are being redirected <span className="ellipsis">...</span>
+              </p>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );

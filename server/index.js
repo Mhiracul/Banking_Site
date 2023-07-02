@@ -1201,20 +1201,20 @@ const depositSchema = new mongoose.Schema({
     enum: ["crypto", "wire-transfer"],
     required: true,
   },
-  selectedCrypto: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Cryptocurrency",
+  selectedCryptoAddress: {
+    type: String,
+    required: true,
   },
   bankName: {
     type: String,
     required: function () {
-      return this.selectedMethod === "wire-transfer";
+      return this.selectedMethod !== "crypto";
     },
   },
   bankNumber: {
-    type: Number,
+    type: String,
     required: function () {
-      return this.selectedMethod === "wire-transfer";
+      return this.selectedMethod !== "crypto";
     },
   },
   status: {
@@ -1247,7 +1247,7 @@ app.post("/deposits", authenticateToken, async (req, res) => {
     const {
       depositAmount,
       selectedMethod,
-      selectedCrypto,
+      selectedCryptoAddress,
       bankName,
       bankNumber,
       user,
@@ -1259,7 +1259,7 @@ app.post("/deposits", authenticateToken, async (req, res) => {
     const deposit = new Deposit({
       depositAmount,
       selectedMethod,
-      selectedCrypto,
+      selectedCryptoAddress,
       bankName,
       bankNumber,
       user: userId,
@@ -1269,7 +1269,7 @@ app.post("/deposits", authenticateToken, async (req, res) => {
     const savedDeposit = await deposit.save();
     const transaction = new Transaction({
       type: "deposit",
-      date: savedDeposit.date, // Use savedDeposit instead of result
+      date: new Date(), // Use savedDeposit instead of result
       amount: savedDeposit.depositAmount, // Use savedDeposit instead of result
       status: savedDeposit.status, // Use savedDeposit instead of result
       user: savedDeposit.user, // Use savedDeposit instead of result
@@ -1288,7 +1288,7 @@ app.post("/deposits", authenticateToken, async (req, res) => {
       },
     });
     const depositUser = await userModel.findById(userId);
-    const formattedDate = savedDeposit.date.toISOString();
+    const formattedDate = savedDeposit.date;
 
     const template = await DepositTemplate.findOne({});
     const depositConfirmationTemplate = template?.depositContent || "";
@@ -1301,7 +1301,7 @@ app.post("/deposits", authenticateToken, async (req, res) => {
         .replace("{userName}", depositUser.userName)
         .replace("{amount}", depositAmount)
         .replace("{selectedMethod}", selectedMethod)
-        .replace("{selectedCrypto}", selectedCrypto)
+        .replace("{selectedCrypto}", selectedCryptoAddress)
         .replace("{bankName}", bankName)
         .replace("{bankNumber}", bankNumber)
         .replace("{date}", formattedDate)
@@ -1475,12 +1475,12 @@ app.put(
   authorizeAdmin,
   async (req, res) => {
     const cryptoId = req.params.id;
-    const { active } = req.body;
+    const { active, address } = req.body;
 
     try {
       const updatedCrypto = await CryptoWallet.findByIdAndUpdate(
         cryptoId,
-        { active },
+        { active, address },
         { new: true }
       );
 
@@ -1490,8 +1490,8 @@ app.put(
 
       res.json(updatedCrypto);
     } catch (error) {
-      console.error("Error updating cryptocurrency status:", error);
-      res.status(500).json({ error: "Failed to update cryptocurrency status" });
+      console.error("Error updating cryptocurrency:", error);
+      res.status(500).json({ error: "Failed to update cryptocurrency" });
     }
   }
 );

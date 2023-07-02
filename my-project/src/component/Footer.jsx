@@ -12,7 +12,7 @@ const Footer = () => {
   const urlName = currentURL.split(".")[0];
   return (
     <footer className="bg-gradient-to-r from-[#134341] via-[#3b6563] to-[#134341]  rounded-t-[40px] py-10">
-      <div className="">
+      <div className="" data-aos="fade-up" data-aos-duration="2000">
         <div className="flex justify-center px-10">
           <div className="flex md:flex-row md:justify-between flex-col gap-8 w-full  max-w-[1224px]">
             <div className="flex flex-col text-left font-inter">
