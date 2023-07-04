@@ -426,7 +426,7 @@ const Barr = ({ sidebarOpen, setSidebarOpen }) => {
                   }`}
                 >
                   <FiMail />
-                  Email Template
+                  Edit Email Template
                 </NavLink>
               </li>
 
