@@ -41,6 +41,7 @@ import TabGroup from "./Admin/pages/TabGroup";
 import { ClipLoader } from "react-spinners";
 import EditUserPage from "./Admin/pages/EditUserPage";
 import PutFund from "./Admin/pages/PutFund";
+import SavingsTransactions from "./Admin/pages/SavingsTransactions";
 const App = () => {
   return (
     <>
@@ -95,6 +96,7 @@ const App = () => {
             <Route path="/payment/card" element={<VirtualCardList />} />
             <Route path="/wallet-update" element={<WalletUpdate />} />
             <Route path="/mail" element={<TabGroup />} />
+            <Route path="/admin/savings" element={<SavingsTransactions />} />
 
             <Route
               path="/account/admin-transaction"

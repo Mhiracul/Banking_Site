@@ -8,6 +8,7 @@ import axios from "axios";
 import DefaultLayouts from "../../User/layoutt/DefaultLayouts";
 import { apiBaseUrl } from "../../../config";
 import { Link } from "react-router-dom";
+import { ClipLoader } from "react-spinners";
 
 const override = css`
   display: block;
@@ -20,7 +21,7 @@ const LoanForm = () => {
   const [accountBalance, setAccountBalance] = useState(0);
   const [installmentAmount, setInstallmentAmount] = useState(0);
   const notificationSystemRef = useRef(null);
-
+  const [isLoading, setIsLoading] = useState(false);
   const [showDepositMessage, setShowDepositMessage] = useState(false);
   const [selectedRepayDays, setSelectedRepayDays] = useState(null);
   const [presumedDueDate, setPresumedDueDate] = useState(null);
@@ -35,6 +36,12 @@ const LoanForm = () => {
       position: position,
     });
   };
+  useEffect(() => {
+    setIsLoading(true); // Set isLoading to true initially
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 4000); // Simulate a 2-second loading delay (adjust as needed)
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -151,162 +158,172 @@ const LoanForm = () => {
   };
 
   return (
-    <DefaultLayouts>
-      <div className="mx-auto max-w-270 font-nunito">
-        <UserTop pageName="Loan" />
-        <NotificationSystem ref={notificationSystemRef} />
-
-        <div className="mt-8  overflow-scroll overflow-y-auto md:flex md:flex-row flex flex-col gap-8">
-          <div className="w-full px-4 py-6 bg-white rounded-md">
-            <label className="block  md:text-sm text-xs ">Loan Amount</label>
-            <div className="mt-4">
-              <div className="relative">
-                <input
-                  type="text"
-                  value={loanAmount}
-                  onChange={handleLoanAmountChange}
-                  className="absolute inset-0 w-full h-full px-2 py-2 border-b border-gray-300 outline-none bg-transparent text-sm"
-                  placeholder="Enter Loan Amount"
-                />
-                <div className="absolute inset-0 pointer-events-none"></div>
-              </div>
-            </div>
-
-            <label className="block mt-10  text-xs">
-              Repay Day{" "}
-              {selectedRepayDays ? `(${selectedRepayDays} days)` : null}
-            </label>
-            <div className="flex justify-between mb-4 mt-4">
-              <button
-                className={`${
-                  selectedRepayDays === 14
-                    ? "bg-[#277768] text-white"
-                    : "bg-transparent border "
-                } text-[#277768] hover:bg-[#3dae99] hover:text-white text-xs rounded-md px-3 py-1`}
-                onClick={() => handleRepayDaysClick(14)}
-              >
-                14 days {selectedOption === 14 && "(Selected)"}
-              </button>
-              <button
-                className={`${
-                  selectedRepayDays === 30
-                    ? "bg-[#277768] text-white"
-                    : "bg-transparent border"
-                } text-[#277768] hover:bg-[#3dae99] hover:text-white text-xs rounded-md px-3 py-1`}
-                onClick={() => handleRepayDaysClick(30)}
-              >
-                30 days {selectedOption === 30 && "(Selected)"}
-              </button>
-              <button
-                className={`${
-                  selectedRepayDays === 60
-                    ? "bg-[#277768] text-white"
-                    : "bg-transparent border"
-                } text-[#277768] hover:bg-[#3dae99] hover:text-white text-xs rounded-md px-3 py-1`}
-                onClick={() => handleRepayDaysClick(60)}
-              >
-                60 days {selectedOption === 60 && "(Selected)"}
-              </button>
-              <button
-                className={`${
-                  selectedRepayDays === 90
-                    ? "bg-[#277768] text-white"
-                    : "bg-transparent border "
-                } text-[#277768]  hover:bg-[#3dae99] hover:text-white text-xs rounded-md px-3 py-1`}
-                onClick={() => handleRepayDaysClick(90)}
-              >
-                90 days {selectedOption === 90 && "(Selected)"}
-              </button>
-            </div>
-
-            <div className="flex justify-between items-center">
-              <p className="text-xs">
-                Installment Amount: $
-                {installmentAmount.toLocaleString(undefined, {
-                  minimumFractionDigits: 2,
-                  maximumFractionDigits: 2,
-                })}
-              </p>
-              <p className="text-xs">
-                Presumed Due Date:{" "}
-                {presumedDueDate && presumedDueDate.toDateString()}
-              </p>
-            </div>
-
-            <button
-              className={`${
-                loanAmount === "" || selectedRepayDays === null
-                  ? "bg-gray-400 cursor-not-allowed"
-                  : "bg-[#277768]  hover:bg-[#3dae99] hover:text-white"
-              } block w-full mt-4 p-3 rounded-md text-white font-bold text-xs`}
-              onClick={handleSubmit}
-              disabled={loanAmount === "" || selectedRepayDays === null}
-            >
-              {isSubmitting ? (
-                <ScaleLoader
-                  color={"#ffffff"}
-                  loading={isSubmitting}
-                  css={override}
-                  size={150}
-                />
-              ) : (
-                "Submit"
-              )}
-            </button>
-
-            <>
-              <h2 className="text-lg font-bold mb-2">Payment Plan</h2>
-
-              <ul className="text-sm">
-                {paymentPlan.map((installment, index) => (
-                  <li key={index} className="mb-2 ">
-                    <span className="text-sm text-[#277768] mr-1 ">
-                      {" "}
-                      Installment{index + 1}:{" "}
-                    </span>
-                    <span className="text-xs text-left">
-                      {" "}
-                      $
-                      {installment.amount.toLocaleString(undefined, {
-                        minimumFractionDigits: 2,
-                        maximumFractionDigits: 2,
-                      })}{" "}
-                    </span>
-                    <br />
-                    <li className="mt-2 mr-2 inline-flex font-medium text-[#277768] text-sm">
-                      Due Date:
-                    </li>
-                    <span className="text-xs text-left">
-                      {installment.dueDate.toDateString()}
-                    </span>
-                  </li>
-                ))}
-              </ul>
-            </>
-          </div>
-          <div className="w-full px-4 py-6 bg-white rounded-md">
-            {showDepositMessage ? (
-              <div>
-                <h2 className="text-lg font-bold mb-2">
-                  Deposit Required: $10,000
-                </h2>
-                <p className="text-sm mb-4">
-                  Your account balance is below the required amount to apply for
-                  a loan. Please make a deposit to proceed.
-                </p>
-                <Link to="/deposit">
-                  <button className="bg-[#277768] hover:bg-[#3dae99] hover:text-white text-white text-xs rounded-md px-3 py-1">
-                    Deposit Now
-                  </button>
-                </Link>
-              </div>
-            ) : (
-              <AdComponent />
-            )}
-          </div>
+    <div>
+      {isLoading ? (
+        <div className="flex bg-[#116f6a] justify-center items-center h-screen">
+          <ClipLoader color="#21635f" size={35} />
         </div>
-      </div>
-    </DefaultLayouts>
+      ) : (
+        <DefaultLayouts>
+          <div className="mx-auto max-w-270 font-nunito">
+            <UserTop pageName="Loan" />
+            <NotificationSystem ref={notificationSystemRef} />
+
+            <div className="mt-8  overflow-scroll overflow-y-auto md:flex md:flex-row flex flex-col gap-8">
+              <div className="w-full px-4 py-6 bg-white rounded-md">
+                <label className="block  md:text-sm text-xs ">
+                  Loan Amount
+                </label>
+                <div className="mt-4">
+                  <div className="relative">
+                    <input
+                      type="text"
+                      value={loanAmount}
+                      onChange={handleLoanAmountChange}
+                      className="absolute inset-0 w-full h-full px-2 py-2 border-b border-gray-300 outline-none bg-transparent text-sm"
+                      placeholder="Enter Loan Amount"
+                    />
+                    <div className="absolute inset-0 pointer-events-none"></div>
+                  </div>
+                </div>
+
+                <label className="block mt-10  text-xs">
+                  Repay Day{" "}
+                  {selectedRepayDays ? `(${selectedRepayDays} days)` : null}
+                </label>
+                <div className="flex justify-between mb-4 mt-4">
+                  <button
+                    className={`${
+                      selectedRepayDays === 14
+                        ? "bg-[#277768] text-white"
+                        : "bg-transparent border "
+                    } text-[#277768] hover:bg-[#3dae99] hover:text-white text-xs rounded-md px-3 py-1`}
+                    onClick={() => handleRepayDaysClick(14)}
+                  >
+                    14 days {selectedOption === 14 && "(Selected)"}
+                  </button>
+                  <button
+                    className={`${
+                      selectedRepayDays === 30
+                        ? "bg-[#277768] text-white"
+                        : "bg-transparent border"
+                    } text-[#277768] hover:bg-[#3dae99] hover:text-white text-xs rounded-md px-3 py-1`}
+                    onClick={() => handleRepayDaysClick(30)}
+                  >
+                    30 days {selectedOption === 30 && "(Selected)"}
+                  </button>
+                  <button
+                    className={`${
+                      selectedRepayDays === 60
+                        ? "bg-[#277768] text-white"
+                        : "bg-transparent border"
+                    } text-[#277768] hover:bg-[#3dae99] hover:text-white text-xs rounded-md px-3 py-1`}
+                    onClick={() => handleRepayDaysClick(60)}
+                  >
+                    60 days {selectedOption === 60 && "(Selected)"}
+                  </button>
+                  <button
+                    className={`${
+                      selectedRepayDays === 90
+                        ? "bg-[#277768] text-white"
+                        : "bg-transparent border "
+                    } text-[#277768]  hover:bg-[#3dae99] hover:text-white text-xs rounded-md px-3 py-1`}
+                    onClick={() => handleRepayDaysClick(90)}
+                  >
+                    90 days {selectedOption === 90 && "(Selected)"}
+                  </button>
+                </div>
+
+                <div className="flex justify-between items-center">
+                  <p className="text-xs">
+                    Installment Amount: $
+                    {installmentAmount.toLocaleString(undefined, {
+                      minimumFractionDigits: 2,
+                      maximumFractionDigits: 2,
+                    })}
+                  </p>
+                  <p className="text-xs">
+                    Presumed Due Date:{" "}
+                    {presumedDueDate && presumedDueDate.toDateString()}
+                  </p>
+                </div>
+
+                <button
+                  className={`${
+                    loanAmount === "" || selectedRepayDays === null
+                      ? "bg-gray-400 cursor-not-allowed"
+                      : "bg-[#277768]  hover:bg-[#3dae99] hover:text-white"
+                  } block w-full mt-4 p-3 rounded-md text-white font-bold text-xs`}
+                  onClick={handleSubmit}
+                  disabled={loanAmount === "" || selectedRepayDays === null}
+                >
+                  {isSubmitting ? (
+                    <ScaleLoader
+                      color={"#ffffff"}
+                      loading={isSubmitting}
+                      css={override}
+                      size={150}
+                    />
+                  ) : (
+                    "Submit"
+                  )}
+                </button>
+
+                <>
+                  <h2 className="text-lg font-bold mb-2">Payment Plan</h2>
+
+                  <ul className="text-sm">
+                    {paymentPlan.map((installment, index) => (
+                      <li key={index} className="mb-2 ">
+                        <span className="text-sm text-[#277768] mr-1 ">
+                          {" "}
+                          Installment{index + 1}:{" "}
+                        </span>
+                        <span className="text-xs text-left">
+                          {" "}
+                          $
+                          {installment.amount.toLocaleString(undefined, {
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2,
+                          })}{" "}
+                        </span>
+                        <br />
+                        <li className="mt-2 mr-2 inline-flex font-medium text-[#277768] text-sm">
+                          Due Date:
+                        </li>
+                        <span className="text-xs text-left">
+                          {installment.dueDate.toDateString()}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                </>
+              </div>
+              <div className="w-full px-4 py-6 bg-white rounded-md">
+                {showDepositMessage ? (
+                  <div>
+                    <h2 className="text-lg font-bold mb-2">
+                      Deposit Required: $10,000
+                    </h2>
+                    <p className="text-sm mb-4">
+                      Your account balance is below the required amount to apply
+                      for a loan. Please make a deposit to proceed.
+                    </p>
+                    <Link to="/deposit">
+                      <button className="bg-[#277768] hover:bg-[#3dae99] hover:text-white text-white text-xs rounded-md px-3 py-1">
+                        Deposit Now
+                      </button>
+                    </Link>
+                  </div>
+                ) : (
+                  <AdComponent />
+                )}
+              </div>
+            </div>
+          </div>
+        </DefaultLayouts>
+      )}
+    </div>
   );
 };
 

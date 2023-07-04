@@ -8,6 +8,7 @@ import Polite from "../assets/PoliteChicky.gif";
 import { BsX } from "react-icons/bs";
 import { apiBaseUrl } from "../../config";
 import ReactTailwindTable from "../ReactTailwindTable";
+import { ClipLoader } from "react-spinners";
 
 const Dropdown = ({ options, selectedOption, onOptionSelect }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -68,6 +69,14 @@ const WithdrawalForm = () => {
   const [selectedWallet, setSelectedWallet] = useState(null);
   const [showSuccessMessage, setShowSuccessMessage] = useState(false); // Add showSuccessMessage state variable
   const [successMessage, setSuccessMessage] = useState(""); // Add successMessage state variable
+  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    setIsLoading(true); // Set isLoading to true initially
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 4000); // Simulate a 2-second loading delay (adjust as needed)
+  }, []);
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -215,114 +224,120 @@ const WithdrawalForm = () => {
 
   return (
     <div className="w-full">
-      <DefaultLayouts>
-        <div className="mx-auto max-w-270 font-inter font-medium">
-          <UserTop pageName="Withdrawal" />
-          {showSuccessMessage && ( // Check if the success message should be shown
-            <div className="relative">
-              <p className="bg-gradient bg-gradient-to-br from-[#043f34] to-transparent bg-opacity-20  text-[#fff] font-medium p-2 text-center rounded-md py-6  mt-2">
-                ✅ {successMessage}
-                <button
-                  className="absolute top-1 right-1 text-[#fff] focus:outline-none"
-                  onClick={handleCloseSuccessMessage}
-                >
-                  <BsX />
-                </button>
-              </p>
-            </div>
-          )}
-          <div className="bg-[#21635f]  px-10 py-10  mt-10 rounded-md shadow-md shadow-[#ccc] w-full">
-            <div className="flex justify-between  items-center mb-5 text-white lg:text-xl md:text-sm text-xs">
-              <h1 className="lg:text-2xl md:text-xl text-sm">
-                Account Balance:
-              </h1>
-              <h1 className="lg:text-2xl md:text-xl text-sm">
-                ${accountBalance.toFixed(2)}
-              </h1>
-            </div>
-            <form onSubmit={handleWithdrawalSubmit}>
-              <div className="py-2">
-                <label
-                  htmlFor="withdrawalType"
-                  className="text-white text-sm mb-2 md:mb-0 md:mr-4"
-                >
-                  Withdrawal Type:
-                </label>
-                <div className="w-full  text-[#21635f]">
-                  <Dropdown
-                    options={[
-                      { label: "Tether", value: "tether" },
-                      { label: "Bitcoin", value: "bitcoin" },
-                      { label: "Wire Transfer", value: "wireTransfer" },
-                    ]}
-                    selectedOption={withdrawalType}
-                    onOptionSelect={handleWithdrawalTypeChange}
-                  />
-                </div>
-              </div>
-
-              <div className="  py-2">
-                <label
-                  htmlFor="withdrawalAmount"
-                  className="text-sm mb-2 md:mb-0 md:mr-4 text-white"
-                >
-                  Withdrawal Amount:
-                </label>
-                <div className="w-full text-[#21635f]">
-                  <input
-                    type="number"
-                    step="0.01"
-                    min="0.01"
-                    max={accountBalance}
-                    className="w-full border px-4 py-2 rounded-md"
-                    value={withdrawalAmount}
-                    onChange={handleWithdrawalAmountChange}
-                    required
-                  />
-                </div>
-              </div>
-              <div className=" py-2">
-                <label
-                  htmlFor="wallet"
-                  className="text-sm mb-2 md:mb-0 md:mr-4 text-white"
-                >
-                  Wallet:
-                </label>
-                <div className="w-full text-[#21635f]">
-                  <Dropdown
-                    options={walletOptions}
-                    selectedOption={selectedWallet}
-                    onOptionSelect={setSelectedWallet}
-                  />
-                </div>
-              </div>
-              <div className=" mt-6 ">
-                <button
-                  type="submit"
-                  className="bg-[#DBFF8E] hover:bg-[#23867f] text-[#23867f] hover:text-white w-full font-bold py-2 px-6 rounded-full outline-none"
-                >
-                  Submit Withdrawal
-                </button>
-              </div>
-            </form>
-          </div>
-          <div className="flex flex-col items-center justify-center">
-            <h1 className="text-white text-xl mt-10 mb-6 text-center">
-              Withdrawal History
-            </h1>
-            <div className=" h-full mb-10  w-full overflow-x-auto text-black rounded-md ">
-              {withdrawals && withdrawals.length > 0 ? (
-                <ReactTailwindTable data={withdrawals} />
-              ) : (
-                <div className="flex flex-col items-center justify-center w-full h-full">
-                  <img src={Polite} alt="PoliteChicky" className="mb-4" />
-                  <p className="text-lg">No withdrawal history found.</p>
-                </div>
-              )}
-            </div>
-          </div>
+      {isLoading ? (
+        <div className="flex bg-[#116f6a] justify-center items-center h-screen">
+          <ClipLoader color="#34a49f" size={35} />
         </div>
-      </DefaultLayouts>
+      ) : (
+        <DefaultLayouts>
+          <div className="mx-auto max-w-270 font-inter font-medium">
+            <UserTop pageName="Withdrawal" />
+            {showSuccessMessage && ( // Check if the success message should be shown
+              <div className="relative">
+                <p className="bg-gradient bg-gradient-to-br from-[#043f34] to-transparent bg-opacity-20  text-[#fff] font-medium p-2 text-center rounded-md py-6  mt-2">
+                  ✅ {successMessage}
+                  <button
+                    className="absolute top-1 right-1 text-[#fff] focus:outline-none"
+                    onClick={handleCloseSuccessMessage}
+                  >
+                    <BsX />
+                  </button>
+                </p>
+              </div>
+            )}
+            <div className="bg-[#21635f]  px-10 py-10  mt-10 rounded-md shadow-md shadow-[#ccc] w-full">
+              <div className="flex justify-between  items-center mb-5 text-white lg:text-xl md:text-sm text-xs">
+                <h1 className="lg:text-2xl md:text-xl text-sm">
+                  Account Balance:
+                </h1>
+                <h1 className="lg:text-2xl md:text-xl text-sm">
+                  ${accountBalance.toFixed(2)}
+                </h1>
+              </div>
+              <form onSubmit={handleWithdrawalSubmit}>
+                <div className="py-2">
+                  <label
+                    htmlFor="withdrawalType"
+                    className="text-white text-sm mb-2 md:mb-0 md:mr-4"
+                  >
+                    Withdrawal Type:
+                  </label>
+                  <div className="w-full  text-[#21635f]">
+                    <Dropdown
+                      options={[
+                        { label: "Tether", value: "tether" },
+                        { label: "Bitcoin", value: "bitcoin" },
+                        { label: "Wire Transfer", value: "wireTransfer" },
+                      ]}
+                      selectedOption={withdrawalType}
+                      onOptionSelect={handleWithdrawalTypeChange}
+                    />
+                  </div>
+                </div>
+
+                <div className="  py-2">
+                  <label
+                    htmlFor="withdrawalAmount"
+                    className="text-sm mb-2 md:mb-0 md:mr-4 text-white"
+                  >
+                    Withdrawal Amount:
+                  </label>
+                  <div className="w-full text-[#21635f]">
+                    <input
+                      type="number"
+                      step="0.01"
+                      min="0.01"
+                      max={accountBalance}
+                      className="w-full border px-4 py-2 rounded-md"
+                      value={withdrawalAmount}
+                      onChange={handleWithdrawalAmountChange}
+                      required
+                    />
+                  </div>
+                </div>
+                <div className=" py-2">
+                  <label
+                    htmlFor="wallet"
+                    className="text-sm mb-2 md:mb-0 md:mr-4 text-white"
+                  >
+                    Wallet:
+                  </label>
+                  <div className="w-full text-[#21635f]">
+                    <Dropdown
+                      options={walletOptions}
+                      selectedOption={selectedWallet}
+                      onOptionSelect={setSelectedWallet}
+                    />
+                  </div>
+                </div>
+                <div className=" mt-6 ">
+                  <button
+                    type="submit"
+                    className="bg-[#DBFF8E] hover:bg-[#23867f] text-[#23867f] hover:text-white w-full font-bold py-2 px-6 rounded-full outline-none"
+                  >
+                    Submit Withdrawal
+                  </button>
+                </div>
+              </form>
+            </div>
+            <div className="flex flex-col items-center justify-center">
+              <h1 className="text-white text-xl mt-10 mb-6 text-center">
+                Withdrawal History
+              </h1>
+              <div className=" h-full mb-10  w-full overflow-x-auto text-black rounded-md ">
+                {withdrawals && withdrawals.length > 0 ? (
+                  <ReactTailwindTable data={withdrawals} />
+                ) : (
+                  <div className="flex flex-col items-center justify-center w-full h-full">
+                    <img src={Polite} alt="PoliteChicky" className="mb-4" />
+                    <p className="text-lg">No withdrawal history found.</p>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        </DefaultLayouts>
+      )}
     </div>
   );
 };

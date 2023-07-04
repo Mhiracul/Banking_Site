@@ -493,13 +493,13 @@ const Barr = ({ sidebarOpen, setSidebarOpen }) => {
                         <ul className="mb-5.5 mt-4 flex flex-col gap-2.5 pl-6">
                           <li>
                             <NavLink
-                              to="/ui/alerts"
+                              to="/admin/savings"
                               className={({ isActive }) =>
                                 "group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-black dark:text-white hover:text-[#4B1DA1] hover:bg-[#E8E1F3] duration-300 ease-in-out  " +
                                 (isActive && "!text-[#4B1DA1]")
                               }
                             >
-                              Withdrawals
+                              Savings
                             </NavLink>
                           </li>
                           <li>

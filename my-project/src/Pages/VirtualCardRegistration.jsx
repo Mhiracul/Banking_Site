@@ -7,16 +7,26 @@ import axios from "axios";
 import chip from "../assets/chip.png";
 import verve from "../assets/Verve-Logo.svg";
 import { apiBaseUrl } from "../../config";
+import { ClipLoader } from "react-spinners";
+
 const VirtualCardRegistrationForm = () => {
   const [cardType, setCardType] = useState("");
   const [name, setName] = useState("");
   const [expiryDate, setExpiryDate] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const cardTypes = [
     { value: "mastercard", label: "Mastercard" },
     { value: "verve", label: "Verve" },
     { value: "visa", label: "Visa" },
   ];
+
+  useEffect(() => {
+    setIsLoading(true); // Set isLoading to true initially
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 4000); // Simulate a 2-second loading delay (adjust as needed)
+  }, []);
 
   const handleCardTypeChange = (selectedOption) => {
     setCardType(selectedOption.value);
@@ -88,66 +98,74 @@ const VirtualCardRegistrationForm = () => {
   };
 
   return (
-    <DefaultLayouts>
-      <div className="mx-auto max-w-270 ">
-        <UserTop pageName="Virtual Card form" />
-        <form
-          onSubmit={handleSubmit}
-          className="bg-white border-stroke mt-5 rounded-lg py-6 px-8"
-        >
-          <div>
-            Card Type:
-            <Select
-              options={cardTypes}
-              value={cardTypes.find((option) => option.value === cardType)}
-              onChange={handleCardTypeChange}
-              placeholder="Select Card Type"
-              className="mt-2 border-stroke"
-            />
-          </div>
-          <br />
-          <label>
-            Name:
-            <input
-              type="text"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              className="mt-2 border w-full border-stroke rounded-md py-2"
-            />
-          </label>
-          <br />
-          <div className="border border-stroke p-4 mt-4">
-            <div
-              className="bg-[#DBFF8E] bg-gradient bg-gradient-to-br from-[#102F2D] to-transparent  
-        bg-opacity-20 rounded-lg p-8 shadow-md py-10 w-full px-8 text-white mx-auto max-w-md"
+    <div>
+      {isLoading ? (
+        <div className="flex  bg-[#116f6a] justify-center items-center h-screen">
+          <ClipLoader color="#34a49f" size={35} />
+        </div>
+      ) : (
+        <DefaultLayouts>
+          <div className="mx-auto max-w-270 ">
+            <UserTop pageName="Virtual Card form" />
+            <form
+              onSubmit={handleSubmit}
+              className="bg-white border-stroke mt-5 rounded-lg py-6 px-8"
             >
-              <div className="flex flex-col mt-4">
-                <div>
-                  <img src={chip} alt="" className="w-10 h-10 ml-3" />
-                </div>
-                <div className="text-sm text-white rounded-lg px-4 py-2 text-left">
-                  1234 5678 9012 3456
-                </div>
-                <div className="ml-4">
-                  <p className="text-gray-500 text-xs">{name}</p>
-                  <div className="flex justify-between items-center">
-                    <p className="text-gray-500 text-xs">{expiryDate}</p>
-                    {renderCardImage()}
+              <div>
+                Card Type:
+                <Select
+                  options={cardTypes}
+                  value={cardTypes.find((option) => option.value === cardType)}
+                  onChange={handleCardTypeChange}
+                  placeholder="Select Card Type"
+                  className="mt-2 border-stroke"
+                />
+              </div>
+              <br />
+              <label>
+                Name:
+                <input
+                  type="text"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  className="mt-2 border w-full border-stroke rounded-md py-2"
+                />
+              </label>
+              <br />
+              <div className="border border-stroke p-4 mt-4">
+                <div
+                  className="bg-[#DBFF8E] bg-gradient bg-gradient-to-br from-[#102F2D] to-transparent  
+        bg-opacity-20 rounded-lg p-8 shadow-md py-10 w-full px-8 text-white mx-auto max-w-md"
+                >
+                  <div className="flex flex-col mt-4">
+                    <div>
+                      <img src={chip} alt="" className="w-10 h-10 ml-3" />
+                    </div>
+                    <div className="text-sm text-white rounded-lg px-4 py-2 text-left">
+                      1234 5678 9012 3456
+                    </div>
+                    <div className="ml-4">
+                      <p className="text-gray-500 text-xs">{name}</p>
+                      <div className="flex justify-between items-center">
+                        <p className="text-gray-500 text-xs">{expiryDate}</p>
+                        {renderCardImage()}
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
+              <br />
+              <button
+                type="submit"
+                className="bg-[#34a49f] w-full rounded-md text-white mt-4 p-2 outline-none"
+              >
+                Submit
+              </button>
+            </form>
           </div>
-          <br />
-          <button
-            type="submit"
-            className="bg-[#34a49f] w-full rounded-md text-white mt-4 p-2 outline-none"
-          >
-            Submit
-          </button>
-        </form>
-      </div>
-    </DefaultLayouts>
+        </DefaultLayouts>
+      )}
+    </div>
   );
 };
 

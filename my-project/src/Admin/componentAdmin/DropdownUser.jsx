@@ -102,9 +102,6 @@ const DropdownUser = () => {
           dropdownOpen === true ? "block" : "hidden"
         }`}
       >
-        <Link to="/profile" className="px-4 py-2.5">
-          My Profile
-        </Link>
         <Link to="/set" className="px-4 py-2.5">
           Settings
         </Link>

@@ -7,7 +7,7 @@ import ReactPaginate from "react-paginate";
 
 const TransactionsHistory = () => {
   const [transactions, setTransactions] = useState([]);
-  const [updated, setUpdated] = useState("");
+  const [updatedStatus, setUpdatedStatus] = useState("");
   const [currentPage, setCurrentPage] = useState(0);
   const perPage = 20; //
   useEffect(() => {
@@ -32,7 +32,7 @@ const TransactionsHistory = () => {
   const handleUpdateStatus = async (transactionId) => {
     try {
       const updatedStatus = "success"; // Set the desired updated status here
-      setUpdated(updatedStatus);
+      setUpdatedStatus(updatedStatus);
       await axios.patch(
         `${apiBaseUrl}/admin/transaction/${transactionId}`,
         {

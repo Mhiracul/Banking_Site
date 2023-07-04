@@ -15,19 +15,19 @@ const ReactTailwindTable = ({ data }) => {
 
   return (
     <div className=" w-full ">
-      <table className=" max-w-md overflow-x-auto mx-auto divide-y divide-gray-200 ">
+      <table className=" w-full overflow-x-auto mx-auto divide-y divide-gray-200 ">
         <thead className="bg-[#DBFF8E] text-[#21635f]">
           <tr>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+            <th className="px-5 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
               Type
             </th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+            <th className="px-5 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
               Wallet
             </th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+            <th className="px-5 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
               Amount
             </th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+            <th className="px-5 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
               Status
             </th>
           </tr>
@@ -35,16 +35,19 @@ const ReactTailwindTable = ({ data }) => {
         <tbody className="bg-[#21635f] text-white divide-y divide-gray-200 font-light">
           {currentData.map((withdrawal) => (
             <tr key={withdrawal._id}>
-              <td className="px-6 py-4 capitalize whitespace-nowrap text-sm text-gray-500">
+              <td className="px-4 py-4 capitalize whitespace-nowrap text-sm text-gray-500">
                 {withdrawal.type}
               </td>
-              <td className="px-6 py-4  whitespace-nowrap text-xs text-gray">
-                {withdrawal.wallet}
+              <td className="px-4 py-4 whitespace-nowrap text-sm text-gray">
+                {withdrawal.wallet.length > 10
+                  ? `${withdrawal.wallet.substr(0, 10)}...`
+                  : withdrawal.wallet}
               </td>
-              <td className="px-6 py-4 capitalize whitespace-nowrap text-sm text-gray-500">
+
+              <td className="px-4 py-4 capitalize whitespace-nowrap text-sm text-gray-500">
                 ${withdrawal.amount}
               </td>
-              <td className="px-6 py-4 capitalize whitespace-nowrap text-sm text-gray-500">
+              <td className="px-4 py-4 capitalize whitespace-nowrap text-sm text-gray-500">
                 {withdrawal.status}
               </td>
             </tr>

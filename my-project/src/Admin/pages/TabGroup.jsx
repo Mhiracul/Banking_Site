@@ -347,6 +347,32 @@ const TabGroup = () => {
                         Save Registration Template
                       </button>
                     </div>
+
+                    <div className="mt-8">
+                      <h2 className="text-xl font-semibold mb-4">
+                        Instructions
+                      </h2>
+                      <p>
+                        To edit the registration email templates, replace the
+                        placeholders
+                        <span className="font-mono bg-gray-200 p-1">
+                          {"{accountNo}"}
+                        </span>
+                        ,
+                        <span className="font-mono bg-gray-200 p-1">
+                          {"{password}"}
+                        </span>{" "}
+                        ,
+                        <span className="font-mono bg-gray-200 p-1">
+                          {"{otp}"}
+                        </span>
+                        , and
+                        <span className="font-mono bg-gray-200 p-1">
+                          {"{userName}"}
+                        </span>{" "}
+                        with the actual values you want to include in the email.
+                      </p>
+                    </div>
                   </Tab.Panel>
                   <Tab.Panel>
                     <div>
@@ -365,6 +391,42 @@ const TabGroup = () => {
                         Save Withdrawal Template
                       </button>
                     </div>
+                    <div className="mt-8">
+                      <h2 className="text-xl font-semibold mb-4">
+                        Instructions
+                      </h2>
+                      <p>
+                        To edit the withdrawal email templates, replace the
+                        placeholders
+                        <span className="font-mono bg-gray-200 p-1">
+                          {"{amount}"}
+                        </span>
+                        ,
+                        <span className="font-mono bg-gray-200 p-1">
+                          {"{balance}"}
+                        </span>{" "}
+                        ,
+                        <span className="font-mono bg-gray-200 p-1">
+                          {"{transactionId}"}
+                        </span>{" "}
+                        ,
+                        <span className="font-mono bg-gray-200 p-1">
+                          {"{type}"}
+                        </span>{" "}
+                        ,
+                        <span className="font-mono bg-gray-200 p-1">
+                          {"{wallet}"}
+                        </span>{" "}
+                        <span className="font-mono bg-gray-200 p-1">
+                          {"{userName}"}
+                        </span>
+                        , and
+                        <span className="font-mono bg-gray-200 p-1">
+                          {"{date}"}
+                        </span>{" "}
+                        with the actual values you want to include in the email.
+                      </p>
+                    </div>
                   </Tab.Panel>
                   <Tab.Panel>
                     <div>
@@ -380,8 +442,41 @@ const TabGroup = () => {
                         onClick={updateLoanConfirmationTemplate}
                         className=" w-full flex justify-center rounded bg-[#5321a8] py-2 px-6 font-medium text-gray hover:bg-opacity-70"
                       >
-                        Save Withdrawal Template
+                        Save Loan Template
                       </button>
+                    </div>
+                    <div className="mt-8">
+                      <h2 className="text-xl font-semibold mb-4">
+                        Instructions
+                      </h2>
+                      <p>
+                        To edit the loan email templates, replace the
+                        placeholders
+                        <span className="font-mono bg-gray-200 p-1">
+                          {"{userName}"}
+                        </span>
+                        ,
+                        <span className="font-mono bg-gray-200 p-1">
+                          {"{amount}"}
+                        </span>
+                        ,
+                        <span className="font-mono bg-gray-200 p-1">
+                          {"{installments}"}
+                        </span>
+                        ,
+                        <span className="font-mono bg-gray-200 p-1">
+                          {"{date}"}
+                        </span>
+                        ,
+                        <span className="font-mono bg-gray-200 p-1">
+                          {"{transactionId}"}
+                        </span>
+                        ,
+                        <span className="font-mono bg-gray-200 p-1">
+                          {"{balance}"}
+                        </span>{" "}
+                        with the actual values you want to include in the email.
+                      </p>
                     </div>
                   </Tab.Panel>
 
@@ -404,11 +499,49 @@ const TabGroup = () => {
                         Save Savings Template
                       </button>
                     </div>
+
+                    <div className="mt-8">
+                      <h2 className="text-xl font-semibold mb-4">
+                        Instructions
+                      </h2>
+                      <p>
+                        To edit the savings email templates, replace the
+                        placeholders
+                        <span className="font-mono bg-gray-200 p-1">
+                          {"{userName}"}
+                        </span>
+                        ,
+                        <span className="font-mono bg-gray-200 p-1">
+                          {"{amount}"}
+                        </span>
+                        ,
+                        <span className="font-mono bg-gray-200 p-1">
+                          {"{duration}"}
+                        </span>
+                        ,
+                        <span className="font-mono bg-gray-200 p-1">
+                          {"{reason}"}
+                        </span>
+                        ,
+                        <span className="font-mono bg-gray-200 p-1">
+                          {"{date}"}
+                        </span>
+                        ,
+                        <span className="font-mono bg-gray-200 p-1">
+                          {"{transactionId}"}
+                        </span>
+                        ,
+                        <span className="font-mono bg-gray-200 p-1">
+                          {"{balance}"}
+                        </span>{" "}
+                        with the actual values you want to include in the email.
+                      </p>
+                    </div>
                   </Tab.Panel>
                   <Tab.Panel>
                     <div>
                       <h1 className="font-medium">
-                        Edit Savings Mail Template
+                        Edit Deposit Mail Template
                       </h1>
                       <textarea
                         value={depositConfirmationTemplate}
@@ -421,8 +554,53 @@ const TabGroup = () => {
                         onClick={updateDepositConfirmationTemplate}
                         className="w-full flex justify-center rounded bg-[#5321a8] py-2 px-6 font-medium text-gray hover:bg-opacity-70"
                       >
-                        Save Savings Template
+                        Save Deposit Template
                       </button>
+                    </div>
+                    <div className="mt-8">
+                      <h2 className="text-xl font-semibold mb-4">
+                        Instructions
+                      </h2>
+                      <p>
+                        To edit the deposit email templates, replace the
+                        placeholders
+                        <span className="font-mono bg-gray-200 p-1">
+                          {"{userName}"}
+                        </span>
+                        ,
+                        <span className="font-mono bg-gray-200 p-1">
+                          {"{amount}"}
+                        </span>
+                        ,
+                        <span className="font-mono bg-gray-200 p-1">
+                          {"{selectedMethod}"}
+                        </span>
+                        ,
+                        <span className="font-mono bg-gray-200 p-1">
+                          {"{selectedCrypto}"}
+                        </span>
+                        ,
+                        <span className="font-mono bg-gray-200 p-1">
+                          {"{bankName}"}
+                        </span>
+                        ,
+                        <span className="font-mono bg-gray-200 p-1">
+                          {"{bankNumber}"}
+                        </span>
+                        ,
+                        <span className="font-mono bg-gray-200 p-1">
+                          {"{date}"}
+                        </span>
+                        ,
+                        <span className="font-mono bg-gray-200 p-1">
+                          {"{transactionId}"}
+                        </span>
+                        ,
+                        <span className="font-mono bg-gray-200 p-1">
+                          {"{balance}"}
+                        </span>{" "}
+                        with the actual values you want to include in the email.
+                      </p>
                     </div>
                   </Tab.Panel>
                 </Tab.Panels>

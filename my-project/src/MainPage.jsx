@@ -56,14 +56,13 @@ function Main() {
         </div>
       ) : (
         <div className="h-screen fixed bg-[#34a49f]  w-full">
-          <div className="flex items-center justify-center w-full px-8">
+          <div className="flex  items-center justify-center w-full px-8 py-10">
             <div className="bg-[#43ded7] flex flex-col justify-center items-center w-full border border-white rounded-[50px] h-screen ">
-              <h1 className="text-[#116f6a] text-center font-bold text-xl mb-3">
+              <h1 className="text-[#116f6a] text-center font-bold text-2xl mb-3">
                 Your login was <br /> successful
               </h1>
               <p className="font-medium text-center text-sm text-[#1c5b57] mb-2">
-                You have succesffully signed with our <br /> Finflow bank
-                system.
+                You have successfully signed in our <br /> Finflow bank system.
               </p>
 
               <p className="font-light font-nunito text-[#1c5b57] text-xs">
