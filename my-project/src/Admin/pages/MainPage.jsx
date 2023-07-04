@@ -215,7 +215,7 @@ function MainPage() {
                             className="action-button put-fund bg-[#2127eb]   text-white px-1 py-1 rounded-md"
                             onClick={() => handlePutFundNavigation(data._id)}
                           >
-                            Put Fund
+                            Fund
                           </button>
                         </div>
                       </td>

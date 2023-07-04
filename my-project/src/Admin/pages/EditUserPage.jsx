@@ -8,6 +8,7 @@ import { apiBaseUrl } from "../../../config";
 import { setUsers } from "../../redux/userSlice";
 import DefaultLayout from "../layout/DefaultLayout";
 import Breadcrumb from "../componentAdmin/Breadcrumb";
+import DropdownSelect from "react-dropdown-select";
 
 function EditUserPage() {
   const { userId } = useParams();
@@ -234,11 +235,18 @@ function EditUserPage() {
                   <label htmlFor="status" className="text-sm">
                     Status:
                   </label>
-                  <input
-                    type="text"
-                    id="status"
-                    value={status}
-                    onChange={(e) => setStatus(e.target.value)}
+
+                  <DropdownSelect
+                    options={[
+                      { value: "activated", label: "activate" },
+                      { value: "suspended", label: "suspend" },
+                      { value: "disabled", label: "disable" },
+                    ]}
+                    value={{ value: status, label: status }} // Set value to an object with "value" and "label" properties
+                    onChange={(selectedValues) =>
+                      setStatus(selectedValues[0]?.value || "")
+                    } // Update the status state with the selected value
+                    placeholder={status}
                     className="w-full rounded border border-stroke bg-gray py-3 px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
                   />
                 </div>

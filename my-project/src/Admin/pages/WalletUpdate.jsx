@@ -8,6 +8,9 @@ import ReactPaginate from "react-paginate";
 
 function WalletUpdate() {
   const [cryptos, setCryptos] = useState([]);
+  const [bankName, setBankName] = useState("");
+  const [bankNumber, setBankNumber] = useState("");
+
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(0);
   const perPage = 20;
@@ -71,23 +74,35 @@ function WalletUpdate() {
         return {
           ...crypto,
           address: event.target.value,
+          bankName:
+            crypto.name === "Wire Transfer"
+              ? event.target.value
+              : crypto.bankName,
+          bankNumber:
+            crypto.name === "Wire Transfer"
+              ? event.target.value
+              : crypto.bankNumber,
         };
       }
       return crypto;
     });
 
-    setCryptos([...updatedCryptos]);
+    setCryptos(updatedCryptos);
 
     try {
       const authToken = localStorage.getItem("token");
       const headers = { "auth-token": authToken };
 
-      // Update the address of the cryptocurrency in the database
+      // Update the address and bank information of the cryptocurrency in the database
       await axios.put(
         `${apiBaseUrl}/admin/cryptos/${cryptoId}`,
         {
           address: updatedCryptos.find((crypto) => crypto._id === cryptoId)
             ?.address,
+          bankName: updatedCryptos.find((crypto) => crypto._id === cryptoId)
+            ?.bankName,
+          bankNumber: updatedCryptos.find((crypto) => crypto._id === cryptoId)
+            ?.bankNumber,
         },
         { headers }
       );
@@ -151,13 +166,60 @@ function WalletUpdate() {
                         <td className="shadow-md shadow-[#ccc]  px-4 py-2 text-xs  w-48">
                           <input
                             type="text"
-                            placeholder="Wallet Address"
+                            placeholder={
+                              crypto.name === "Wire Transfer"
+                                ? "Account Details"
+                                : "Wallet Address"
+                            }
                             value={crypto.address || ""}
                             className="rounded-md py-1 px-1 text-sm mt-2 shadow-md"
                             onChange={(event) =>
                               handleAddressChange(crypto._id, event)
                             }
+                            style={{
+                              display:
+                                crypto.name === "Wire Transfer"
+                                  ? "none"
+                                  : "block",
+                            }}
                           />
+
+                          {crypto.name === "Wire Transfer" ? (
+                            <>
+                              <div>
+                                <label className="mr-4 text-[8px]">
+                                  Bank Name:
+                                </label>
+                                <input
+                                  type="text"
+                                  placeholder="Bank Name"
+                                  value={crypto.bankName || ""}
+                                  className="rounded-md py-1 px-1 text-sm mt-2 shadow-md"
+                                  onChange={(event) =>
+                                    handleAddressChange(crypto._id, {
+                                      target: { value: event.target.value },
+                                    })
+                                  }
+                                />
+                                <div>
+                                  <label className="mr-2 text-[8px]">
+                                    Bank Number:
+                                  </label>
+                                  <input
+                                    type="text"
+                                    placeholder="Bank Number"
+                                    value={crypto.bankNumber || ""}
+                                    className="rounded-md py-1 px-1 text-sm mt-2 shadow-md"
+                                    onChange={(event) =>
+                                      handleAddressChange(crypto._id, {
+                                        target: { value: event.target.value },
+                                      })
+                                    }
+                                  />
+                                </div>
+                              </div>
+                            </>
+                          ) : null}
                         </td>
                         <td className="shadow-md shadow-[#ccc]  px-4 py-2 text-xs  w-48">
                           <button

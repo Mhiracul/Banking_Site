@@ -37,7 +37,7 @@ const cryptoData = [
   { id: 14, name: "Ripple", logo: xrp },
   { id: 15, name: "PayPal", logo: paypal },
   { id: 16, name: "Berty", logo: berty },
-  { id: 17, name: "Wire Transfer", logo: berty },
+  { id: 17, name: "Wire Transfer", logo: null },
 
   // Add other crypto data here
 ];
@@ -71,31 +71,22 @@ function Wallet() {
       const authToken = localStorage.getItem("token");
       const headers = { "auth-token": authToken };
 
-      const reader = new FileReader();
-      reader.onload = () => {
-        const base64Logo = reader.result;
-
-        const cryptoData = {
-          name: selectedCrypto.name,
-          logo: base64Logo,
-          address,
-          bankName,
-          bankNumber,
-        };
-
-        axios.post(`${apiBaseUrl}/admin/cryptos`, cryptoData, { headers });
-
-        toast.success("Wallet addresses saved successfully");
-        // Clear the form
-        setSelectedCrypto(null);
-        setAddress("");
-        setBankName("");
-        setBankNumber("");
+      const cryptoData = {
+        name: selectedCrypto.name,
+        logo: selectedCrypto.logo,
+        address,
+        bankName,
+        bankNumber,
       };
 
-      if (selectedCrypto && selectedCrypto.logo) {
-        reader.readAsDataURL(selectedCrypto.logo);
-      }
+      axios.post(`${apiBaseUrl}/admin/cryptos`, cryptoData, { headers });
+
+      toast.success("Wallet addresses saved successfully");
+      // Clear the form
+      setSelectedCrypto(null);
+      setAddress("");
+      setBankName("");
+      setBankNumber("");
     } catch (error) {
       console.error("Error saving wallet addresses:", error);
       toast.error("Failed to save wallet addresses");
@@ -118,11 +109,13 @@ function Wallet() {
                   options={cryptoData}
                   getOptionLabel={(option) => (
                     <div className=" px-6 dark:text-black">
-                      <img
-                        src={option.logo}
-                        alt={option.name}
-                        style={{ width: "20px", marginRight: "8px" }}
-                      />
+                      {option.logo && (
+                        <img
+                          src={option.logo}
+                          alt={option.name}
+                          style={{ width: "20px", marginRight: "8px" }}
+                        />
+                      )}
                       {option.name}
                     </div>
                   )}

@@ -63,12 +63,12 @@ router.put(
   authorizeAdmin,
   async (req, res) => {
     const cryptoId = req.params.id;
-    const { active, address } = req.body;
+    const { active, address, bankName, bankNumber } = req.body;
 
     try {
       const updatedCrypto = await CryptoWallet.findByIdAndUpdate(
         cryptoId,
-        { active, address },
+        { active, address, bankName, bankNumber },
         { new: true }
       );
 
