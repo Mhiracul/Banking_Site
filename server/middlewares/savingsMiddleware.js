@@ -69,6 +69,7 @@ router.post("/savings", authenticateToken, async (req, res) => {
       reason,
       releaseDate,
       dailyAddition,
+      user: userId,
     });
 
     const savedSavings = await savings.save();
@@ -96,7 +97,7 @@ router.post("/savings", authenticateToken, async (req, res) => {
       date: savedSavings.date,
       amount: savedSavings.amount,
       status: savedSavings.status,
-      user: savedSavings.user,
+      user: userId,
     });
 
     const savedTransaction = await transaction.save();
@@ -313,17 +314,13 @@ router.get(
 
   async (req, res) => {
     try {
-      const savings = await Savings.find().populate({
-        path: "user",
-        select: "userName",
-      });
+      const savings = await Savings.find().populate("user", "userName");
       res.status(200).json({ savings });
     } catch (error) {
       res.status(500).json({ error: "Failed to fetch savings" });
     }
   }
 );
-
 router.patch(
   "/admin/savings/:id",
   authenticateToken,

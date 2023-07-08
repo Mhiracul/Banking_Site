@@ -6,6 +6,8 @@ const LoanTemplate = require("../models/loanTemplate");
 const nodemailer = require("nodemailer");
 const HeaderContent = require("../models/headerContent");
 const FooterContent = require("../models/footerContent");
+const Settings = require("../models/settings");
+
 const {
   authenticateToken,
   authorizeAdmin,
@@ -18,6 +20,14 @@ router.post("/loans", authenticateToken, async (req, res) => {
   const { amount, installments } = req.body; // Add amount field to the destructuring assignment
 
   try {
+    const settings = await Settings.findOne();
+    const minimumLoanAmount = settings ? settings.minimumLoanAmount : 0;
+
+    if (amount < minimumLoanAmount) {
+      return res
+        .status(400)
+        .json({ error: `Minimum loan amount is ${minimumLoanAmount}` });
+    }
     console.log("Request body:", req.body);
     console.log("Amount:", amount);
 
@@ -141,6 +151,56 @@ router.put(
       res
         .status(500)
         .json({ error: "An error occurred while updating the email template" });
+    }
+  }
+);
+
+router.put(
+  "/admin/minimum-loan-amount",
+  authenticateToken,
+  authorizeAdmin,
+  async (req, res) => {
+    const { newMinimumLoanAmount } = req.body;
+    // Perform authentication and authorization to ensure only admins can access this route
+
+    try {
+      const settings = await Settings.findOne();
+      if (!settings) {
+        // Create a new settings document if it doesn't exist
+        const newSettings = new Settings({
+          minimumLoanAmount: newMinimumLoanAmount,
+        });
+        await newSettings.save();
+      } else {
+        // Update the existing settings document
+        settings.minimumLoanAmount = newMinimumLoanAmount;
+        await settings.save();
+      }
+
+      res
+        .status(200)
+        .json({ message: "Minimum loan amount updated successfully" });
+    } catch (error) {
+      console.error("Error updating minimum loan amount:", error);
+      res.status(500).json({ error: "Failed to update minimum loan amount" });
+    }
+  }
+);
+// Assuming you have already imported the Settings model
+
+router.get(
+  "/admin/minimum-loan-amount",
+  authenticateToken,
+  authorizeAdmin,
+  async (req, res) => {
+    try {
+      const settings = await Settings.findOne();
+      const NewminimumLoanAmount = settings ? settings.minimumLoanAmount : 0;
+
+      res.status(200).json({ NewminimumLoanAmount });
+    } catch (error) {
+      console.error("Error retrieving minimum loan amount:", error);
+      res.status(500).json({ error: "Failed to retrieve minimum loan amount" });
     }
   }
 );

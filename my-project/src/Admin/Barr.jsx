@@ -13,6 +13,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { logoutRedux } from "../redux/userSlice";
 import { toast } from "react-hot-toast";
 import { apiBaseUrl } from "../../config";
+import { BiMailSend } from "react-icons/bi";
 const Barr = ({ sidebarOpen, setSidebarOpen }) => {
   const location = useLocation();
   const { pathname } = location;
@@ -259,99 +260,19 @@ const Barr = ({ sidebarOpen, setSidebarOpen }) => {
               {/* <!-- Menu Item Profile --> */}
 
               {/* <!-- Menu Item Forms --> */}
-              <SidebarLinkGroup
-                activeCondition={
-                  pathname === "/forms" || pathname.includes("forms")
-                }
-              >
-                {(handleClick, open) => {
-                  return (
-                    <React.Fragment>
-                      <NavLink
-                        to="#"
-                        className={`group relative flex items-center gap-2.5 rounded-sm px-4 py-2 font-medium font-inter text-black dark:text-white hover:text-[#4B1DA1] duration-300 ease-in-out hover:bg-[#E8E1F3] dark:hover:bg-meta-4 ${
-                          (pathname === "/account" ||
-                            pathname.includes("forms")) &&
-                          "bg-graydark dark:bg-meta-4"
-                        }`}
-                        onClick={(e) => {
-                          e.preventDefault();
-                          sidebarExpanded
-                            ? handleClick()
-                            : setSidebarExpanded(true);
-                        }}
-                      >
-                        <CiDollar size={18} />
-                        Account
-                        <svg
-                          className={`absolute right-4 top-1/2 -translate-y-1/2 fill-current ${
-                            open && "rotate-180"
-                          }`}
-                          width="20"
-                          height="20"
-                          viewBox="0 0 20 20"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            fillRule="evenodd"
-                            clipRule="evenodd"
-                            d="M4.41107 6.9107C4.73651 6.58527 5.26414 6.58527 5.58958 6.9107L10.0003 11.3214L14.4111 6.91071C14.7365 6.58527 15.2641 6.58527 15.5896 6.91071C15.915 7.23614 15.915 7.76378 15.5896 8.08922L10.5896 13.0892C10.2641 13.4147 9.73651 13.4147 9.41107 13.0892L4.41107 8.08922C4.08563 7.76378 4.08563 7.23614 4.41107 6.9107Z"
-                            fill=""
-                          />
-                        </svg>
-                      </NavLink>
-                      {/* <!-- Dropdown Menu Start --> */}
-                      <div
-                        className={`translate transform overflow-hidden ${
-                          !open && "hidden"
-                        }`}
-                      >
-                        <ul className="mb-5.5 mt-4 flex flex-col gap-2.5 pl-6">
-                          <li>
-                            <NavLink
-                              to="/account/admin-penalty"
-                              className={({ isActive }) =>
-                                "group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-black dark:text-white hover:text-[#4B1DA1] hover:bg-[#E8E1F3] duration-300 ease-in-out  " +
-                                (isActive && "!text-[#4B1DA1]")
-                              }
-                            >
-                              Penalty
-                            </NavLink>
-                          </li>
-                          <li>
-                            <NavLink
-                              to="/account/admin-add"
-                              className={({ isActive }) =>
-                                "group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-black dark:text-white hover:text-[#4B1DA1] hover:bg-[#E8E1F3] duration-300 ease-in-out  " +
-                                (isActive && "!text-[#4B1DA1]")
-                              }
-                            >
-                              Addition
-                            </NavLink>
-                          </li>
-
-                          <li>
-                            <NavLink
-                              to="/account/admin-transaction"
-                              className={({ isActive }) =>
-                                "group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-black dark:text-white hover:text-[#4B1DA1] hover:bg-[#E8E1F3] duration-300 ease-in-out  " +
-                                (isActive && "!text-[#4B1DA1]")
-                              }
-                            >
-                              Transaction
-                            </NavLink>
-                          </li>
-                        </ul>
-                      </div>
-                      {/* <!-- Dropdown Menu End --> */}
-                    </React.Fragment>
-                  );
-                }}
-              </SidebarLinkGroup>
-              {/* <!-- Menu Item Forms --> */}
 
               {/* <!-- Menu Item Tables --> */}
+              <li>
+                <NavLink
+                  to="/account/admin-transaction"
+                  className={`group relative flex items-center gap-2.5 rounded-sm px-4 py-2 font-medium text-black dark:text-white hover:text-[#4B1DA1] hover:bg-[#E8E1F3] duration-300 ease-in-out  dark:hover:bg-meta-4 ${
+                    pathname.includes("tables") && "bg-graydark dark:bg-meta-4"
+                  }`}
+                >
+                  <CiDollar size={18} />
+                  Transaction
+                </NavLink>
+              </li>
               <li>
                 <NavLink
                   to="/admin-user"
@@ -430,17 +351,85 @@ const Barr = ({ sidebarOpen, setSidebarOpen }) => {
                 </NavLink>
               </li>
 
-              <li>
-                <NavLink
-                  to="/save"
-                  className={`group relative flex items-center gap-2.5 rounded-sm px-4 py-2 font-medium text-black dark:text-white hover:text-[#4B1DA1] hover:bg-[#E8E1F3] duration-300 ease-in-out  dark:hover:bg-meta-4 ${
-                    pathname.includes("chart") && "bg-graydark dark:bg-meta-4"
-                  }`}
-                >
-                  <MdOutlineSavings size={18} />
-                  Save
-                </NavLink>
-              </li>
+              <SidebarLinkGroup
+                activeCondition={pathname === "/ui" || pathname.includes("ui")}
+              >
+                {(handleClick, open) => {
+                  return (
+                    <React.Fragment>
+                      <NavLink
+                        to="#"
+                        className={`group relative flex items-center gap-2.5 rounded-sm px-4 py-2 font-medium text-black dark:text-white hover:text-[#4B1DA1] hover:bg-[#E8E1F3] duration-300 ease-in-out  dark:hover:bg-meta-4 ${
+                          (pathname === "/payment" ||
+                            pathname.includes("ui")) &&
+                          "bg-graydark dark:bg-meta-4"
+                        }`}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          sidebarExpanded
+                            ? handleClick()
+                            : setSidebarExpanded(true);
+                        }}
+                      >
+                        <RiSecurePaymentFill size={18} />
+                        Plans
+                        <svg
+                          className={`absolute right-4 top-1/2 -translate-y-1/2 fill-current ${
+                            open && "rotate-180"
+                          }`}
+                          width="20"
+                          height="20"
+                          viewBox="0 0 20 20"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            fillRule="evenodd"
+                            clipRule="evenodd"
+                            d="M4.41107 6.9107C4.73651 6.58527 5.26414 6.58527 5.58958 6.9107L10.0003 11.3214L14.4111 6.91071C14.7365 6.58527 15.2641 6.58527 15.5896 6.91071C15.915 7.23614 15.915 7.76378 15.5896 8.08922L10.5896 13.0892C10.2641 13.4147 9.73651 13.4147 9.41107 13.0892L4.41107 8.08922C4.08563 7.76378 4.08563 7.23614 4.41107 6.9107Z"
+                            fill=""
+                          />
+                        </svg>
+                      </NavLink>
+                      {/* <!-- Dropdown Menu Start --> */}
+                      <div
+                        className={`translate transform overflow-hidden ${
+                          !open && "hidden"
+                        }`}
+                      >
+                        <ul className="mb-5.5 mt-4 flex flex-col gap-2.5 pl-6">
+                          <li>
+                            <NavLink
+                              to="/save"
+                              className={({ isActive }) =>
+                                "group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-black dark:text-white hover:text-[#4B1DA1] hover:bg-[#E8E1F3] duration-300 ease-in-out  " +
+                                (isActive &&
+                                  "!text-[#4B1DA1] dark:!text-[#ccc]")
+                              }
+                            >
+                              Save
+                            </NavLink>
+                          </li>
+
+                          <li>
+                            <NavLink
+                              to="/payment/loan"
+                              className={({ isActive }) =>
+                                "group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-black dark:text-white hover:text-[#4B1DA1] hover:bg-[#E8E1F3] duration-300 ease-in-out  " +
+                                (isActive &&
+                                  "!text-[#4B1DA1] dark:!text-[#ccc]")
+                              }
+                            >
+                              Loan
+                            </NavLink>
+                          </li>
+                        </ul>
+                      </div>
+                      {/* <!-- Dropdown Menu End --> */}
+                    </React.Fragment>
+                  );
+                }}
+              </SidebarLinkGroup>
 
               <li>
                 <NavLink
@@ -449,7 +438,7 @@ const Barr = ({ sidebarOpen, setSidebarOpen }) => {
                     pathname.includes("chart") && "bg-graydark dark:bg-meta-4"
                   }`}
                 >
-                  <MdOutlineSavings size={18} />
+                  <BiMailSend size={18} />
                   Send a Newsletter
                 </NavLink>
               </li>
@@ -508,7 +497,8 @@ const Barr = ({ sidebarOpen, setSidebarOpen }) => {
                               to="/admin/savings"
                               className={({ isActive }) =>
                                 "group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-black dark:text-white hover:text-[#4B1DA1] hover:bg-[#E8E1F3] duration-300 ease-in-out  " +
-                                (isActive && "!text-[#4B1DA1]")
+                                (isActive &&
+                                  "!text-[#4B1DA1] dark:!text-[#ccc]")
                               }
                             >
                               Savings
@@ -519,21 +509,11 @@ const Barr = ({ sidebarOpen, setSidebarOpen }) => {
                               to="/payment/card"
                               className={({ isActive }) =>
                                 "group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-black dark:text-white hover:text-[#4B1DA1] hover:bg-[#E8E1F3] duration-300 ease-in-out  " +
-                                (isActive && "!text-[#4B1DA1]")
+                                (isActive &&
+                                  "!text-[#4B1DA1] dark:!text-[#ccc]")
                               }
                             >
                               Cards
-                            </NavLink>
-                          </li>
-                          <li>
-                            <NavLink
-                              to="/payment/loan"
-                              className={({ isActive }) =>
-                                "group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-black dark:text-white hover:text-[#4B1DA1] hover:bg-[#E8E1F3] duration-300 ease-in-out  " +
-                                (isActive && "!text-[#4B1DA1]")
-                              }
-                            >
-                              Loan Reason
                             </NavLink>
                           </li>
                         </ul>

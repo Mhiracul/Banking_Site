@@ -9,6 +9,8 @@ const TransactionsHistory = () => {
   const [transactions, setTransactions] = useState([]);
   const [updatedStatus, setUpdatedStatus] = useState("");
   const [currentPage, setCurrentPage] = useState(0);
+  const [searchValue, setSearchValue] = useState("");
+
   const perPage = 20; //
   useEffect(() => {
     fetchTransaction();
@@ -53,22 +55,45 @@ const TransactionsHistory = () => {
     setCurrentPage(selected.selected);
   };
 
-  const offset = currentPage * perPage;
-  const currentData = transactions.slice(offset, offset + perPage);
-  const pageCount = Math.ceil(transactions.length / perPage);
+  const handleSearch = (event) => {
+    setSearchValue(event.target.value);
+  };
 
+  const offset = currentPage * perPage;
+  const filteredTransactions = transactions.filter(
+    (transaction) =>
+      transaction.type.toLowerCase().includes(searchValue.toLowerCase()) ||
+      (transaction.user &&
+        transaction.user.userName
+          .toLowerCase()
+          .includes(searchValue.toLowerCase()))
+  );
+  const currentData = filteredTransactions.slice(offset, offset + perPage);
+  const pageCount = Math.ceil(filteredTransactions.length / perPage);
   return (
     <DefaultLayout>
       <div className="mx-auto max-w-270">
         <Breadcrumb pageName="Transaction history" />
         <div>
-          <div className="h-full   py-6 ">
+          <div className="h-full   py-3 ">
+            <div className="flex items-center justify-end px-4 py-2">
+              <input
+                type="text"
+                value={searchValue}
+                onChange={handleSearch}
+                placeholder="Search by type or username"
+                className="border border-[#ccc] px-2 py-1 text-xs rounded-md"
+              />
+            </div>
             <div className="bg-[#fff] w-full overflow-x-auto border border-stroke shadow-default dark:border-strokedark dark:bg-boxdark     text-black rounded-md">
               <table className="w-full   text-black dark:text-white">
                 <thead>
                   <tr>
                     <th className="font-medium text-left shadow-md uppercase text-xs px-4 py-2">
                       Date
+                    </th>
+                    <th className="font-medium text-left shadow-md uppercase text-xs px-4 py-2">
+                      User
                     </th>
                     <th className="font-medium text-left shadow-md uppercase text-xs px-4 py-2">
                       Type
@@ -90,6 +115,10 @@ const TransactionsHistory = () => {
                       <td className="shadow-md shadow-[#ccc]  px-4 py-2 text-[8px]  w-40">
                         {transaction.date}
                       </td>
+                      <td className="shadow-md shadow-[#ccc]  px-4 py-2 text-xs  w-40">
+                        {transaction.user ? transaction.user.userName : ""}
+                      </td>
+
                       <td className="shadow-md shadow-[#ccc]  px-4 py-2 text-xs  w-48">
                         {transaction.type}
                       </td>
@@ -108,8 +137,8 @@ const TransactionsHistory = () => {
                         className={`shadow-md shadow-[#ccc] px-4 font-bold py-2 text-xs w-48 ${
                           transaction.type === "withdrawal" ||
                           transaction.type === "savings"
-                            ? "text-red"
-                            : "text-green"
+                            ? "text-[#FC444C]"
+                            : "text-[#34C164]"
                         }`}
                       >
                         ${transaction.amount}

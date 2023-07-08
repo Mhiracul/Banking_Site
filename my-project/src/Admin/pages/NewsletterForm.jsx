@@ -42,7 +42,7 @@ const NewsletterForm = () => {
     fetchData();
   }, []);
 
-  useEffect(() => {
+  /* useEffect(() => {
     const fetchNewsletter = async () => {
       try {
         const res = await axios.get(`${apiBaseUrl}/admin/newsletter`);
@@ -62,7 +62,7 @@ const NewsletterForm = () => {
 
     fetchNewsletter();
   }, []);
-
+*/
   const handleUpdate = (e) => {
     e.preventDefault();
     setLoading(true);

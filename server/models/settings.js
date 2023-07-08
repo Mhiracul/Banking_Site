@@ -5,6 +5,9 @@ const settingsSchema = new mongoose.Schema({
     type: Number,
     default: 5,
   },
+  minimumLoanAmount: {
+    type: Number,
+  },
 });
 const Settings = mongoose.model("Settings", settingsSchema);
 

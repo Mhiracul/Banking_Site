@@ -10,7 +10,7 @@ const savingsSchema = new mongoose.Schema({
     default: "pending",
   },
   releaseDate: Date,
-  user: { type: mongoose.Schema.Types.ObjectId, ref: "user" },
+  user: { type: mongoose.Schema.Types.ObjectId, ref: "users" },
   transaction: { type: mongoose.Schema.Types.ObjectId, ref: "Transaction" }, // Reference to the Transaction schema
 });
 const Savings = mongoose.model("Savings", savingsSchema);

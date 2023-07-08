@@ -26,7 +26,6 @@ router.post(
 
       if (dynamicValues) {
         // Update the dynamic values in the database
-        dynamicValues.message = updatedDynamicValues.message;
         dynamicValues.reasons = updatedDynamicValues.reasons;
 
         await dynamicValues.save();
