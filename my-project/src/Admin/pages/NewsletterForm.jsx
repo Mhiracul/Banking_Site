@@ -7,7 +7,7 @@ import { toast } from "react-hot-toast";
 import DefaultLayout from "../layout/DefaultLayout";
 import Breadcrumb from "../componentAdmin/Breadcrumb";
 
-const NewsletterForm = () => {
+const NewsLetterForm = () => {
   const [selectedOption, setSelectedOption] = useState("all");
   const [newsletterContent, setNewsletterContent] = useState("");
   const [userName, setUserName] = useState("");
@@ -167,4 +167,4 @@ const NewsletterForm = () => {
   );
 };
 
-export default NewsletterForm;
+export default NewsLetterForm;
