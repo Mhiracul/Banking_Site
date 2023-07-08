@@ -80,7 +80,7 @@ const SavingsTransactions = () => {
         <DefaultLayout>
           <Breadcrumb pageName="Savings" />
           <div>
-            <table className="bg-white dark:bg-boxdark w-full">
+            <table className="bg-white dark:bg-boxdark w-full overflow-x-auto">
               <thead>
                 <tr>
                   <th className="font-medium text-left shadow-md uppercase text-xs px-4 py-2">
