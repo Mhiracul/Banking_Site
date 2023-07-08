@@ -52,7 +52,7 @@ const Dashboard = () => {
       {loading ? ( // Display the loading spinner while loading is true
         <div
           style={override}
-          className="flex bg-[#116f6a] items-center justify-center h-screen"
+          className="flex bg-[#116f6a] fixed items-center justify-center h-screen"
         >
           <ClipLoader color="#34a49f" loading={loading} size={75} />
         </div>
