@@ -4,6 +4,10 @@ const Transaction = require("../models/transaction");
 const userModel = require("../models/user");
 const DepositTemplate = require("../models/depositTemplate");
 const nodemailer = require("nodemailer");
+const HeaderContent = require("../models/headerContent");
+const FooterContent = require("../models/footerContent");
+// Rest of your code
+
 const {
   authenticateToken,
   authorizeAdmin,
@@ -62,7 +66,8 @@ router.post("/deposits", authenticateToken, async (req, res) => {
 
     const depositUser = await userModel.findById(userId);
     const formattedDate = savedDeposit.date;
-
+    const headerContent = await HeaderContent.findOne();
+    const footerContent = await FooterContent.findOne();
     const template = await DepositTemplate.findOne({});
     const depositConfirmationTemplate = template?.depositContent || "";
 
@@ -70,7 +75,18 @@ router.post("/deposits", authenticateToken, async (req, res) => {
       from: '"Finflow 👻" <mokeke250@gmail.com>',
       to: depositUser.email,
       subject: "Deposit Confirmation",
-      html: depositConfirmationTemplate
+      html: `
+      <div style="color: black; padding: 70px 10px; border-radius: 10px;">
+      ${headerContent?.content || ""}
+      <div style="color: black;">  ${depositConfirmationTemplate}
+      </div>
+
+      <p style="color: black; margin-top: 30px; font-size: 11px; border-top: 1px solid gray;">${
+        footerContent?.content || ""
+      }</p>
+    </div>
+
+    `
         .replace("{userName}", depositUser.userName)
         .replace("{amount}", depositAmount)
         .replace("{selectedMethod}", selectedMethod)

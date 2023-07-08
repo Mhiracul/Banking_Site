@@ -15,6 +15,9 @@ const Transaction = require("./routes/transactionRoute");
 const Virtual = require("./middlewares/virtual");
 const loanValue = require("./middlewares/loanValue");
 const cryptoMiddleware = require("./middlewares/cryptoMiddleware");
+const headerContentRoutes = require("./routes/header");
+const footerContentRoutes = require("./routes/footer");
+
 // Set up multer for handling file uploads
 const upload = multer(); // Specify the directory to store uploaded files
 
@@ -55,6 +58,8 @@ app.use("/", savingsMiddleware);
 app.use("/", loanValue);
 app.use("/", withdrawalMiddleware);
 app.use("/", cryptoMiddleware);
+app.use("/", headerContentRoutes);
+app.use("/", footerContentRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);

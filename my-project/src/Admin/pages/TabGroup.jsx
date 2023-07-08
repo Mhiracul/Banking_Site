@@ -19,6 +19,86 @@ const TabGroup = () => {
   const [depositConfirmationTemplate, setDepositConfirmationTemplate] =
     useState("");
 
+  const [headerContent, setHeaderContent] = useState("");
+  const [footerContent, setFooterContent] = useState("");
+
+  useEffect(() => {
+    fetchHeaderContent();
+    fetchFooterContent();
+  }, []);
+
+  const fetchHeaderContent = async () => {
+    try {
+      const response = await fetch(`${apiBaseUrl}/admin/header`, {
+        headers: {
+          "Content-Type": "application/json",
+          "auth-token": localStorage.getItem("token"),
+        },
+      });
+      const data = await response.json();
+      setHeaderContent(data.content);
+    } catch (error) {
+      console.error("Failed to fetch header content:", error);
+    }
+  };
+
+  const fetchFooterContent = async () => {
+    try {
+      const response = await fetch(`${apiBaseUrl}/admin/footer`, {
+        headers: {
+          "Content-Type": "application/json",
+          "auth-token": localStorage.getItem("token"),
+        },
+      });
+      const data = await response.json();
+      setFooterContent(data.content);
+    } catch (error) {
+      console.error("Failed to fetch footer content:", error);
+    }
+  };
+
+  const updateHeaderContent = async () => {
+    try {
+      const response = await fetch(`${apiBaseUrl}/admin/header`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          "auth-token": localStorage.getItem("token"),
+        },
+        body: JSON.stringify({ content: headerContent }),
+      });
+
+      if (response.ok) {
+        console.log("Header content updated successfully.");
+      } else {
+        console.error("Failed to update header content.");
+      }
+    } catch (error) {
+      console.error("Failed to update header content:", error);
+    }
+  };
+
+  const updateFooterContent = async () => {
+    try {
+      const response = await fetch(`${apiBaseUrl}/admin/footer`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          "auth-token": localStorage.getItem("token"),
+        },
+        body: JSON.stringify({ content: footerContent }),
+      });
+
+      if (response.ok) {
+        console.log("Footer content updated successfully.");
+      } else {
+        console.error("Failed to update footer content.");
+      }
+    } catch (error) {
+      console.error("Failed to update footer content:", error);
+    }
+  };
+
   useEffect(() => {
     getEmailTemplate();
   }, []);
@@ -270,13 +350,13 @@ const TabGroup = () => {
     <DefaultLayout>
       <div className="mx-auto max-w-270">
         <Breadcrumb pageName="Mail" />
-        <div className=" gap-6">
-          <div className="col-span-1">
-            <div className="bg-white shadow-lg rounded-lg p-6">
+        <div className=" gap-6 text-sm outline-none">
+          <div className="col-span-1 outline-none">
+            <div className="bg-white outline-none dark:bg-boxdark dark:border-strokedark border border-stroke shadow-lg rounded-lg p-6">
               <h4 className="text-lg font-bold mb-2">Mail Templates</h4>
               <p className="text-gray-500 mb-4">Edit Mail Templates</p>
               <Tab.Group>
-                <div className="">
+                <div className="outline-none">
                   <Tab.List className="flex border-b overflow-x-auto border-gray-200 mb-4">
                     <Tab
                       className={({ selected }) =>
@@ -330,15 +410,15 @@ const TabGroup = () => {
                   </Tab.List>
                 </div>
                 <Tab.Panels>
-                  <Tab.Panel>
-                    <div>
-                      <h1>Edit Email Template</h1>
+                  <Tab.Panel className="outline-none">
+                    <div className=" outline-none">
+                      <h1 className="mb-2">Edit Email Template</h1>
                       <textarea
                         value={registrationConfirmationTemplate}
                         onChange={handleTemplateChange}
                         rows={10}
                         cols={50}
-                        className="w-full rounded border border-stroke bg-gray py-3 px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                        className="w-full outline-none rounded border border-stroke bg-gray py-3 px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
                       />
                       <button
                         onClick={updateRegistrationConfirmationTemplate}
@@ -374,9 +454,9 @@ const TabGroup = () => {
                       </p>
                     </div>
                   </Tab.Panel>
-                  <Tab.Panel>
+                  <Tab.Panel className="outline-none">
                     <div>
-                      <h1>Edit Withdrawal Mail Template</h1>
+                      <h1 className="mb-2">Edit Withdrawal Mail Template</h1>
                       <textarea
                         value={withdrawalConfirmationTemplate}
                         onChange={handleWithdrawChange}
@@ -428,9 +508,11 @@ const TabGroup = () => {
                       </p>
                     </div>
                   </Tab.Panel>
-                  <Tab.Panel>
+                  <Tab.Panel className="outline-none">
                     <div>
-                      <h1 className="font-medium">Edit Loan Mail Template</h1>
+                      <h1 className="font-medium mb-2">
+                        Edit Loan Mail Template
+                      </h1>
                       <textarea
                         value={loanConfirmationTemplate}
                         onChange={handleLoanChange}
@@ -480,9 +562,9 @@ const TabGroup = () => {
                     </div>
                   </Tab.Panel>
 
-                  <Tab.Panel>
+                  <Tab.Panel className="outline-none">
                     <div>
-                      <h1 className="font-medium">
+                      <h1 className="font-medium mb-2">
                         Edit Savings Mail Template
                       </h1>
                       <textarea
@@ -538,9 +620,9 @@ const TabGroup = () => {
                       </p>
                     </div>
                   </Tab.Panel>
-                  <Tab.Panel>
+                  <Tab.Panel className="outline-none">
                     <div>
-                      <h1 className="font-medium">
+                      <h1 className="font-medium mb-2">
                         Edit Deposit Mail Template
                       </h1>
                       <textarea
@@ -607,6 +689,50 @@ const TabGroup = () => {
               </Tab.Group>
             </div>
           </div>
+        </div>
+
+        <div>
+          <form onSubmit={updateHeaderContent}>
+            <div className="mb-3 mt-7 text-xs">
+              <label>
+                Header Content:
+                <textarea
+                  value={headerContent}
+                  onChange={(e) => setHeaderContent(e.target.value)}
+                  rows={10}
+                  cols={50}
+                  className="w-full rounded border border-stroke bg-gray py-3 px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                />
+              </label>
+            </div>
+            <button
+              type="submit"
+              className="w-full mb-8 flex justify-center rounded bg-[#5321a8] py-2 px-6 font-medium text-gray hover:bg-opacity-70"
+            >
+              Update Header
+            </button>
+          </form>
+
+          <form onSubmit={updateFooterContent}>
+            <div className="mb-3 text-xs ">
+              <label>
+                Footer Content:
+                <textarea
+                  value={footerContent}
+                  onChange={(e) => setFooterContent(e.target.value)}
+                  rows={10}
+                  cols={50}
+                  className="w-full rounded border border-stroke bg-gray py-3 px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                />
+              </label>
+            </div>
+            <button
+              type="submit"
+              className="w-full mb-3 flex justify-center rounded bg-[#5321a8] py-2 px-6 font-medium text-gray hover:bg-opacity-70"
+            >
+              Update Footer
+            </button>
+          </form>
         </div>
       </div>
     </DefaultLayout>

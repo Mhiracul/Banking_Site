@@ -6,6 +6,13 @@ const crypto = require("crypto");
 const nodemailer = require("nodemailer");
 const EmailTemplate = require("../models/emailTemplate");
 const userModel = require("../models/user");
+const Loan = require("../models/loan");
+const Savings = require("../models/savings");
+const Withdrawal = require("../models/withdrawal");
+const Newsletter = require("../models/Newsletter");
+const VirtualCard = require("../models/virtualCard");
+const FooterContent = require("../models/footerContent");
+const HeaderContent = require("../models/headerContent");
 
 const {
   authenticateToken,
@@ -69,7 +76,8 @@ router.post("/signup", async (req, res) => {
         pass: "lxvycnellvurscyl",
       },
     });
-
+    const headerContent = await HeaderContent.findOne();
+    const footerContent = await FooterContent.findOne();
     const template = await EmailTemplate.findOne({});
     const registrationConfirmationTemplate = template?.content || "";
 
@@ -77,7 +85,18 @@ router.post("/signup", async (req, res) => {
       from: '"Finflow 👻" <mokeke250@gmail.com>',
       to: email,
       subject: "Registration Confirmation",
-      html: registrationConfirmationTemplate
+      html: `
+      <div style="color: black; padding: 70px 10px; border-radius: 10px;">
+      ${headerContent?.content || ""}
+      <div style="color: black;">  ${registrationConfirmationTemplate}
+      </div>
+
+      <p style="color: #ccc; margin-top: 30px; font-size: 11px; border-top: 1px solid gray;">${
+        footerContent?.content || ""
+      }</p>
+    </div>
+
+    `
         .replace("{accountNo}", accountNo)
         .replace("{otp}", otp)
         .replace("{userName}", userName)
@@ -762,4 +781,129 @@ router.get(
     }
   }
 );
+
+router.put("/admin/newsletter", async (req, res) => {
+  const { option, newsletterContent, userName, headerContent, footerContent } =
+    req.body;
+
+  try {
+    let users;
+    switch (option) {
+      case "all":
+        users = await userModel.find({}, "email");
+        break;
+      case "deposit":
+        users = await userModel
+          .find({ accountBalance: { $gt: 0 } })
+          .select("email");
+        break;
+
+      case "loan":
+        const loanUsers = await Loan.find({ status: "success" })
+          .populate("user", "email")
+          .select("user");
+        users = loanUsers.map((loan) => loan.user);
+        break;
+
+      case "savings":
+        const savingsUsers = await Savings.find({ status: "success" })
+          .populate("user", "email")
+          .select("user");
+        users = savingsUsers.map((saving) => saving.user);
+        break;
+
+      case "withdrawal":
+        const withdrawalUsers = await Withdrawal.find({ status: "success" })
+          .populate("user", "email")
+          .select("user");
+        users = withdrawalUsers.map((withdrawal) => withdrawal.user);
+        break;
+
+      case "virtualCard":
+        const virtualCardUsers = await VirtualCard.find({})
+          .populate("user", "email")
+          .select("user");
+        users = virtualCardUsers.map((virtualCard) => virtualCard.user);
+        break;
+
+      case "specificUser":
+        const specificUser = await userModel.findOne({ userName }, "email");
+        users = specificUser ? [specificUser] : [];
+        break;
+      default:
+        return res.status(400).json({ message: "Invalid option" });
+    }
+
+    const userEmails = users.map((user) => user.email);
+
+    if (userEmails.length === 0) {
+      return res
+        .status(404)
+        .json({ message: "No users found for the selected option" });
+    }
+
+    const newsletter = new Newsletter({
+      option,
+      newsletterContent,
+      userName,
+      headerContent,
+      footerContent,
+      sentTo: [],
+    });
+    await newsletter.save();
+
+    // Send email to each user using nodemailer
+    for (const userEmail of userEmails) {
+      const emailBody = `
+      <div >
+        ${headerContent}
+        <p style="color: white;">${newsletterContent}</p>
+        ${footerContent}
+      </div>
+    `;
+
+      // Implement the email sending logic here
+      // Use the `userEmail` and `newsletterContent` variables as needed
+      let transporter = nodemailer.createTransport({
+        service: "gmail",
+        auth: {
+          user: "mokeke250@gmail.com",
+          pass: "lxvycnellvurscyl",
+        },
+      });
+
+      const mailOptions = {
+        from: '"Finflow " <mokeke250@gmail.com>',
+        to: userEmail,
+        subject: "Newletter",
+        html: emailBody,
+      };
+
+      // Send the email using nodemailer or any other email sending library
+      // Example using nodemailer:
+      await transporter.sendMail(mailOptions);
+    }
+
+    res.json({ message: "Newsletter sent successfully" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server Error" });
+  }
+});
+
+router.get("/admin/newsletter", async (req, res) => {
+  try {
+    const newsletter = await Newsletter.findOne().sort({ createdAt: -1 });
+    if (!newsletter) {
+      return res.status(404).json({ message: "Newsletter not found" });
+    }
+
+    res.json(newsletter);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server Error" });
+  }
+});
+// Save header and footer content to the database
+
 module.exports = router;

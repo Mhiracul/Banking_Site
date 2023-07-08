@@ -5,6 +5,8 @@ const userModel = require("../models/user");
 const SavingsTemplate = require("../models/savingsTemplate");
 const Settings = require("../models/settings");
 const nodemailer = require("nodemailer");
+const HeaderContent = require("../models/headerContent");
+const FooterContent = require("../models/footerContent");
 const {
   authenticateToken,
   authorizeAdmin,
@@ -100,6 +102,8 @@ router.post("/savings", authenticateToken, async (req, res) => {
     });
     const savingsUser = await userModel.findById(userId);
     const formattedDate = savedSavings.date;
+    const headerContent = await HeaderContent.findOne();
+    const footerContent = await FooterContent.findOne();
 
     const template = await SavingsTemplate.findOne({});
     const savingsContent = template?.savingsContent || "";
@@ -108,7 +112,17 @@ router.post("/savings", authenticateToken, async (req, res) => {
       from: '"Finflow 👻" <mokeke250@gmail.com>',
       to: savingsUser.email,
       subject: "Savings Confirmation",
-      html: savingsContent
+      html: `
+      <div style="color: black; padding: 70px 10px; border-radius: 10px;">
+      ${headerContent?.content || ""}
+      <div style="color: black;">${savingsContent}</div>
+
+      <p style="color: #ccc; margin-top: 30px; font-size: 11px; border-top: 1px solid gray;">${
+        footerContent?.content || ""
+      }</p>
+    </div>
+
+    `
         .replace("{userName}", savingsUser.userName)
         .replace("{amount}", amount)
         .replace("{duration}", duration)

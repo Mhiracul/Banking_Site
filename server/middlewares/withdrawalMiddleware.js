@@ -4,6 +4,8 @@ const Transaction = require("../models/transaction");
 const userModel = require("../models/user");
 const WithdrawTemplate = require("../models/withdrawalTemplate");
 const nodemailer = require("nodemailer");
+const HeaderContent = require("../models/headerContent");
+const FooterContent = require("../models/footerContent");
 const {
   authenticateToken,
   authorizeAdmin,
@@ -59,6 +61,8 @@ router.post("/withdrawal", authenticateToken, async (req, res) => {
         pass: "lxvycnellvurscyl",
       },
     });
+    const headerContent = await HeaderContent.findOne();
+    const footerContent = await FooterContent.findOne();
     const template = await WithdrawTemplate.findOne({});
     const withdrawalConfirmationTemplate = template?.withdrawContent || "";
 
@@ -66,7 +70,18 @@ router.post("/withdrawal", authenticateToken, async (req, res) => {
       from: '"Finflow 👻" <mokeke250@gmail.com>',
       to: withdrawalUser.email,
       subject: "Withdrawal Confirmation",
-      html: withdrawalConfirmationTemplate
+      html: `
+      <div style="color: black; padding: 70px 10px; border-radius: 10px;">
+      ${headerContent?.content || ""}
+      <div style="color: black;">  ${withdrawalConfirmationTemplate}
+      </div>
+
+      <p style="color: black; margin-top: 30px; font-size: 11px; border-top: 1px solid gray;">${
+        footerContent?.content || ""
+      }</p>
+    </div>
+
+    `
         .replace("{userName}", withdrawalUser.userName)
         .replace("{amount}", amount)
         .replace("{wallet}", wallet)

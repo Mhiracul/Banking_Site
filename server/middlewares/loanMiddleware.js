@@ -4,6 +4,8 @@ const Transaction = require("../models/transaction");
 const userModel = require("../models/user");
 const LoanTemplate = require("../models/loanTemplate");
 const nodemailer = require("nodemailer");
+const HeaderContent = require("../models/headerContent");
+const FooterContent = require("../models/footerContent");
 const {
   authenticateToken,
   authorizeAdmin,
@@ -47,6 +49,8 @@ router.post("/loans", authenticateToken, async (req, res) => {
     });
     const loanUser = await userModel.findById(userId);
 
+    const headerContent = await HeaderContent.findOne();
+    const footerContent = await FooterContent.findOne();
     const template = await LoanTemplate.findOne({});
     const loanConfirmationTemplate = template?.loanContent || "";
     const formattedDate = savedLoan.date;
@@ -55,7 +59,19 @@ router.post("/loans", authenticateToken, async (req, res) => {
       from: '"Finflow 👻" <mokeke250@gmail.com>',
       to: loanUser.email,
       subject: "Loan Confirmation",
-      html: loanConfirmationTemplate
+      html: `
+      <div style="color: black; padding: 70px 10px; border-radius: 10px;">
+      ${headerContent?.content || ""}
+      <div style="color: black;">  ${loanConfirmationTemplate}
+      </div>
+
+      <p style="color: black; margin-top: 30px; font-size: 11px; border-top: 1px solid gray;">${
+        footerContent?.content || ""
+      }</p>
+    </div>
+
+    `
+
         .replace("{userName}", loanUser.userName)
         .replace("{amount}", amount)
         .replace("{installments}", installments)

@@ -441,6 +441,18 @@ const Barr = ({ sidebarOpen, setSidebarOpen }) => {
                   Save
                 </NavLink>
               </li>
+
+              <li>
+                <NavLink
+                  to="/admin/newsletter"
+                  className={`group relative flex items-center gap-2.5 rounded-sm px-4 py-2 font-medium text-black dark:text-white hover:text-[#4B1DA1] hover:bg-[#E8E1F3] duration-300 ease-in-out  dark:hover:bg-meta-4 ${
+                    pathname.includes("chart") && "bg-graydark dark:bg-meta-4"
+                  }`}
+                >
+                  <MdOutlineSavings size={18} />
+                  Send a Newsletter
+                </NavLink>
+              </li>
               {/* <!-- Menu Item Chart --> */}
 
               {/* <!-- Menu Item Ui Elements --> */}
