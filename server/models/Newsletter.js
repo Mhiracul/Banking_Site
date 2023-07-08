@@ -15,14 +15,7 @@ const newsletterSchema = new mongoose.Schema({
       return this.option === "specificUser";
     },
   },
-  headerContent: {
-    type: String,
-    required: true,
-  },
-  footerContent: {
-    type: String,
-    required: true,
-  },
+
   sentTo: {
     type: [String],
     required: true,

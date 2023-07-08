@@ -783,8 +783,7 @@ router.get(
 );
 
 router.put("/admin/newsletter", async (req, res) => {
-  const { option, newsletterContent, userName, headerContent, footerContent } =
-    req.body;
+  const { option, newsletterContent, userName } = req.body;
 
   try {
     let users;
@@ -842,23 +841,29 @@ router.put("/admin/newsletter", async (req, res) => {
         .json({ message: "No users found for the selected option" });
     }
 
+    const headerContent = await HeaderContent.findOne();
+    const footerContent = await FooterContent.findOne();
     const newsletter = new Newsletter({
       option,
       newsletterContent,
       userName,
-      headerContent,
-      footerContent,
+
       sentTo: [],
     });
     await newsletter.save();
+    const formattedContent = newsletterContent.replace(/\n/g, "<br/>");
 
     // Send email to each user using nodemailer
     for (const userEmail of userEmails) {
       const emailBody = `
-      <div >
-        ${headerContent}
-        <p style="color: white;">${newsletterContent}</p>
-        ${footerContent}
+      <div style="color: white; background-color: #272727; padding: 70px 10px; border-radius: 10px;">
+      ${headerContent?.content || ""}
+        <p style="color: white; margin-bottom: 10px;">
+        ${formattedContent}
+      </p>
+      <p style="color: #696969; margin-top: 30px; font-size: 6px; border-top: 1px solid gray;">${
+        footerContent?.content || ""
+      }</p>
       </div>
     `;
 

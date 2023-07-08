@@ -164,8 +164,8 @@ function MainPage() {
             <p>Loading...</p>
           ) : (
             <div className=" h-full rounded-lg ">
-              <table className="min-w-full divide-y divide-gray-200">
-                <thead className="bg-gray-50 md:text-xs text-[10px]">
+              <table className="min-w-full ">
+                <thead className="bg-gray dark:bg-boxdark md:text-xs text-[10px] shadow-md shadow-stroke">
                   <tr>
                     <th
                       scope="col"
@@ -194,7 +194,7 @@ function MainPage() {
                     </th>
                   </tr>
                 </thead>
-                <tbody className="bg-white divide-y md:text-xs text-[10px] divide-gray-200">
+                <tbody className="bg-white dark:border-strokedark dark:bg-boxdark dark:text-white divide-y divide-stroke md:text-xs text-[10px] dark:divide-strokedark">
                   {currentData.map((data) => (
                     <tr key={data._id}>
                       <td className="px-4 py-2">{data.userName}</td>

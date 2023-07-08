@@ -6,13 +6,13 @@ import { apiBaseUrl } from "../../../config";
 import { toast } from "react-hot-toast";
 import DefaultLayout from "../layout/DefaultLayout";
 import Breadcrumb from "../componentAdmin/Breadcrumb";
+import { ScaleLoader } from "react-spinners";
 
 const NewsletterForm = () => {
   const [selectedOption, setSelectedOption] = useState("all");
   const [newsletterContent, setNewsletterContent] = useState("");
   const [userName, setUserName] = useState("");
-  const [headerContent, setHeaderContent] = useState(""); // New field
-  const [footerContent, setFooterContent] = useState(""); // New field
+  const [loading, setLoading] = useState(false);
 
   const dispatch = useDispatch();
   const usersData = useSelector((state) => state.user.users);
@@ -50,8 +50,6 @@ const NewsletterForm = () => {
           const newsletter = res.data;
           if (newsletter) {
             setNewsletterContent(newsletter.newsletterContent);
-            setHeaderContent(newsletter.headerContent);
-            setFooterContent(newsletter.footerContent);
           }
         } else {
           // Handle other response statuses
@@ -67,6 +65,7 @@ const NewsletterForm = () => {
 
   const handleUpdate = (e) => {
     e.preventDefault();
+    setLoading(true);
 
     // Send the newsletter details to the backend
     axios
@@ -74,8 +73,6 @@ const NewsletterForm = () => {
         option: selectedOption,
         userName: selectedOption === "specificUser" ? userName : "",
         newsletterContent,
-        headerContent,
-        footerContent,
       })
       .then((response) => {
         console.log(response.data);
@@ -86,6 +83,9 @@ const NewsletterForm = () => {
         console.error(error);
         // Display error message or perform error handling
         toast.error("Failed to send newsletter");
+      })
+      .finally(() => {
+        setLoading(false);
       });
   };
 
@@ -120,7 +120,7 @@ const NewsletterForm = () => {
                 type="text"
                 value={userName}
                 onChange={(e) => setUserName(e.target.value)}
-                className="w-full rounded mt-2 border border-stroke bg-gray py-3 px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                className="w-full text-sm rounded mt-2 border border-stroke bg-gray py-3 px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
               />
             </label>
           </div>
@@ -132,35 +132,35 @@ const NewsletterForm = () => {
           <textarea
             value={newsletterContent}
             onChange={(e) => setNewsletterContent(e.target.value)}
-            className="w-full rounded mt-2 border border-stroke bg-gray py-3 px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+            rows={16}
+            cols={80}
+            className="w-full text-xs rounded mt-2 border border-stroke bg-gray py-3 px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
           />
         </label>
         <br />
-        <label>
-          Header Content:
-          <textarea
-            value={headerContent}
-            onChange={(e) => setHeaderContent(e.target.value)}
-            readOnly
-            className="w-full rounded mt-2 border border-stroke bg-gray py-3 px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-          />
-        </label>
+
         <br />
-        <label>
-          Footer Content:
-          <textarea
-            value={footerContent}
-            onChange={(e) => setFooterContent(e.target.value)}
-            readOnly
-            className="w-full rounded mt-2 border border-stroke bg-gray py-3 px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-          />
-        </label>
+
+        {loading && (
+          <div className="flex  justify-center items-center mt-1">
+            <ScaleLoader
+              color="#123abc"
+              height={35}
+              width={4}
+              radius={2}
+              margin={2}
+            />
+          </div>
+        )}
+
         <br />
+
         <button
           type="submit"
-          className="flex justify-center rounded-md bg-primary  w-full mt-5 py-2 px-6 font-medium text-gray hover:shadow-1"
+          className="flex justify-center rounded-md bg-primary  w-full mt-2 py-2 px-6 font-medium text-gray hover:shadow-1"
+          disabled={loading}
         >
-          Send Newsletter
+          {loading ? "Sending..." : "Send Newsletter"}
         </button>
       </form>
     </DefaultLayout>

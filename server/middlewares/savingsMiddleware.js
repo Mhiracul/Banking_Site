@@ -7,6 +7,8 @@ const Settings = require("../models/settings");
 const nodemailer = require("nodemailer");
 const HeaderContent = require("../models/headerContent");
 const FooterContent = require("../models/footerContent");
+const schedule = require("node-schedule");
+
 const {
   authenticateToken,
   authorizeAdmin,
@@ -56,14 +58,13 @@ router.post("/savings", authenticateToken, async (req, res) => {
     }
 
     // Calculate daily addition based on the current interest rate
-    const interestRate = await getInterestRate(); // Function to retrieve the current interest rate
+    const interestRate = await getInterestRate();
     const durationInDays = getDurationInDays(duration);
     const dailyAddition =
       (parsedAmount * (interestRate / 100)) / durationInDays;
 
-    // Create a new Savings entry
     const savings = new Savings({
-      amount: parsedAmount, // Use the parsed amount
+      amount: parsedAmount,
       duration,
       reason,
       releaseDate,
@@ -72,6 +73,23 @@ router.post("/savings", authenticateToken, async (req, res) => {
 
     const savedSavings = await savings.save();
     console.log("Savings saved successfully");
+
+    const user = await userModel.findById(userId);
+    user.accountBalance -= parsedAmount;
+    await user.save();
+
+    // Schedule the recurring task to add daily addition
+    const dailyAdditionJob = schedule.scheduleJob(releaseDate, async () => {
+      const user = await userModel.findById(userId);
+
+      user.accountBalance += dailyAddition;
+      user.earnings += dailyAddition;
+      await user.save();
+    });
+
+    // Save the job ID in the savedSavings document
+    savedSavings.dailyAdditionJobId = dailyAdditionJob.id;
+    await savedSavings.save();
 
     const transaction = new Transaction({
       type: "savings",
@@ -84,14 +102,6 @@ router.post("/savings", authenticateToken, async (req, res) => {
     const savedTransaction = await transaction.save();
     savedSavings.transaction = savedTransaction._id;
     await savedSavings.save();
-
-    // Deduct the savings amount from the user's account balance
-    const user = await userModel.findById(userId);
-    user.accountBalance -= parsedAmount; // Deduct the parsed amount from the account balance
-    user.earnings += dailyAddition;
-    user.accountBalance += dailyAddition;
-
-    await user.save();
 
     const transporter = nodemailer.createTransport({
       service: "gmail",

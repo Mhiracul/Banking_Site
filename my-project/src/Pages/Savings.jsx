@@ -9,6 +9,7 @@ import DefaultLayouts from "../User/layoutt/DefaultLayouts";
 import { toast } from "react-hot-toast";
 import { apiBaseUrl } from "../../config";
 import { ClipLoader } from "react-spinners";
+import { ScaleLoader } from "react-spinners";
 
 function Savings() {
   const [amount, setAmount] = useState("");
@@ -209,8 +210,19 @@ function Savings() {
                   <button
                     className="bg-[#21635f] hover:bg-[#23867f] text-white w-full font-bold py-2 px-4 rounded mt-4"
                     type="submit"
+                    disabled={isLoading}
                   >
-                    Create Savings
+                    {isLoading ? (
+                      <ScaleLoader
+                        color="#ffffff"
+                        height={15}
+                        width={2}
+                        radius={2}
+                        margin={2}
+                      />
+                    ) : (
+                      "Create Savings"
+                    )}
                   </button>
 
                   <div className=" mt-5">
